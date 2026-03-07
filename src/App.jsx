@@ -28,7 +28,7 @@ const ELEM_COLORS = { ice:"#5BC4E8", fire:"#E84E25", umbra:"#A855F7", light:"#ED
 
 const CHARACTERS = [
   { id:"hibiki", name:"Hibiki Kohaku", tag:"SHADOW / CLONE", tier:"S", color:"#7B8FE4",
-    img:"https://static.wikia.nocookie.net/blazblue/images/c/c7/Hibiki_Kohaku_%28Centralfiction%2C_Character_Select_Artwork%29.png/revision/latest?cb=20161019131225",
+    img:"https://static.wikia.nocookie.net/blazblue/images/c/c7/Hibiki_Kohaku_%28Centralfiction%2C_Character_Select_Artwork%29.png/revision/latest",
     builds:[
       { id:"clone_army", name:"CLONE ARMY", arch:"AoE Dominance", rating:97,
         tactics:["Attack Shadow Spike (Umbra)","Skill Lightning Orb (Electric)","Dash Thunderbolt (Light)","Legacy Ice Spike (Ice)","Summon Chain Lightning (Light)"],
@@ -72,7 +72,7 @@ const CHARACTERS = [
     ]
   },
   { id:"ragna", name:"Ragna the Bloodedge", tag:"MELEE / LIFESTEAL", tier:"B", color:"#D93025",
-    img:"https://static.wikia.nocookie.net/blazblue/images/1/16/Ragna_the_Bloodedge_%28Centralfiction%2C_Character_Select_Artwork%29.png/revision/latest?cb=20161019135146",
+    img:"https://static.wikia.nocookie.net/blazblue/images/1/16/Ragna_the_Bloodedge_%28Centralfiction%2C_Character_Select_Artwork%29.png/revision/latest",
     builds:[
       { id:"bloodletting", name:"BLOODLETTING", arch:"Risk-Reward / Sustain", rating:85,
         tactics:["Attack Cold (Ice)","Skill Burn (Fire)","Dash Thunderbolt (Light)","Legacy Shadow Spike (Umbra)","Summon Lightning Orb (Electric)"],
@@ -116,7 +116,7 @@ const CHARACTERS = [
     ]
   },
   { id:"jin", name:"Jin Kisaragi", tag:"ICE / SWORD", tier:"S", color:"#4EA8D8",
-    img:"https://static.wikia.nocookie.net/blazblue/images/b/ba/Jin_Kisaragi_%28Centralfiction%2C_Character_Select_Artwork%29.png/revision/latest?cb=20161019131859",
+    img:"https://static.wikia.nocookie.net/blazblue/images/b/ba/Jin_Kisaragi_%28Centralfiction%2C_Character_Select_Artwork%29.png/revision/latest",
     builds:[
       { id:"freeze_god", name:"FREEZE GOD", arch:"Control / Auto Mode", rating:98,
         tactics:["Attack Cold (Ice)","Skill Cold (Ice)","Dash Shadow Ice Spike (Double)","Legacy Frost Burst (Ice)","Summon Ice Spike (Ice)"],
@@ -160,7 +160,7 @@ const CHARACTERS = [
     ]
   },
   { id:"kokonoe", name:"Kokonoe Mercury", tag:"ZONING / SCIENCE", tier:"A", color:"#E8714A",
-    img:"https://static.wikia.nocookie.net/blazblue/images/c/ce/Konoe_A._Mercury_%28Centralfiction%2C_Character_Select_Artwork%29.png/revision/latest?cb=20161019132337",
+    img:"https://static.wikia.nocookie.net/blazblue/images/c/ce/Konoe_A._Mercury_%28Centralfiction%2C_Character_Select_Artwork%29.png/revision/latest",
     builds:[
       { id:"aerial_bomber", name:"AERIAL BOMBER", arch:"Aerial DoT / Untouchable", rating:94,
         tactics:["Skill Burn (Fire)","Attack Fire Spirit (Fire)","Dash Thunderbolt (Light)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
@@ -204,7 +204,7 @@ const CHARACTERS = [
     ]
   },
   { id:"es", name:"Es", tag:"CREST / SPATIAL", tier:"A", color:"#E878A0",
-    img:"https://static.wikia.nocookie.net/blazblue/images/5/57/Es_%28Centralfiction%2C_Character_Select_Artwork%29.png/revision/latest?cb=20160425120259",
+    img:"https://static.wikia.nocookie.net/blazblue/images/5/57/Es_%28Centralfiction%2C_Character_Select_Artwork%29.png/revision/latest",
     builds:[
       { id:"mine_bouncer", name:"MINE BOUNCER", arch:"Es-Exclusive / Highest Burst", rating:93,
         tactics:["Summon Mine (Fire)","Attack Cold (Ice)","Skill Burn (Fire)","Dash Shadow Spike (Umbra)","Legacy Thunderbolt (Light)"],
