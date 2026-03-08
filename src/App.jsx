@@ -745,12 +745,9 @@ function Banner() {
           90%  { opacity: 1; }
           100% { transform: translateX(200%); opacity: 0; }
         }
-        @keyframes xSpin {
-          0%   { transform: rotate(0deg);   filter: drop-shadow(0 0 4px #B91C1C) drop-shadow(0 0 12px #7A0A0A); }
-          25%  { filter: drop-shadow(0 0 14px #FF3020) drop-shadow(0 0 30px #B91C1C); }
-          50%  { transform: rotate(180deg); filter: drop-shadow(0 0 4px #B91C1C) drop-shadow(0 0 12px #7A0A0A); }
-          75%  { filter: drop-shadow(0 0 14px #FF3020) drop-shadow(0 0 30px #B91C1C); }
-          100% { transform: rotate(360deg); filter: drop-shadow(0 0 4px #B91C1C) drop-shadow(0 0 12px #7A0A0A); }
+        @keyframes xGlow {
+          0%, 100% { filter: drop-shadow(0 0 4px #B91C1C) drop-shadow(0 0 12px #7A0A0A); }
+          50%       { filter: drop-shadow(0 0 16px #FF3020) drop-shadow(0 0 32px #B91C1C); }
         }
         @keyframes bladeShimmer {
           0%, 100% { opacity: 0.9; }
@@ -776,7 +773,7 @@ function Banner() {
           0%,100% { opacity: 0.5; }
           50%     { opacity: 1; }
         }
-        .entropy-x  { animation: xSpin 4s linear infinite; transform-origin: 425px 44px; transform-box: fill-box; }
+        .entropy-x  { animation: xGlow 2s ease-in-out infinite; }
         .blade-left { animation: bladeShimmer 4s ease-in-out infinite; }
         .blade-right{ animation: bladeShimmer 4s ease-in-out infinite 0.8s; }
         .gold-text  { animation: goldPulse 5s ease-in-out infinite; }
@@ -841,7 +838,11 @@ function Banner() {
         <g className="entropy-x">
           <text x="402" y="63"
             fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
-            fontWeight="900" fontSize="68" fill="url(#bladeG)" filter="url(#strongglow)">X</text>
+            fontWeight="900" fontSize="68" fill="url(#bladeG)" filter="url(#strongglow)">X
+            <animateTransform attributeName="transform" type="rotate"
+              from="0 422 30" to="360 422 30"
+              dur="3s" repeatCount="indefinite"/>
+          </text>
         </g>
 
         {/* ── OVERRIDE subtitle ── */}
