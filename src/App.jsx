@@ -1023,6 +1023,259 @@ const CHARACTERS = [
   }
 ];
 
+function HomePage({setTab}) {
+  const [hovered, setHovered] = useState(null);
+  const tiers = {S:"#E53935", A:"#FF8F00", B:"#1976D2"};
+
+  const features = [
+    {
+      id:"builds",
+      label:"BUILD ANALYZER",
+      desc:"3 curated builds per character with full DPS math, radar profiles, tactic loadouts, and synergy charts.",
+      stat:"48 BUILDS",
+      icon:(
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect x="2" y="18" width="6" height="12" fill="#B91C1C" opacity="0.9"/>
+          <rect x="10" y="12" width="6" height="18" fill="#C9A227" opacity="0.9"/>
+          <rect x="18" y="6" width="6" height="24" fill="#B91C1C" opacity="0.7"/>
+          <rect x="26" y="2" width="4" height="28" fill="#C9A227" opacity="0.5"/>
+          <polyline points="5,18 13,12 21,6 28,2" stroke="#F0EDE5" strokeWidth="1.5" fill="none" strokeDasharray="2 2"/>
+        </svg>
+      ),
+    },
+    {
+      id:"tactics",
+      label:"TACTICS DATABASE",
+      desc:"15 tactics across 5 elements with rarity scaling charts, damage math breakdowns, and tier justifications.",
+      stat:"15 TACTICS",
+      icon:(
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="16" r="13" stroke="#B91C1C" strokeWidth="1.5" fill="none"/>
+          <circle cx="16" cy="16" r="8" stroke="#C9A227" strokeWidth="1" fill="none" opacity="0.6"/>
+          <circle cx="16" cy="16" r="3" fill="#B91C1C"/>
+          <line x1="16" y1="3" x2="16" y2="8" stroke="#B91C1C" strokeWidth="1.5"/>
+          <line x1="16" y1="24" x2="16" y2="29" stroke="#B91C1C" strokeWidth="1.5"/>
+          <line x1="3" y1="16" x2="8" y2="16" stroke="#B91C1C" strokeWidth="1.5"/>
+          <line x1="24" y1="16" x2="29" y2="16" stroke="#B91C1C" strokeWidth="1.5"/>
+          <line x1="7" y1="7" x2="11" y2="11" stroke="#C9A227" strokeWidth="1" opacity="0.7"/>
+          <line x1="21" y1="21" x2="25" y2="25" stroke="#C9A227" strokeWidth="1" opacity="0.7"/>
+          <line x1="25" y1="7" x2="21" y2="11" stroke="#C9A227" strokeWidth="1" opacity="0.7"/>
+          <line x1="11" y1="21" x2="7" y2="25" stroke="#C9A227" strokeWidth="1" opacity="0.7"/>
+        </svg>
+      ),
+    },
+    {
+      id:"guide",
+      label:"CHARACTER GUIDE",
+      desc:"Full leveling paths per build, key mechanics, talent breakdowns, and Morpheus's personal tips for every character.",
+      stat:"16 CHARS",
+      icon:(
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect x="4" y="2" width="20" height="26" rx="1" stroke="#C9A227" strokeWidth="1.5" fill="none"/>
+          <rect x="6" y="6" width="10" height="1.5" fill="#B91C1C" opacity="0.8"/>
+          <rect x="6" y="10" width="14" height="1" fill="#555"/>
+          <rect x="6" y="13" width="14" height="1" fill="#555"/>
+          <rect x="6" y="16" width="10" height="1" fill="#555"/>
+          <rect x="6" y="19" width="12" height="1" fill="#555"/>
+          <path d="M22 20 L30 16 L22 12 Z" fill="#C9A227" opacity="0.9"/>
+        </svg>
+      ),
+    },
+  ];
+
+  const stats = [
+    {val:"16", label:"PROTOTYPES"},
+    {val:"48", label:"BUILDS"},
+    {val:"15", label:"TACTICS"},
+    {val:"5",  label:"ELEMENTS"},
+    {val:"3",  label:"BUILDS / CHAR"},
+  ];
+
+  return (
+    <div style={{flex:1, overflowY:"auto", overflowX:"hidden", background:"#080808"}}>
+      <style>{`
+        @keyframes homeSlideUp {
+          from { opacity:0; transform:translateY(24px); }
+          to   { opacity:1; transform:translateY(0); }
+        }
+        @keyframes statCount {
+          from { opacity:0; transform:translateY(8px); }
+          to   { opacity:1; transform:translateY(0); }
+        }
+        @keyframes scanH {
+          0%   { transform:translateY(-100%); }
+          100% { transform:translateY(800%); }
+        }
+        @keyframes pulseRed {
+          0%,100% { box-shadow: 0 0 0 0 rgba(185,28,28,0); }
+          50%     { box-shadow: 0 0 24px 4px rgba(185,28,28,0.35); }
+        }
+        @keyframes borderGlow {
+          0%,100% { opacity:0.4; }
+          50%     { opacity:1; }
+        }
+        @keyframes charReveal {
+          from { opacity:0; transform:scale(0.96) translateY(10px); }
+          to   { opacity:1; transform:scale(1)    translateY(0); }
+        }
+        .home-hero    { animation: homeSlideUp 0.6s ease both; }
+        .home-stats   { animation: homeSlideUp 0.6s ease 0.15s both; }
+        .home-feat    { animation: homeSlideUp 0.6s ease 0.3s both; }
+        .home-roster  { animation: homeSlideUp 0.6s ease 0.45s both; }
+        .feat-card:hover { transform: translateY(-3px); border-color: rgba(185,28,28,0.6) !important; }
+        .feat-card { transition: transform 0.18s ease, border-color 0.18s ease; }
+        .char-card:hover .char-img { transform: scale(1.06); filter: brightness(1.1) saturate(1.1); }
+        .char-card:hover .char-name { color: var(--char-color) !important; }
+        .char-img { transition: transform 0.22s ease, filter 0.22s ease; }
+        .char-card { cursor: pointer; }
+        .enter-btn:hover { background: #B91C1C !important; color: #fff !important; }
+        .enter-btn { transition: background 0.15s ease, color 0.15s ease; }
+      `}</style>
+
+      {/* ── HERO ── */}
+      <div className="home-hero" style={{position:"relative", overflow:"hidden"}}>
+        <img src="/banner.png" alt="" style={{
+          display:"block", width:"100%", height:"340px",
+          objectFit:"cover", objectPosition:"center 40%",
+          filter:"brightness(0.55) saturate(1.2)",
+        }}/>
+        {/* Dark gradient overlay */}
+        <div style={{position:"absolute",inset:0,background:"linear-gradient(to bottom, rgba(8,8,8,0.1) 0%, rgba(8,8,8,0.4) 60%, #080808 100%)"}}/>
+        {/* Diagonal slash accent */}
+        <div style={{position:"absolute",top:0,left:0,right:0,bottom:0,overflow:"hidden",pointerEvents:"none"}}>
+          <div style={{position:"absolute",top:"-10%",left:"45%",width:"2px",height:"120%",background:"linear-gradient(to bottom,transparent,rgba(185,28,28,0.6),transparent)",transform:"rotate(12deg)"}}/>
+          <div style={{position:"absolute",top:"-10%",left:"47%",width:"1px",height:"120%",background:"linear-gradient(to bottom,transparent,rgba(201,162,39,0.3),transparent)",transform:"rotate(12deg)"}}/>
+        </div>
+        {/* Hero text */}
+        <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"0 48px 44px"}}>
+          <div style={{fontSize:11,letterSpacing:5,color:"#B91C1C",fontWeight:900,marginBottom:8,fontFamily:"'Barlow Condensed',sans-serif"}}>BLAZBLUE ENTROPY EFFECT X</div>
+          <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontWeight:900,fontSize:"clamp(36px,5vw,68px)",letterSpacing:"2px",lineHeight:0.95,color:"#F7F3EE",textShadow:"0 0 60px rgba(185,28,28,0.5)"}}>
+            TACTICS<br/>
+            <span style={{color:"#B91C1C"}}>CODEX</span>
+          </div>
+          <div style={{marginTop:14,fontSize:13,letterSpacing:3,color:"#666",fontFamily:"'Courier Prime',monospace"}}>THE DEFINITIVE BUILD REFERENCE — V4.0</div>
+        </div>
+        {/* Horizontal scan line */}
+        <div style={{position:"absolute",inset:0,overflow:"hidden",pointerEvents:"none"}}>
+          <div style={{position:"absolute",left:0,right:0,height:"1px",background:"rgba(255,255,255,0.04)",animation:"scanH 4s linear infinite"}}/>
+        </div>
+      </div>
+
+      {/* ── STATS BAR ── */}
+      <div className="home-stats" style={{
+        display:"flex", alignItems:"stretch",
+        borderTop:"2px solid #B91C1C", borderBottom:"1px solid #161616",
+        background:"#0A0A0A", overflow:"hidden",
+      }}>
+        {stats.map((s,i)=>(
+          <div key={s.label} style={{
+            flex:1, padding:"18px 0", textAlign:"center",
+            borderRight: i < stats.length-1 ? "1px solid #1A1A1A" : "none",
+          }}>
+            <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontWeight:900,fontSize:"clamp(28px,3vw,44px)",color:"#B91C1C",lineHeight:1}}>{s.val}</div>
+            <div style={{fontSize:10,letterSpacing:3,color:"#444",marginTop:4,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:700}}>{s.label}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* ── FEATURE CARDS ── */}
+      <div className="home-feat" style={{padding:"40px 40px 0"}}>
+        <div style={{fontSize:11,letterSpacing:4,color:"#3A3A3A",fontWeight:900,marginBottom:20,fontFamily:"'Barlow Condensed',sans-serif"}}>TOOLS</div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:16}}>
+          {features.map(f=>(
+            <div key={f.id} className="feat-card" onClick={()=>setTab(f.id)}
+              style={{
+                background:"#0D0D0D", border:"1px solid #1E1E1E",
+                padding:"24px 24px 22px", position:"relative", overflow:"hidden",
+                cursor:"pointer",
+              }}>
+              {/* Top accent line */}
+              <div style={{position:"absolute",top:0,left:0,right:0,height:"2px",background:"linear-gradient(90deg,#B91C1C,transparent)"}}/>
+              {/* Diagonal corner cut */}
+              <div style={{position:"absolute",top:0,right:0,width:0,height:0,borderStyle:"solid",borderWidth:"0 28px 28px 0",borderColor:`transparent #080808 transparent transparent`}}/>
+
+              <div style={{marginBottom:16}}>{f.icon}</div>
+              <div style={{fontSize:13,letterSpacing:3,color:"#B91C1C",fontWeight:900,marginBottom:8,fontFamily:"'Barlow Condensed',sans-serif"}}>{f.stat}</div>
+              <div style={{fontSize:18,fontWeight:900,color:"#F0EDE5",letterSpacing:1,marginBottom:10,fontFamily:"'Barlow Condensed',sans-serif"}}>{f.label}</div>
+              <div style={{fontSize:12,color:"#555",lineHeight:1.7,fontFamily:"'Courier Prime',monospace"}}>{f.desc}</div>
+              <div className="enter-btn" style={{
+                display:"inline-block",marginTop:18,padding:"7px 20px",
+                border:"1px solid #2A2A2A", background:"transparent",
+                fontSize:10,letterSpacing:3,color:"#444",fontWeight:700,
+                fontFamily:"'Barlow Condensed',sans-serif",
+              }}>ENTER</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── CHARACTER ROSTER ── */}
+      <div className="home-roster" style={{padding:"40px 40px 48px"}}>
+        <div style={{display:"flex",alignItems:"center",gap:20,marginBottom:24}}>
+          <div style={{fontSize:11,letterSpacing:4,color:"#3A3A3A",fontWeight:900,fontFamily:"'Barlow Condensed',sans-serif"}}>PROTOTYPE ROSTER</div>
+          <div style={{flex:1,height:"1px",background:"#1A1A1A"}}/>
+          <div style={{fontSize:10,letterSpacing:2,color:"#2A2A2A",fontFamily:"'Courier Prime',monospace"}}>16 PLAYABLE</div>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(8,1fr)",gap:8}}>
+          {CHARACTERS.map((c,i)=>(
+            <div key={c.id} className="char-card" onClick={()=>setTab("builds")}
+              style={{"--char-color":c.color, animationDelay:`${i*0.04}s`}}
+            >
+              {/* Portrait */}
+              <div style={{position:"relative",overflow:"hidden",aspectRatio:"3/4",background:"#0D0D0D",border:"1px solid #1A1A1A"}}>
+                <img className="char-img" src={c.img} alt={c.name}
+                  style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"top center",display:"block"}}
+                  onError={e=>{e.target.style.display="none"}}
+                />
+                {/* Gradient overlay */}
+                <div style={{position:"absolute",bottom:0,left:0,right:0,height:"55%",background:"linear-gradient(transparent,rgba(0,0,0,0.92))"}}/>
+                {/* Tier badge */}
+                <div style={{
+                  position:"absolute",top:6,right:6,
+                  background:tiers[c.tier]+"22",color:tiers[c.tier],
+                  border:`1px solid ${tiers[c.tier]}`,
+                  fontSize:9,fontWeight:900,padding:"2px 6px",letterSpacing:1,
+                  fontFamily:"'Barlow Condensed',sans-serif",
+                }}>{c.tier}</div>
+                {/* Name */}
+                <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"8px 8px 7px"}}>
+                  <div className="char-name" style={{
+                    fontSize:10,fontWeight:900,letterSpacing:0.5,
+                    color:"#D0D0D0",lineHeight:1.2,
+                    fontFamily:"'Barlow Condensed',sans-serif",
+                    transition:"color 0.15s",
+                  }}>{c.name.toUpperCase()}</div>
+                  <div style={{fontSize:8,color:"#3A3A3A",letterSpacing:1,marginTop:2,fontFamily:"'Courier Prime',monospace"}}>{c.tag}</div>
+                </div>
+                {/* Left accent bar on hover handled via CSS */}
+                <div style={{position:"absolute",left:0,top:0,bottom:0,width:"2px",background:c.color,opacity:0.7}}/>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Bottom call to action */}
+        <div style={{
+          marginTop:32, padding:"22px 28px",
+          background:"#0A0A0A", border:"1px solid #1A1A1A",
+          borderLeft:"3px solid #B91C1C",
+          display:"flex", alignItems:"center", justifyContent:"space-between",
+        }}>
+          <div>
+            <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontWeight:900,fontSize:16,letterSpacing:2,color:"#F0EDE5"}}>READY TO BUILD?</div>
+            <div style={{fontSize:11,color:"#444",letterSpacing:2,marginTop:4,fontFamily:"'Courier Prime',monospace"}}>SELECT A CHARACTER AND LOAD A BUILD PROFILE</div>
+          </div>
+          <button className="enter-btn" onClick={()=>setTab("builds")} style={{
+            background:"#B91C1C",border:"none",color:"#fff",
+            padding:"12px 32px",fontFamily:"'Barlow Condensed',sans-serif",
+            fontWeight:900,fontSize:13,letterSpacing:3,cursor:"pointer",
+          }}>OPEN BUILD ANALYZER</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // Animated Full-Width Banner
 function Banner() {
   const [posY,     setPosY]     = useState(() => parseFloat(localStorage.getItem("bannerPosY")  ?? "50"));
@@ -1270,7 +1523,7 @@ function RarityChart({tactic}) {
 export default function App() {
   const [activeChar, setActiveChar] = useState(CHARACTERS[0].id);
   const [activeBuild, setActiveBuild] = useState(0);
-  const [tab, setTab] = useState("builds");
+  const [tab, setTab] = useState("home");
   const [selectedTactic, setSelectedTactic] = useState(null);
   const [guideBuild, setGuideBuild] = useState(0);
 
@@ -1527,12 +1780,14 @@ export default function App() {
       <Banner />
 
       <div style={S.nav}>
-        {[["builds","BUILD ANALYZER"],["tactics","TACTICS DATABASE"],["guide","CHARACTER GUIDE"]].map(([id,lbl])=>(
+        {[["home","HOME"],["builds","BUILD ANALYZER"],["tactics","TACTICS DATABASE"],["guide","CHARACTER GUIDE"]].map(([id,lbl])=>(
           <button key={id} style={S.navBtn(tab===id)} onClick={()=>setTab(id)}>{lbl}</button>
         ))}
       </div>
 
-      {tab === "tactics" ? (
+      {tab === "home" ? (
+        <HomePage setTab={setTab} />
+      ) : tab === "tactics" ? (
         <div style={{flex:1, display:"flex", overflow:"hidden"}}>
           {renderTactics()}
         </div>
