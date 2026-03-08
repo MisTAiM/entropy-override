@@ -739,6 +739,9 @@ const CHARACTERS = [
 function Banner() {
   const [posY,     setPosY]     = useState(() => parseFloat(localStorage.getItem("bannerPosY")  ?? "50"));
   const [height,   setHeight]   = useState(() => parseFloat(localStorage.getItem("bannerH")     ?? "120"));
+  const [imgSrc,   setImgSrc]   = useState(() => localStorage.getItem("bannerImg") || "/banner.png");
+  const [uploading,setUploading] = useState(false);
+  const [uploadErr,setUploadErr] = useState("");
   const [showAdmin,setShowAdmin] = useState(false);
   const [authed,   setAuthed]   = useState(() => sessionStorage.getItem("adminAuth") === "1");
   const [loginUser,setLoginUser] = useState("");
@@ -764,9 +767,30 @@ function Banner() {
     }
   };
 
+  const handleUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) { setUploadErr("Not an image file."); return; }
+    if (file.size > 8 * 1024 * 1024) { setUploadErr("File too large (max 8MB)."); return; }
+    setUploading(true); setUploadErr("");
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      setImgSrc(ev.target.result);
+      setUploading(false);
+    };
+    reader.onerror = () => { setUploadErr("Failed to read file."); setUploading(false); };
+    reader.readAsDataURL(file);
+  };
+
+  const resetImg = () => {
+    setImgSrc("/banner.png");
+    localStorage.removeItem("bannerImg");
+  };
+
   const save = () => {
     localStorage.setItem("bannerPosY", posY);
     localStorage.setItem("bannerH",    height);
+    if (imgSrc !== "/banner.png") localStorage.setItem("bannerImg", imgSrc);
     setShowAdmin(false);
   };
 
@@ -803,7 +827,7 @@ function Banner() {
       <div style={{width:"100%", lineHeight:0, background:"#000", borderBottom:"2px solid #B91C1C", cursor:"default"}}
         onClick={handleBannerClick}>
         <img
-          src="/banner.png"
+          src={imgSrc}
           alt="Entropy Override"
           style={{
             display:"block", width:"100%",
@@ -837,6 +861,27 @@ function Banner() {
               </div>
             ) : (
               <div>
+                <label style={labelStyle}>BANNER IMAGE</label>
+                <div style={{marginBottom:"20px"}}>
+                  <div style={{display:"flex", gap:"8px", alignItems:"center", flexWrap:"wrap"}}>
+                    <label style={{
+                      ...btnStyle, display:"inline-block",
+                      background: uploading ? "#444" : "#1A1A1A",
+                      border:"1px solid #444", cursor:"pointer", padding:"8px 16px",
+                    }}>
+                      {uploading ? "LOADING…" : "UPLOAD IMAGE"}
+                      <input type="file" accept="image/*" style={{display:"none"}}
+                        onChange={handleUpload} disabled={uploading}/>
+                    </label>
+                    <button style={{...btnStyle, background:"#222", padding:"8px 14px", fontSize:"10px"}}
+                      onClick={resetImg}>RESET DEFAULT</button>
+                  </div>
+                  {uploadErr && <div style={{color:"#EF4444", fontSize:"11px", marginTop:"8px"}}>{uploadErr}</div>}
+                  {imgSrc !== "/banner.png" && !uploading && (
+                    <div style={{marginTop:"10px", fontSize:"10px", color:"#4ADE80", letterSpacing:"1px"}}>✓ Custom image loaded</div>
+                  )}
+                </div>
+
                 <label style={labelStyle}>BANNER HEIGHT (px)</label>
                 <div style={{display:"flex", alignItems:"center", gap:"12px", marginBottom:"20px"}}>
                   <input type="range" min="60" max="300" value={height}
