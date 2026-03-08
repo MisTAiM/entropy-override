@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { getSettings } from "./hooks/useSettings";
 import CharacterGuide from "./components/CharacterGuide";
 import AdminPanel from "./components/AdminPanel";
 import {
@@ -1024,7 +1025,7 @@ const CHARACTERS = [
   }
 ];
 
-function HomePage({setTab}) {
+function HomePage({setTab, cfg={}}) {
   const [hovered, setHovered] = useState(null);
   const tiers = {S:"#E53935", A:"#FF8F00", B:"#1976D2"};
 
@@ -1223,7 +1224,7 @@ function HomePage({setTab}) {
         </div>
       </div>
       {/* ── STATS BAR ── */}
-      <div className="home-stats" style={{
+      {cfg.showStatsBar!==false ? <div className="home-stats" style={{
         display:"flex", alignItems:"stretch",
         borderTop:"2px solid #B91C1C", borderBottom:"1px solid #161616",
         background:"#0A0A0A", overflow:"hidden",
@@ -1237,7 +1238,7 @@ function HomePage({setTab}) {
             <div style={{fontSize:10,letterSpacing:3,color:"#444",marginTop:4,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:700}}>{s.label}</div>
           </div>
         ))}
-      </div>
+      </div> : null}
 
       {/* ── FEATURE CARDS ── */}
       <div className="home-feat" style={{padding:"40px 40px 0"}}>
@@ -1596,9 +1597,17 @@ function RarityChart({tactic}) {
 }
 
 export default function App() {
+  const [cfg, setCfg] = useState(() => getSettings());
+  useEffect(() => {
+    const handler = (e) => setCfg(e.detail || getSettings());
+    window.addEventListener("eo-settings", handler);
+    return () => window.removeEventListener("eo-settings", handler);
+  }, []);
+
+  const visibleChars = CHARACTERS.filter(c => !(cfg.hiddenChars||[]).includes(c.id));
   const [activeChar, setActiveChar] = useState(CHARACTERS[0].id);
   const [activeBuild, setActiveBuild] = useState(0);
-  const [tab, setTab] = useState("home");
+  const [tab, setTab] = useState(() => getSettings().defaultTab || "home");
   const [selectedTactic, setSelectedTactic] = useState(null);
   const [guideBuild, setGuideBuild] = useState(0);
 
@@ -1606,9 +1615,9 @@ export default function App() {
   const build = char.builds[activeBuild];
 
   const S = {
-    wrap:{background:"#080808",height:"100vh",display:"flex",flexDirection:"column",overflow:"hidden",color:"#F0EDE5",fontFamily:"'Barlow Condensed','Arial Narrow',Arial,sans-serif"},
+    wrap:{background:cfg.bgColor||"#080808",height:"100vh",display:"flex",flexDirection:"column",overflow:"hidden",color:cfg.textColor||"#F0EDE5",fontFamily:"'Barlow Condensed','Arial Narrow',Arial,sans-serif"},
     header:{borderBottom:"2px solid #B91C1C",padding:"18px 28px 14px",background:"#0A0A0A",display:"flex",alignItems:"center",justifyContent:"space-between"},
-    nav:{display:"flex",gap:0,background:"#060606",borderBottom:"2px solid #1A1A1A",padding:"0 20px",alignItems:"stretch",height:"44px"},
+    nav:{display:"flex",gap:0,background:"#060606",borderBottom:"2px solid #1A1A1A",padding:"0 20px",alignItems:"stretch",height:`${cfg.navHeight||44}px`},
     navBtn:(a)=>({
       position:"relative",
       background:"transparent",
@@ -1628,11 +1637,11 @@ export default function App() {
       outline:"none",
       whiteSpace:"nowrap",
     }),
-    main:{display:"grid",gridTemplateColumns:"272px 1fr",flex:1,overflow:"hidden"},
+    main:{display:"grid",gridTemplateColumns:`${cfg.sidebarWidth||272}px 1fr`,flex:1,overflow:"hidden"},
     sidebar:{background:"#080808",borderRight:"1px solid #141414",overflowY:"auto"},
     charRow:(a,col)=>({display:"flex",alignItems:"center",gap:10,padding:"10px 14px",cursor:"pointer",background:a?`${col}14`:"transparent",borderLeft:a?`3px solid ${col}`:"3px solid transparent",transition:"all 0.1s"}),
     content:{padding:"22px 26px",overflowY:"auto",flex:1},
-    card:{background:"#0D0D0D",border:"1px solid #1A1A1A",padding:"20px",marginBottom:14},
+    card:{background:cfg.cardBg||"#0D0D0D",border:"1px solid #1A1A1A",padding:`${cfg.cardPadding||20}px`,marginBottom:14,borderRadius:`${cfg.borderRadius||0}px`},
     label:{fontSize:12,letterSpacing:3,color:"#4A4A4A",fontWeight:700,marginBottom:10,fontFamily:"'Barlow Condensed',sans-serif"},
     h1:(col="#F0EDE5")=>({fontSize:22,fontWeight:900,letterSpacing:3,color:col,marginBottom:3}),
     mono:{fontFamily:"'Courier Prime','Courier New',monospace"},
@@ -1668,7 +1677,7 @@ export default function App() {
           </div>
           <div style={{width:190,flexShrink:0}}>
             <div style={S.label}>BUILD PROFILE</div>
-            <BuildRadar radar={build.radar} color={char.color}/>
+            {cfg.showRadar!==false && <BuildRadar radar={build.radar} color={char.color}/>}
           </div>
         </div>
       </div>
@@ -1704,7 +1713,7 @@ export default function App() {
           <div style={S.card}>
             <div style={S.label}>EFFECTIVE DPS BREAKDOWN — LEGENDARY RARITY</div>
             <div style={{color:"#3A3A3A",fontSize:12,marginBottom:8,...S.mono}}>Source: BlazBlue Wiki base values + community play data</div>
-            <DPSChart data={build.dps} color={char.color}/>
+            {cfg.showDPS!==false && <DPSChart data={build.dps} color={char.color}/>}
             <div style={{marginTop:10,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
               <div style={{fontSize:13,color:"#3A3A3A",...S.mono}}>estimates — actual varies by entropy + attack speed</div>
               <div style={{fontSize:22,fontWeight:700,color:char.color,...S.mono}}>~{build.dps[build.dps.length-1].v.toLocaleString()}</div>
@@ -1862,7 +1871,15 @@ export default function App() {
     <style>{`
   .eo-nav-btn:hover { color: #C0C0C0 !important; }
   .eo-nav-btn.active { color: #F0EDE5 !important; }
+  ${cfg.customCSS||""}
+  ${cfg.showScrollbar===false ? "::-webkit-scrollbar{display:none!important}" : ""}
 `}</style>
+      {cfg.maintenanceMode && (
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.96)",zIndex:8888,display:"flex",alignItems:"center",justifyContent:"center",flexDirection:"column",gap:16}}>
+          <div style={{fontSize:36,fontWeight:900,letterSpacing:6,color:"#B91C1C",fontFamily:"'Barlow Condensed',sans-serif"}}>MAINTENANCE MODE</div>
+          <div style={{fontSize:14,color:"#555",fontFamily:"'Courier Prime',monospace",letterSpacing:2}}>{cfg.maintenanceMsg||"Site under maintenance."}</div>
+        </div>
+      )}
       <div style={S.wrap}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Courier+Prime:wght@400;700&display=swap');
@@ -1884,7 +1901,7 @@ export default function App() {
       </div>
 
       {tab === "home" ? (
-        <HomePage setTab={setTab} />
+        <HomePage setTab={setTab} cfg={cfg}/>
       ) : tab === "tactics" ? (
         <div style={{flex:1, display:"flex", overflow:"hidden"}}>
           {renderTactics()}
@@ -1894,7 +1911,7 @@ export default function App() {
         {/* SIDEBAR */}
         <div style={S.sidebar}>
           <div style={{padding:"12px 14px 8px",fontSize:10,letterSpacing:3,color:"#3A3A3A",fontWeight:700}}>CHARACTER SELECT</div>
-          {CHARACTERS.map(c=>(
+          {visibleChars.map(c=>(
             <div key={c.id} style={S.charRow(activeChar===c.id,c.color)}
               onClick={()=>{setActiveChar(c.id);setActiveBuild(0);}}>
               <div style={{width:38,height:50,overflow:"hidden",flexShrink:0,clipPath:"polygon(0 0,100% 0,88% 100%,0 100%)"}}>
