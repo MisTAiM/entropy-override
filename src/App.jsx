@@ -1182,34 +1182,6 @@ function HomePage({setTab}) {
           <ellipse cx="360" cy="170" rx="200" ry="160" fill="#AA0A0A" filter="url(#heroGlow)"
             style={{animation:"glowPulse 3s ease-in-out infinite", transformOrigin:"360px 170px"}}/>
 
-          {/* X blades */}
-          <g style={{animation:"xPulse 3.5s ease-in-out infinite"}}>
-            <line x1="285" y1="85"  x2="435" y2="255" stroke="#881010" strokeWidth="40" strokeLinecap="round"/>
-            <line x1="435" y1="85"  x2="285" y2="255" stroke="#881010" strokeWidth="40" strokeLinecap="round"/>
-            <line x1="285" y1="85"  x2="435" y2="255" stroke="#CC2020" strokeWidth="18" strokeLinecap="round"/>
-            <line x1="435" y1="85"  x2="285" y2="255" stroke="#CC2020" strokeWidth="18" strokeLinecap="round"/>
-            <line x1="285" y1="85"  x2="435" y2="255" stroke="#FF5040" strokeWidth="7" strokeLinecap="round"/>
-            <line x1="435" y1="85"  x2="285" y2="255" stroke="#FF5040" strokeWidth="7" strokeLinecap="round"/>
-            <line x1="285" y1="85"  x2="435" y2="255" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.7"/>
-            <line x1="435" y1="85"  x2="285" y2="255" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.7"/>
-          </g>
-
-          {/* Center core */}
-          <circle cx="360" cy="170" r="28" fill="#CC1010" filter="url(#heroGlowSm)" style={{animation:"coreFlare 2s ease-in-out infinite"}}/>
-          <circle cx="360" cy="170" r="7" fill="white" style={{animation:"coreFlare 2s ease-in-out infinite"}}/>
-
-          {/* 4-pt impact star */}
-          <polygon points="360,145 362,168 360,191 358,168" fill="white" opacity="0.6"/>
-          <polygon points="335,170 358,168 381,170 358,172" fill="white" opacity="0.6"/>
-
-          {/* Tip sparks */}
-          {[[285,85],[435,85],[285,255],[435,255]].map(([x,y],i)=>(
-            <g key={i}>
-              <circle cx={x} cy={y} r="10" fill="#FF3020" filter="url(#tipGlow)" style={{animation:`tipSpark ${1.8+i*0.3}s ease-in-out infinite`,animationDelay:`${i*0.4}s`}}/>
-              <circle cx={x} cy={y} r="3" fill="white" opacity="0.85"/>
-            </g>
-          ))}
-
           {/* Particle field — red + gold + dim */}
           {Array.from({length:40},(_,i)=>{
             const px=50+(i*73.1)%1100;
@@ -1228,11 +1200,7 @@ function HomePage({setTab}) {
               }}/>;
           })}
 
-          {/* Diagonal slash decorations flanking X */}
-          <line x1="250" y1="80" x2="270" y2="110" stroke="#440000" strokeWidth="1.2" opacity="0.6"/>
-          <line x1="450" y1="230" x2="470" y2="260" stroke="#440000" strokeWidth="1.2" opacity="0.6"/>
-          <line x1="450" y1="80" x2="470" y2="110" stroke="#440000" strokeWidth="1.2" opacity="0.6"/>
-          <line x1="250" y1="230" x2="270" y2="260" stroke="#440000" strokeWidth="1.2" opacity="0.6"/>
+
 
           {/* Scan shimmer */}
           <rect x="-250" y="0" width="350" height="340" fill="url(#hScanGrad)"
