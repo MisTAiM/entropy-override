@@ -1350,11 +1350,8 @@ function HomePage({setTab}) {
   );
 }
 
-// Animated Full-Width Banner
+// ── Top Zone: Brand Bar + HUD Nav ─────────────────────────────────────────────
 function Banner() {
-  const [posY,      setPosY]     = useState(() => parseFloat(localStorage.getItem("bannerPosY") ?? "50"));
-  const [height,    setHeight]   = useState(() => parseFloat(localStorage.getItem("bannerH")    ?? "120"));
-  const [imgSrc,    setImgSrc]   = useState(() => localStorage.getItem("bannerImg") || "/banner.png");
   const [showAdmin, setShowAdmin] = useState(false);
   const [clicks,    setClicks]   = useState(0);
   const clickTimer = useState(null);
@@ -1368,120 +1365,192 @@ function Banner() {
   };
 
   const handleSave = (vals) => {
-    if (vals) { setPosY(vals.posY); setHeight(vals.height); setImgSrc(vals.imgSrc); }
     setShowAdmin(false);
   };
-
-  // Particle positions — seeded so they don't jump on re-render
-  const particles = Array.from({length:22}, (_,i) => ({
-    cx: 8 + (i * 53.7) % 84,
-    cy: 10 + (i * 37.3) % 80,
-    r:  0.6 + (i % 3) * 0.5,
-    dur: 2.2 + (i % 5) * 0.7,
-    del: (i * 0.31) % 3,
-    type: i % 3, // 0=red, 1=gold, 2=dim
-  }));
 
   return (
     <>
       <style>{`
-        @keyframes particleFloat {
-          0%,100% { transform: translateY(0px) translateX(0px); opacity: var(--op-lo); }
-          33%     { transform: translateY(-5px) translateX(2px); opacity: var(--op-hi); }
-          66%     { transform: translateY(-2px) translateX(-3px); opacity: var(--op-md); }
+        /* ── Brand bar ── */
+        .eo-brand-bar {
+          position: relative;
+          display: flex;
+          align-items: stretch;
+          height: 64px;
+          background: #050505;
+          overflow: hidden;
+          cursor: default;
+          user-select: none;
         }
-        @keyframes glowPulse {
-          0%,100% { opacity:0.18; r:30; }
-          50%     { opacity:0.38; r:42; }
+        /* Diagonal stripe texture */
+        .eo-brand-bar::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: repeating-linear-gradient(
+            -55deg,
+            transparent 0px,
+            transparent 18px,
+            rgba(255,255,255,0.012) 18px,
+            rgba(255,255,255,0.012) 19px
+          );
+          pointer-events: none;
         }
-        @keyframes glowPulse2 {
-          0%,100% { opacity:0.10; r:20; }
-          50%     { opacity:0.22; r:28; }
+        /* Bottom double-rule */
+        .eo-brand-bar::after {
+          content: "";
+          position: absolute;
+          bottom: 0; left: 0; right: 0;
+          height: 3px;
+          background: #B91C1C;
+          box-shadow: 0 3px 0 0 rgba(201,162,39,0.35);
         }
-        @keyframes scanBanner {
-          0%   { transform:translateX(-40%); opacity:0; }
-          8%   { opacity:1; }
-          92%  { opacity:1; }
-          100% { transform:translateX(160%); opacity:0; }
+
+        /* Left red accent pillar */
+        .eo-brand-pillar {
+          width: 4px;
+          background: #B91C1C;
+          flex-shrink: 0;
         }
-        @keyframes borderBreathe {
-          0%,100% { opacity:0.7; }
-          50%     { opacity:1; box-shadow:0 0 8px rgba(185,28,28,0.6); }
+
+        /* Logotype block */
+        .eo-logotype {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          padding: 0 20px 0 14px;
+          border-right: 1px solid #1A1A1A;
+          min-width: 210px;
         }
-        .banner-border-b { animation: borderBreathe 3s ease-in-out infinite; }
-        .banner-scan     { animation: scanBanner 7s linear infinite 1s; }
-        .glow-1          { animation: glowPulse  2.4s ease-in-out infinite; }
-        .glow-2          { animation: glowPulse2 3.1s ease-in-out infinite 0.8s; }
+        .eo-logotype-top {
+          font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+          font-weight: 900;
+          font-size: 22px;
+          letter-spacing: 5px;
+          color: #F0EDE5;
+          line-height: 1;
+          text-transform: uppercase;
+        }
+        .eo-logotype-sub {
+          font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+          font-weight: 700;
+          font-size: 10px;
+          letter-spacing: 4px;
+          color: #B91C1C;
+          margin-top: 3px;
+          text-transform: uppercase;
+        }
+
+        /* Center rule fill */
+        .eo-brand-fill {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          padding: 0 24px;
+          gap: 16px;
+        }
+        .eo-brand-rule {
+          flex: 1;
+          height: 1px;
+          background: linear-gradient(to right, #1A1A1A 0%, transparent 100%);
+        }
+        .eo-brand-tag {
+          font-family: 'Courier Prime', monospace;
+          font-size: 9px;
+          letter-spacing: 3px;
+          color: #282828;
+          white-space: nowrap;
+        }
+
+        /* Right meta block */
+        .eo-brand-meta {
+          display: flex;
+          align-items: center;
+          padding: 0 20px;
+          border-left: 1px solid #1A1A1A;
+          gap: 20px;
+        }
+        .eo-meta-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        .eo-meta-val {
+          font-family: 'Barlow Condensed', sans-serif;
+          font-weight: 900;
+          font-size: 18px;
+          color: #C9A227;
+          line-height: 1;
+        }
+        .eo-meta-key {
+          font-family: 'Barlow Condensed', sans-serif;
+          font-weight: 700;
+          font-size: 8px;
+          letter-spacing: 2px;
+          color: #333;
+          margin-top: 2px;
+        }
+        .eo-meta-div {
+          width: 1px;
+          height: 24px;
+          background: #1A1A1A;
+        }
+        .eo-status-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #22C55E;
+          animation: eo-blink 2s ease-in-out infinite;
+        }
+        @keyframes eo-blink {
+          0%,100% { opacity: 1; }
+          50%      { opacity: 0.2; }
+        }
+        .eo-status-label {
+          font-family: 'Courier Prime', monospace;
+          font-size: 9px;
+          letter-spacing: 2px;
+          color: #333;
+        }
       `}</style>
 
-      <div style={{position:"relative", width:"100%", lineHeight:0, background:"#000", cursor:"default", overflow:"hidden"}}
-        onClick={handleBannerClick}>
+      <div className="eo-brand-bar" onClick={handleBannerClick}>
+        <div className="eo-brand-pillar"/>
 
-        {/* Base image */}
-        <img src={imgSrc} alt="Entropy Override"
-          style={{
-            display:"block", width:"100%", height:`${height}px`,
-            objectFit:"cover", objectPosition:`center ${posY}%`,
-            pointerEvents:"none",
-          }}
-        />
+        <div className="eo-logotype">
+          <span className="eo-logotype-top">ENTROPY</span>
+          <span className="eo-logotype-sub">OVERRIDE // TACTICS CODEX</span>
+        </div>
 
-        {/* SVG overlay — particles + glow pulses + scan */}
-        <svg style={{position:"absolute",inset:0,width:"100%",height:"100%",pointerEvents:"none"}}
-          viewBox="0 0 100 100" preserveAspectRatio="none">
+        <div className="eo-brand-fill">
+          <div className="eo-brand-rule"/>
+          <span className="eo-brand-tag">BLAZBLUE ENTROPY EFFECT X — BUILD REFERENCE v4.0</span>
+          <div className="eo-brand-rule" style={{background:"linear-gradient(to left, #1A1A1A 0%, transparent 100%)"}}/>
+        </div>
 
-          {/* Radial glow pulses at the X center (approx 37% across) */}
-          <circle className="glow-1" cx="37" cy="50" r="30"
-            fill="#CC1010" filter="url(#bGlow)" opacity="0.18"/>
-          <circle className="glow-2" cx="37" cy="50" r="20"
-            fill="#FF4020" filter="url(#bGlow)" opacity="0.10"/>
-
-          {/* Secondary glow right side */}
-          <circle cx="72" cy="50" r="18" fill="#C9A227" opacity="0.04"
-            style={{animation:"glowPulse2 4s ease-in-out infinite 1.5s"}}/>
-
-          {/* Particles */}
-          {particles.map((p,i) => (
-            <circle key={i} cx={p.cx} cy={p.cy} r={p.r}
-              fill={p.type===0?"#FF3020":p.type===1?"#C9A227":"#888"}
-              opacity={p.type===2?0.12:0.35}
-              style={{
-                animation:`particleFloat ${p.dur}s ease-in-out infinite`,
-                animationDelay:`${p.del}s`,
-                "--op-lo": p.type===2?"0.06":p.type===1?"0.18":"0.20",
-                "--op-md": p.type===2?"0.09":p.type===1?"0.28":"0.32",
-                "--op-hi": p.type===2?"0.14":p.type===1?"0.45":"0.55",
-              }}
-            />
+        <div className="eo-brand-meta">
+          {[["16","CHARS"],["48","BUILDS"],["15","TACTICS"]].map(([v,k])=>(
+            <React.Fragment key={k}>
+              <div className="eo-meta-item">
+                <span className="eo-meta-val">{v}</span>
+                <span className="eo-meta-key">{k}</span>
+              </div>
+              <div className="eo-meta-div"/>
+            </React.Fragment>
           ))}
-
-          {/* Scan shimmer */}
-          <rect className="banner-scan" x="-25" y="0" width="30" height="100"
-            fill="url(#scanGrad)" opacity="0.6"/>
-
-          <defs>
-            <filter id="bGlow" x="-100%" y="-100%" width="300%" height="300%">
-              <feGaussianBlur stdDeviation="8"/>
-            </filter>
-            <linearGradient id="scanGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%"   stopColor="white" stopOpacity="0"/>
-              <stop offset="50%"  stopColor="white" stopOpacity="0.03"/>
-              <stop offset="100%" stopColor="white" stopOpacity="0"/>
-            </linearGradient>
-          </defs>
-        </svg>
-
-        {/* Bottom breathing border */}
-        <div className="banner-border-b" style={{
-          position:"absolute", bottom:0, left:0, right:0,
-          height:"2px", background:"#B91C1C",
-        }}/>
+          <div style={{display:"flex",alignItems:"center",gap:6}}>
+            <div className="eo-status-dot"/>
+            <span className="eo-status-label">ACTIVE</span>
+          </div>
+        </div>
       </div>
 
       <AdminPanel show={showAdmin} onClose={handleSave}/>
     </>
   );
 }
+
+
 const RADAR_AXES = ["burst","sustain","aoe","control","survival"];
 const RADAR_LABELS = {burst:"BURST",sustain:"SUSTAIN",aoe:"AoE",control:"CONTROL",survival:"SURVIVE"};
 const TIER_COLORS = {S:"#E53935",A:"#FF8F00",B:"#1976D2",C:"#757575"};
@@ -1561,8 +1630,26 @@ export default function App() {
   const S = {
     wrap:{background:"#080808",height:"100vh",display:"flex",flexDirection:"column",overflow:"hidden",color:"#F0EDE5",fontFamily:"'Barlow Condensed','Arial Narrow',Arial,sans-serif"},
     header:{borderBottom:"2px solid #B91C1C",padding:"18px 28px 14px",background:"#0A0A0A",display:"flex",alignItems:"center",justifyContent:"space-between"},
-    nav:{display:"flex",gap:0,borderBottom:"1px solid #161616",padding:"0 28px",background:"#090909"},
-    navBtn:(a)=>({background:"transparent",border:"none",borderBottom:a?"3px solid #B91C1C":"3px solid transparent",color:a?"#F0EDE5":"#505050",padding:"14px 28px",fontSize:15,letterSpacing:3,fontWeight:700,cursor:"pointer",fontFamily:"'Barlow Condensed','Arial Narrow',Arial,sans-serif",transition:"all 0.15s"}),
+    nav:{display:"flex",gap:0,borderBottom:"3px solid #111",background:"#060606",padding:"0 20px",alignItems:"stretch",position:"relative"},
+    navBtn:(a)=>({
+      position:"relative",
+      background: a ? "#B91C1C" : "transparent",
+      border:"none",
+      color: a ? "#FFFFFF" : "#404040",
+      padding:"0 28px",
+      fontSize:13,
+      letterSpacing:4,
+      fontWeight:900,
+      cursor:"pointer",
+      fontFamily:"'Barlow Condensed','Arial Narrow',Arial,sans-serif",
+      transition:"color 0.12s, background 0.12s",
+      clipPath:"polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%)",
+      textTransform:"uppercase",
+      height:"42px",
+      marginRight:"3px",
+      zIndex: a ? 2 : 1,
+      borderBottom: a ? "3px solid #FF4040" : "none",
+    }),
     main:{display:"grid",gridTemplateColumns:"272px 1fr",flex:1,overflow:"hidden"},
     sidebar:{background:"#080808",borderRight:"1px solid #141414",overflowY:"auto"},
     charRow:(a,col)=>({display:"flex",alignItems:"center",gap:10,padding:"10px 14px",cursor:"pointer",background:a?`${col}14`:"transparent",borderLeft:a?`3px solid ${col}`:"3px solid transparent",transition:"all 0.1s"}),
@@ -1793,7 +1880,12 @@ export default function App() {
   );
 
   return (
-    <div style={S.wrap}>
+    <>
+    <style>{`
+  .eo-nav-btn:hover { color: #F0EDE5 !important; background: #1A0000 !important; }
+  .eo-nav-btn.active { color: #FFFFFF !important; }
+`}</style>
+      <div style={S.wrap}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Courier+Prime:wght@400;700&display=swap');
         *{box-sizing:border-box;margin:0;padding:0;}
@@ -1809,7 +1901,7 @@ export default function App() {
 
       <div style={S.nav}>
         {[["home","HOME"],["builds","BUILD ANALYZER"],["tactics","TACTICS DATABASE"],["guide","CHARACTER GUIDE"]].map(([id,lbl])=>(
-          <button key={id} style={S.navBtn(tab===id)} onClick={()=>setTab(id)}>{lbl}</button>
+          <button key={id} className={`eo-nav-btn${tab===id?" active":""}`} style={S.navBtn(tab===id)} onClick={()=>setTab(id)}>{lbl}</button>
         ))}
       </div>
 
@@ -1857,5 +1949,6 @@ export default function App() {
       </div>
       )}
     </div>
+    </>
   );
 }
