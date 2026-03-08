@@ -990,14 +990,14 @@ export default function App() {
   const build = char.builds[activeBuild];
 
   const S = {
-    wrap:{background:"#080808",minHeight:"100vh",color:"#F0EDE5",fontFamily:"'Barlow Condensed','Arial Narrow',Arial,sans-serif"},
+    wrap:{background:"#080808",height:"100vh",display:"flex",flexDirection:"column",overflow:"hidden",color:"#F0EDE5",fontFamily:"'Barlow Condensed','Arial Narrow',Arial,sans-serif"},
     header:{borderBottom:"2px solid #B91C1C",padding:"18px 28px 14px",background:"#0A0A0A",display:"flex",alignItems:"center",justifyContent:"space-between"},
     nav:{display:"flex",gap:0,borderBottom:"1px solid #161616",padding:"0 28px",background:"#090909"},
     navBtn:(a)=>({background:"transparent",border:"none",borderBottom:a?"3px solid #B91C1C":"3px solid transparent",color:a?"#F0EDE5":"#505050",padding:"14px 28px",fontSize:15,letterSpacing:3,fontWeight:700,cursor:"pointer",fontFamily:"'Barlow Condensed','Arial Narrow',Arial,sans-serif",transition:"all 0.15s"}),
-    main:{display:"grid",gridTemplateColumns:"272px 1fr",minHeight:"calc(100vh - 126px)"},
-    sidebar:{background:"#080808",borderRight:"1px solid #141414"},
+    main:{display:"grid",gridTemplateColumns:"272px 1fr",flex:1,overflow:"hidden"},
+    sidebar:{background:"#080808",borderRight:"1px solid #141414",overflowY:"auto"},
     charRow:(a,col)=>({display:"flex",alignItems:"center",gap:10,padding:"10px 14px",cursor:"pointer",background:a?`${col}14`:"transparent",borderLeft:a?`3px solid ${col}`:"3px solid transparent",transition:"all 0.1s"}),
-    content:{padding:"22px 26px",overflowY:"auto"},
+    content:{padding:"22px 26px",overflowY:"auto",flex:1},
     card:{background:"#0D0D0D",border:"1px solid #1A1A1A",padding:"20px",marginBottom:14},
     label:{fontSize:12,letterSpacing:3,color:"#4A4A4A",fontWeight:700,marginBottom:10,fontFamily:"'Barlow Condensed',sans-serif"},
     h1:(col="#F0EDE5")=>({fontSize:22,fontWeight:900,letterSpacing:3,color:col,marginBottom:3}),
@@ -1082,9 +1082,9 @@ export default function App() {
   );
 
   const renderTactics = () => (
-    <div style={{display:"grid",gridTemplateColumns:"300px 1fr",gap:24,maxWidth:1400,margin:"0 auto"}}>
-      <div>
-        <div style={S.label}>SELECT TACTIC</div>
+    <div style={{display:"grid",gridTemplateColumns:"280px 1fr",gap:0,width:"100%",overflow:"hidden"}}>
+      <div style={{overflowY:"auto",borderRight:"1px solid #161616",paddingRight:16,paddingLeft:4,paddingTop:4}}>
+        <div style={{...S.label,paddingLeft:8}}>SELECT TACTIC</div>
         {TACTICS_REFERENCE.map(t=>{
           const ec=ELEM_COLORS[t.element]||"#888";
           const a=selectedTactic?.name===t.name;
@@ -1101,7 +1101,7 @@ export default function App() {
           );
         })}
       </div>
-      <div>
+      <div style={{overflowY:"auto",paddingLeft:24,paddingTop:4,paddingRight:4}}>
         {selectedTactic ? (
           <>
             <div style={{...S.card,borderColor:`${ELEM_COLORS[selectedTactic.element]}33`}}>
@@ -1186,7 +1186,7 @@ export default function App() {
       </div>
 
       {tab === "tactics" ? (
-        <div style={{...S.content, height:"calc(100vh - 108px)", overflowY:"auto"}}>
+        <div style={{flex:1, display:"flex", overflow:"hidden"}}>
           {renderTactics()}
         </div>
       ) : (
