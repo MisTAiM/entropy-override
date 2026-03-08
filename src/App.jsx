@@ -734,37 +734,150 @@ const CHARACTERS = [
   }
 ];
 
-// SVG Logo
-function Logo() {
-
-
+// Animated Full-Width Banner
+function Banner() {
   return (
-    <svg viewBox="0 0 560 88" style={{width:"100%",maxWidth:560,height:"auto"}} xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="bladeG" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#FF3020"/><stop offset="100%" stopColor="#7A0A0A"/>
-        </linearGradient>
-        <linearGradient id="goldG" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#C9931A"/><stop offset="100%" stopColor="#F2C94C"/>
-        </linearGradient>
-        <filter id="redglow"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-      </defs>
-      <line x1="0" y1="2" x2="560" y2="2" stroke="#C62020" strokeWidth="1.5" opacity="0.5"/>
-      {/* Left blade pair */}
-      <polygon points="4,6 16,6 26,82 14,82" fill="url(#bladeG)" filter="url(#redglow)"/>
-      <polygon points="16,6 26,6 36,82 24,82" fill="#C62020" opacity="0.35"/>
-      {/* Main title */}
-      <text x="46" y="62" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="66" letterSpacing="5" fill="#F0EDE5">ENTROPY</text>
-      {/* X */}
-      <text x="374" y="62" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="66" fill="url(#bladeG)" filter="url(#redglow)">X</text>
-      {/* OVERRIDE subtitle */}
-      <text x="46" y="81" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="700" fontSize="17" letterSpacing="16" fill="url(#goldG)">OVERRIDE</text>
-      {/* Right accent */}
-      <polygon points="530,6 542,6 552,82 540,82" fill="url(#bladeG)" opacity="0.55"/>
-      {/* Version tag */}
-      <text x="408" y="81" fontFamily="'Courier Prime','Courier New',monospace" fontSize="10" fill="#444" letterSpacing="1">TACTICS CODEX v4.0</text>
-      <line x1="0" y1="86" x2="560" y2="86" stroke="#C62020" strokeWidth="1.5" opacity="0.5"/>
-    </svg>
+    <div style={{position:"relative",width:"100%",overflow:"hidden",background:"#080808",borderBottom:"2px solid #B91C1C"}}>
+      <style>{`
+        @keyframes scanline {
+          0%   { transform: translateX(-100%); opacity: 0; }
+          10%  { opacity: 1; }
+          90%  { opacity: 1; }
+          100% { transform: translateX(200%); opacity: 0; }
+        }
+        @keyframes xPulse {
+          0%, 100% { filter: drop-shadow(0 0 4px #B91C1C) drop-shadow(0 0 12px #7A0A0A); opacity: 1; }
+          50%       { filter: drop-shadow(0 0 10px #FF3020) drop-shadow(0 0 28px #B91C1C); opacity: 0.85; }
+        }
+        @keyframes bladeShimmer {
+          0%, 100% { opacity: 0.9; }
+          40%       { opacity: 0.5; }
+          60%       { opacity: 1; }
+        }
+        @keyframes goldPulse {
+          0%, 100% { opacity: 1; }
+          50%       { opacity: 0.7; }
+        }
+        @keyframes glitchH {
+          0%,94%,100% { transform: translateX(0); }
+          95%  { transform: translateX(-3px); }
+          97%  { transform: translateX(4px); }
+          99%  { transform: translateX(-1px); }
+        }
+        @keyframes particleDrift {
+          0%   { transform: translateY(0px) translateX(0px); opacity: 0.6; }
+          50%  { transform: translateY(-8px) translateX(4px); opacity: 1; }
+          100% { transform: translateY(0px) translateX(0px); opacity: 0.6; }
+        }
+        @keyframes borderPulse {
+          0%,100% { opacity: 0.5; }
+          50%     { opacity: 1; }
+        }
+        .entropy-x  { animation: xPulse 3s ease-in-out infinite; }
+        .blade-left { animation: bladeShimmer 4s ease-in-out infinite; }
+        .blade-right{ animation: bladeShimmer 4s ease-in-out infinite 0.8s; }
+        .gold-text  { animation: goldPulse 5s ease-in-out infinite; }
+        .entropy-word { animation: glitchH 8s steps(1) infinite; }
+        .scan-bar   { animation: scanline 6s linear infinite 1.5s; }
+        .top-border { animation: borderPulse 3s ease-in-out infinite; }
+        .bot-border { animation: borderPulse 3s ease-in-out infinite 1.5s; }
+      `}</style>
+
+      <svg viewBox="0 0 1200 88" preserveAspectRatio="xMidYMid meet"
+        style={{width:"100%",height:"auto",display:"block",minHeight:60}} xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="bladeG" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#FF3020"/><stop offset="100%" stopColor="#7A0A0A"/>
+          </linearGradient>
+          <linearGradient id="goldG" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#C9931A"/><stop offset="100%" stopColor="#F2C94C"/>
+          </linearGradient>
+          <linearGradient id="bgFade" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#B91C1C" stopOpacity="0.08"/>
+            <stop offset="40%" stopColor="#B91C1C" stopOpacity="0"/>
+            <stop offset="60%" stopColor="#B91C1C" stopOpacity="0"/>
+            <stop offset="100%" stopColor="#B91C1C" stopOpacity="0.06"/>
+          </linearGradient>
+          <filter id="redglow">
+            <feGaussianBlur stdDeviation="3" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="strongglow">
+            <feGaussianBlur stdDeviation="5" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <clipPath id="bannerClip"><rect x="0" y="0" width="1200" height="88"/></clipPath>
+        </defs>
+
+        {/* Background vignette */}
+        <rect x="0" y="0" width="1200" height="88" fill="url(#bgFade)"/>
+
+        {/* Animated scan bar */}
+        <rect className="scan-bar" x="0" y="0" width="120" height="88"
+          fill="url(#bgFade)" opacity="0.4" clipPath="url(#bannerClip)"/>
+
+        {/* Top border line */}
+        <line className="top-border" x1="0" y1="2" x2="1200" y2="2" stroke="#C62020" strokeWidth="1.5"/>
+
+        {/* ── LEFT BLADES ── */}
+        <g className="blade-left">
+          <polygon points="8,6 20,6 30,82 18,82" fill="url(#bladeG)" filter="url(#redglow)"/>
+          <polygon points="20,6 30,6 40,82 28,82" fill="#C62020" opacity="0.35"/>
+          {/* Tiny accent blade */}
+          <polygon points="42,6 48,6 54,82 48,82" fill="#B91C1C" opacity="0.2"/>
+        </g>
+
+        {/* ── MAIN TITLE ── */}
+        <g className="entropy-word">
+          <text x="62" y="63"
+            fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
+            fontWeight="900" fontSize="68" letterSpacing="5" fill="#F0EDE5">ENTROPY</text>
+        </g>
+
+        {/* ── X ── */}
+        <g className="entropy-x">
+          <text x="402" y="63"
+            fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
+            fontWeight="900" fontSize="68" fill="url(#bladeG)" filter="url(#strongglow)">X</text>
+        </g>
+
+        {/* ── OVERRIDE subtitle ── */}
+        <g className="gold-text">
+          <text x="62" y="82"
+            fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
+            fontWeight="700" fontSize="17" letterSpacing="16" fill="url(#goldG)">OVERRIDE</text>
+        </g>
+
+        {/* ── CENTER DIVIDER TICK ── */}
+        <line x1="600" y1="6" x2="600" y2="82" stroke="#1A1A1A" strokeWidth="1" opacity="0.5"/>
+
+        {/* ── RIGHT SIDE INFO ── */}
+        <text x="640" y="42"
+          fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
+          fontWeight="700" fontSize="13" letterSpacing="4" fill="#2A2A2A">TACTICS CODEX</text>
+        <text x="640" y="60"
+          fontFamily="'Courier Prime','Courier New',monospace"
+          fontSize="11" fill="#222" letterSpacing="1">16 CHARACTERS · 48 BUILDS · 15 TACTICS</text>
+        <text x="640" y="76"
+          fontFamily="'Courier Prime','Courier New',monospace"
+          fontSize="10" fill="#1A1A1A" letterSpacing="1">BlazBlue Entropy Effect X — v4.0</text>
+
+        {/* Particle dots (animated at different delays) */}
+        <circle cx="580" cy="20" r="1.5" fill="#B91C1C" opacity="0.4" style={{animation:"particleDrift 4s ease-in-out infinite"}}/>
+        <circle cx="590" cy="68" r="1" fill="#C9A227" opacity="0.3" style={{animation:"particleDrift 5s ease-in-out infinite 1s"}}/>
+        <circle cx="570" cy="44" r="1" fill="#B91C1C" opacity="0.25" style={{animation:"particleDrift 6s ease-in-out infinite 2s"}}/>
+
+        {/* ── RIGHT BLADES ── */}
+        <g className="blade-right">
+          <polygon points="1148,6 1160,6 1170,82 1158,82" fill="url(#bladeG)" opacity="0.6"/>
+          <polygon points="1160,6 1170,6 1180,82 1168,82" fill="url(#bladeG)" filter="url(#redglow)" opacity="0.8"/>
+          <polygon points="1180,6 1188,6 1194,82 1186,82" fill="#C62020" opacity="0.25"/>
+        </g>
+
+        {/* Bottom border line */}
+        <line className="bot-border" x1="0" y1="86" x2="1200" y2="86" stroke="#C62020" strokeWidth="1.5"/>
+      </svg>
+    </div>
   );
 }
 
@@ -937,7 +1050,7 @@ export default function App() {
   );
 
   const renderTactics = () => (
-    <div style={{display:"grid",gridTemplateColumns:"250px 1fr",gap:20}}>
+    <div style={{display:"grid",gridTemplateColumns:"300px 1fr",gap:24,maxWidth:1400,margin:"0 auto"}}>
       <div>
         <div style={S.label}>SELECT TACTIC</div>
         {TACTICS_REFERENCE.map(t=>{
@@ -1032,15 +1145,7 @@ export default function App() {
         button:hover{opacity:0.85;}
       `}</style>
 
-      <div style={S.header}>
-        <div style={{maxWidth:500}}><Logo/></div>
-        <div style={{textAlign:"right"}}>
-          <div style={{fontSize:11,letterSpacing:3,color:"#3A3A3A",...{fontFamily:"'Courier Prime',monospace"}}}>TACTICS CODEX</div>
-          <div style={{fontSize:10,color:"#2A2A2A",fontFamily:"'Courier Prime',monospace",marginTop:4}}>
-            Data: BlazBlue Wiki · Steam Community · {CHARACTERS.length} characters · {TACTICS_REFERENCE.length} tactics
-          </div>
-        </div>
-      </div>
+      <Banner />
 
       <div style={S.nav}>
         {[["builds","BUILD ANALYZER"],["tactics","TACTICS DATABASE"],["guide","CHARACTER GUIDE"]].map(([id,lbl])=>(
@@ -1048,6 +1153,11 @@ export default function App() {
         ))}
       </div>
 
+      {tab === "tactics" ? (
+        <div style={{...S.content, height:"calc(100vh - 108px)", overflowY:"auto"}}>
+          {renderTactics()}
+        </div>
+      ) : (
       <div style={S.main}>
         {/* SIDEBAR */}
         <div style={S.sidebar}>
@@ -1080,10 +1190,10 @@ export default function App() {
         {/* CONTENT */}
         <div style={S.content}>
           {tab==="builds" && renderBuilds()}
-          {tab==="tactics" && renderTactics()}
           {tab==="guide" && <CharacterGuide char={char} />}
         </div>
       </div>
+      )}
     </div>
   );
 }
