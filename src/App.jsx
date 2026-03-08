@@ -839,7 +839,7 @@ function Banner() {
 
         {/* ── X ── */}
         <g className="entropy-x">
-          <text x="402" y="63"
+          <text x="378" y="63"
             fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
             fontWeight="900" fontSize="68" fill="url(#bladeG)" filter="url(#strongglow)">X</text>
         </g>
