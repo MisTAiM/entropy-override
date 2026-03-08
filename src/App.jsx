@@ -738,106 +738,18 @@ const CHARACTERS = [
 // Animated Full-Width Banner
 function Banner() {
   return (
-    <div style={{
-      position:"relative", width:"100%", overflow:"hidden",
-      background:"#000",
-      borderBottom:"2px solid #B91C1C"
-    }}>
-      <style>{`
-        @keyframes glitchE {
-          0%,88%,100% { transform:translate(0,0) skewX(0deg); }
-          89%  { transform:translate(-4px,0) skewX(-1.5deg); }
-          91%  { transform:translate(4px,0)  skewX(1deg); }
-          93%  { transform:translate(-2px,0); }
-          95%  { transform:translate(0,0); }
-        }
-        @keyframes goldFlow {
-          0%,100% { opacity:1; }
-          50%     { opacity:0.78; }
-        }
-        @keyframes hudBlink {
-          0%,93%,100% { opacity:1; }
-          94% { opacity:0.15; }
-          96% { opacity:1; }
-          98% { opacity:0.4; }
-        }
-        @keyframes borderPulse {
-          0%,100% { opacity:0.6; }
-          50%     { opacity:1; }
-        }
-        @keyframes scanMove {
-          0%   { transform:translateX(-100%); }
-          100% { transform:translateX(400%); }
-        }
-        .entropy-g  { animation: glitchE 8s steps(1) infinite; }
-        .gold-txt   { animation: goldFlow 4s ease-in-out infinite; }
-        .hud-blink  { animation: hudBlink 7s steps(1) infinite; }
-        .b-border   { animation: borderPulse 3s ease-in-out infinite; }
-        .scan-bar   { animation: scanMove 8s linear infinite; }
-      `}</style>
-
-      {/* The actual banner image — fills the full width */}
+    <div style={{width:"100%", lineHeight:0, background:"#000", borderBottom:"2px solid #B91C1C"}}>
       <img
         src="/banner.png"
-        alt=""
+        alt="Entropy Override"
         style={{
           display:"block",
           width:"100%",
-          height:"auto",
-          maxHeight:"160px",
+          height:"120px",
           objectFit:"cover",
           objectPosition:"center center",
         }}
       />
-
-      {/* Text overlay — absolutely positioned on top of image */}
-      <div style={{
-        position:"absolute", inset:0,
-        display:"flex", alignItems:"center",
-        justifyContent:"space-between",
-        padding:"0 3%",
-        pointerEvents:"none",
-      }}>
-        {/* ENTROPY left */}
-        <div className="entropy-g" style={{
-          fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",
-          fontWeight:900, fontSize:"clamp(28px,5.5vw,72px)",
-          letterSpacing:"3px", color:"#F7F3EE",
-          textShadow:"4px 4px 0 rgba(180,0,0,0.5), -2px -2px 0 rgba(20,20,200,0.18), 0 0 30px rgba(200,30,30,0.6)",
-          lineHeight:1,
-        }}>ENTROPY</div>
-
-        {/* OVERRIDE right — gold */}
-        <div style={{textAlign:"right"}}>
-          <div className="gold-txt" style={{
-            fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",
-            fontWeight:900, fontSize:"clamp(28px,5.5vw,72px)",
-            letterSpacing:"3px",
-            background:"linear-gradient(90deg,#A0700A,#F5CB45,#C9A227,#7A5208)",
-            WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent",
-            filter:"drop-shadow(0 0 12px rgba(210,160,0,0.5))",
-            lineHeight:1,
-          }}>OVERRIDE</div>
-          <div className="hud-blink" style={{
-            fontFamily:"'Courier Prime','Courier New',monospace",
-            fontSize:"clamp(8px,1.1vw,13px)", letterSpacing:"2px",
-            color:"#C9A227", opacity:0.75, marginTop:"4px",
-          }}>TACTICS CODEX · 16 CHARS · 48 BUILDS</div>
-        </div>
-      </div>
-
-      {/* Bottom border pulse */}
-      <div className="b-border" style={{
-        position:"absolute", bottom:0, left:0, right:0,
-        height:"2px", background:"#B91C1C",
-      }}/>
-
-      {/* Scan shimmer */}
-      <div className="scan-bar" style={{
-        position:"absolute", inset:0, width:"15%",
-        background:"linear-gradient(90deg,transparent,rgba(255,255,255,0.03),transparent)",
-        pointerEvents:"none",
-      }}/>
     </div>
   );
 }
