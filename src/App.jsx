@@ -745,9 +745,12 @@ function Banner() {
           90%  { opacity: 1; }
           100% { transform: translateX(200%); opacity: 0; }
         }
-        @keyframes xGlow {
-          0%, 100% { filter: drop-shadow(0 0 4px #B91C1C) drop-shadow(0 0 12px #7A0A0A); }
-          50%       { filter: drop-shadow(0 0 16px #FF3020) drop-shadow(0 0 32px #B91C1C); }
+        @keyframes xTurn {
+          0%        { transform: rotateY(0deg);   filter: drop-shadow(0 0 4px #B91C1C) drop-shadow(0 0 12px #7A0A0A); }
+          40%       { transform: rotateY(180deg); filter: drop-shadow(0 0 16px #FF3020) drop-shadow(0 0 32px #B91C1C); }
+          50%       { transform: rotateY(180deg); }
+          90%       { transform: rotateY(360deg); filter: drop-shadow(0 0 4px #B91C1C) drop-shadow(0 0 12px #7A0A0A); }
+          100%      { transform: rotateY(360deg); }
         }
         @keyframes bladeShimmer {
           0%, 100% { opacity: 0.9; }
@@ -773,7 +776,7 @@ function Banner() {
           0%,100% { opacity: 0.5; }
           50%     { opacity: 1; }
         }
-        .entropy-x  { animation: xGlow 2s ease-in-out infinite; }
+        .entropy-x  { animation: xTurn 2.5s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
         .blade-left { animation: bladeShimmer 4s ease-in-out infinite; }
         .blade-right{ animation: bladeShimmer 4s ease-in-out infinite 0.8s; }
         .gold-text  { animation: goldPulse 5s ease-in-out infinite; }
@@ -838,11 +841,7 @@ function Banner() {
         <g className="entropy-x">
           <text x="402" y="63"
             fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
-            fontWeight="900" fontSize="68" fill="url(#bladeG)" filter="url(#strongglow)">X
-            <animateTransform attributeName="transform" type="rotate"
-              from="0 422 30" to="360 422 30"
-              dur="3s" repeatCount="indefinite"/>
-          </text>
+            fontWeight="900" fontSize="68" fill="url(#bladeG)" filter="url(#strongglow)">X</text>
         </g>
 
         {/* ── OVERRIDE subtitle ── */}
