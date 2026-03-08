@@ -737,281 +737,107 @@ const CHARACTERS = [
 
 // Animated Full-Width Banner
 function Banner() {
-  // Speed lines radiating from X center (440, 44)
-  const leftLines  = Array.from({length:16}, (_,i) => {
-    const a = (155 + i * 4.5) * Math.PI / 180;
-    const len = 300 + i * 18;
-    return [510 + Math.cos(a)*len, 44 + Math.sin(a)*len];
-  });
-  const rightLines = Array.from({length:16}, (_,i) => {
-    const a = (-25 + i * 4.5) * Math.PI / 180;
-    const len = 300 + i * 18;
-    return [440 + Math.cos(a)*len, 44 + Math.sin(a)*len];
-  });
-
   return (
-    <div style={{position:"relative",width:"100%",overflow:"hidden",background:"#030303"}}>
+    <div style={{
+      position:"relative", width:"100%", overflow:"hidden",
+      background:"#000",
+      borderBottom:"2px solid #B91C1C"
+    }}>
       <style>{`
-        @keyframes xPulse {
-          0%,100% { opacity:1; }
-          45%      { opacity:0.7; }
-          50%      { opacity:1; filter:brightness(1.6); }
-          55%      { opacity:0.8; }
-        }
-        @keyframes coreFlare {
-          0%,100% { r:5;  opacity:1; }
-          50%     { r:9;  opacity:0.9; }
-        }
         @keyframes glitchE {
-          0%,88%,100% { transform:translate(0,0) skewX(0deg); clip-path:none; }
-          89%  { transform:translate(-4px,0) skewX(-1deg); }
-          91%  { transform:translate(3px,0)  skewX(1deg); }
-          93%  { transform:translate(-2px,0) skewX(-0.5deg); }
-          95%  { transform:translate(0,0) skewX(0deg); }
+          0%,88%,100% { transform:translate(0,0) skewX(0deg); }
+          89%  { transform:translate(-4px,0) skewX(-1.5deg); }
+          91%  { transform:translate(4px,0)  skewX(1deg); }
+          93%  { transform:translate(-2px,0); }
+          95%  { transform:translate(0,0); }
         }
         @keyframes goldFlow {
           0%,100% { opacity:1; }
-          50%     { opacity:0.72; }
-        }
-        @keyframes scanMove {
-          0%   { transform:translateX(-30%); }
-          100% { transform:translateX(120%); }
-        }
-        @keyframes borderPulse {
-          0%,100% { opacity:0.65; }
-          50%     { opacity:1; }
-        }
-        @keyframes tipSpark {
-          0%,100% { opacity:0.9; r:3; }
-          50%     { opacity:0.4; r:1.5; }
+          50%     { opacity:0.78; }
         }
         @keyframes hudBlink {
-          0%,94%,100% { opacity:1; }
-          95%  { opacity:0.2; }
-          97%  { opacity:1; }
-          98%  { opacity:0.4; }
+          0%,93%,100% { opacity:1; }
+          94% { opacity:0.15; }
+          96% { opacity:1; }
+          98% { opacity:0.4; }
         }
-        .x-pulse    { animation: xPulse 3s ease-in-out infinite; }
-        .core-flare { animation: coreFlare 1.8s ease-in-out infinite; }
+        @keyframes borderPulse {
+          0%,100% { opacity:0.6; }
+          50%     { opacity:1; }
+        }
+        @keyframes scanMove {
+          0%   { transform:translateX(-100%); }
+          100% { transform:translateX(400%); }
+        }
         .entropy-g  { animation: glitchE 8s steps(1) infinite; }
         .gold-txt   { animation: goldFlow 4s ease-in-out infinite; }
-        .scan-bar   { animation: scanMove 6s linear infinite 0.5s; }
-        .t-border   { animation: borderPulse 3s ease-in-out infinite; }
-        .b-border   { animation: borderPulse 3s ease-in-out infinite 1.5s; }
-        .tip-spark  { animation: tipSpark 1.8s ease-in-out infinite; }
         .hud-blink  { animation: hudBlink 7s steps(1) infinite; }
+        .b-border   { animation: borderPulse 3s ease-in-out infinite; }
+        .scan-bar   { animation: scanMove 8s linear infinite; }
       `}</style>
 
-      <svg viewBox="0 0 1200 88" preserveAspectRatio="xMidYMid meet"
-        style={{width:"100%",height:"auto",display:"block",minHeight:52}}>
-        <defs>
-          {/* --- FILTERS --- */}
-          {/* Large X halo */}
-          <filter id="xHalo" x="-200%" y="-200%" width="500%" height="500%">
-            <feGaussianBlur stdDeviation="22" result="b"/>
-            <feColorMatrix in="b" type="matrix"
-              values="2.5 0 0 0 0.55  0 0 0 0 0  0 0 0 0 0  0 0 0 1.4 0"/>
-          </filter>
-          {/* Mid X glow */}
-          <filter id="xGlow" x="-80%" y="-80%" width="260%" height="260%">
-            <feGaussianBlur stdDeviation="9" result="b"/>
-            <feColorMatrix in="b" type="matrix"
-              values="2 0 0 0 0.3  0 0 0 0 0  0 0 0 0 0  0 0 0 1.2 0" result="c"/>
-            <feMerge><feMergeNode in="c"/><feMergeNode in="SourceGraphic"/></feMerge>
-          </filter>
-          {/* Center burst */}
-          <filter id="burstF" x="-300%" y="-300%" width="700%" height="700%">
-            <feGaussianBlur stdDeviation="16" result="b"/>
-            <feColorMatrix in="b" type="matrix"
-              values="4 0 0 0 1  0.2 0 0 0 0  0 0 0 0 0  0 0 0 2 0"/>
-          </filter>
-          {/* White star glow */}
-          <filter id="starF" x="-200%" y="-200%" width="500%" height="500%">
-            <feGaussianBlur stdDeviation="5"/>
-          </filter>
-          {/* Entropy text glow */}
-          <filter id="etxtGlow" x="-15%" y="-40%" width="130%" height="180%">
-            <feGaussianBlur stdDeviation="5" result="b"/>
-            <feColorMatrix in="b" type="matrix"
-              values="2 0 0 0 0.15  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="c"/>
-            <feMerge><feMergeNode in="c"/><feMergeNode in="SourceGraphic"/></feMerge>
-          </filter>
-          {/* Gold text glow */}
-          <filter id="gtxtGlow" x="-15%" y="-40%" width="130%" height="180%">
-            <feGaussianBlur stdDeviation="5" result="b"/>
-            <feColorMatrix in="b" type="matrix"
-              values="1.2 0.5 0 0 0.15  0 1 0 0 0.05  0 0 0 0 0  0 0 0 1 0" result="c"/>
-            <feMerge><feMergeNode in="c"/><feMergeNode in="SourceGraphic"/></feMerge>
-          </filter>
-          {/* Tip spark glow */}
-          <filter id="tipF" x="-300%" y="-300%" width="700%" height="700%">
-            <feGaussianBlur stdDeviation="4"/>
-          </filter>
+      {/* The actual banner image — fills the full width */}
+      <img
+        src="/banner.png"
+        alt=""
+        style={{
+          display:"block",
+          width:"100%",
+          height:"auto",
+          maxHeight:"160px",
+          objectFit:"cover",
+          objectPosition:"center center",
+        }}
+      />
 
-          {/* --- GRADIENTS --- */}
-          <radialGradient id="bgRadial" cx="37%" cy="50%" r="45%">
-            <stop offset="0%" stopColor="#4A0808" stopOpacity="0.85"/>
-            <stop offset="45%" stopColor="#1C0303" stopOpacity="0.5"/>
-            <stop offset="100%" stopColor="#030303" stopOpacity="0"/>
-          </radialGradient>
-          <linearGradient id="goldG" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%"   stopColor="#A0700A"/>
-            <stop offset="30%"  stopColor="#F5CB45"/>
-            <stop offset="60%"  stopColor="#C9A227"/>
-            <stop offset="100%" stopColor="#7A5208"/>
-          </linearGradient>
-          <linearGradient id="scanG" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%"   stopColor="#ffffff" stopOpacity="0"/>
-            <stop offset="40%"  stopColor="#ffffff" stopOpacity="0.025"/>
-            <stop offset="60%"  stopColor="#ffffff" stopOpacity="0.025"/>
-            <stop offset="100%" stopColor="#ffffff" stopOpacity="0"/>
-          </linearGradient>
-          <clipPath id="bClip"><rect x="0" y="0" width="1200" height="88"/></clipPath>
-        </defs>
+      {/* Text overlay — absolutely positioned on top of image */}
+      <div style={{
+        position:"absolute", inset:0,
+        display:"flex", alignItems:"center",
+        justifyContent:"space-between",
+        padding:"0 3%",
+        pointerEvents:"none",
+      }}>
+        {/* ENTROPY left */}
+        <div className="entropy-g" style={{
+          fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",
+          fontWeight:900, fontSize:"clamp(28px,5.5vw,72px)",
+          letterSpacing:"3px", color:"#F7F3EE",
+          textShadow:"4px 4px 0 rgba(180,0,0,0.5), -2px -2px 0 rgba(20,20,200,0.18), 0 0 30px rgba(200,30,30,0.6)",
+          lineHeight:1,
+        }}>ENTROPY</div>
 
-        {/* ── BG ── */}
-        <rect x="0" y="0" width="1200" height="88" fill="#030303"/>
-        <rect x="0" y="0" width="1200" height="88" fill="url(#bgRadial)"/>
+        {/* OVERRIDE right — gold */}
+        <div style={{textAlign:"right"}}>
+          <div className="gold-txt" style={{
+            fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",
+            fontWeight:900, fontSize:"clamp(28px,5.5vw,72px)",
+            letterSpacing:"3px",
+            background:"linear-gradient(90deg,#A0700A,#F5CB45,#C9A227,#7A5208)",
+            WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent",
+            filter:"drop-shadow(0 0 12px rgba(210,160,0,0.5))",
+            lineHeight:1,
+          }}>OVERRIDE</div>
+          <div className="hud-blink" style={{
+            fontFamily:"'Courier Prime','Courier New',monospace",
+            fontSize:"clamp(8px,1.1vw,13px)", letterSpacing:"2px",
+            color:"#C9A227", opacity:0.75, marginTop:"4px",
+          }}>TACTICS CODEX · 16 CHARS · 48 BUILDS</div>
+        </div>
+      </div>
 
-        {/* ── SPEED LINES (left side, radiating from X toward ENTROPY) ── */}
-        {leftLines.map(([x2,y2],i) => (
-          <line key={`sl${i}`} x1="440" y1="44" x2={x2} y2={y2}
-            stroke="#991010" strokeWidth={i % 3 === 0 ? "0.8" : "0.4"}
-            opacity={0.04 + i * 0.006} clipPath="url(#bClip)"/>
-        ))}
-        {/* Speed lines right side */}
-        {rightLines.map(([x2,y2],i) => (
-          <line key={`sr${i}`} x1="440" y1="44" x2={x2} y2={y2}
-            stroke="#991010" strokeWidth={i % 3 === 0 ? "0.8" : "0.4"}
-            opacity={0.03 + i * 0.005} clipPath="url(#bClip)"/>
-        ))}
+      {/* Bottom border pulse */}
+      <div className="b-border" style={{
+        position:"absolute", bottom:0, left:0, right:0,
+        height:"2px", background:"#B91C1C",
+      }}/>
 
-        {/* Horizontal manga scan lines — very subtle */}
-        {Array.from({length:6}, (_,i) => (
-          <line key={`hl${i}`} x1="0" y1={i*15+7} x2="1200" y2={i*15+7}
-            stroke="#1A0000" strokeWidth="0.5" opacity="0.35"/>
-        ))}
-
-        {/* Scan bar */}
-        <rect className="scan-bar" x="-300" y="0" width="500" height="88"
-          fill="url(#scanG)" clipPath="url(#bClip)"/>
-
-        {/* Borders */}
-        <line className="t-border" x1="0" y1="1.5" x2="1200" y2="1.5" stroke="#D42020" strokeWidth="2"/>
-        <line className="b-border" x1="0" y1="86.5" x2="1200" y2="86.5" stroke="#D42020" strokeWidth="2"/>
-
-        {/* Thin vertical frame lines flanking X */}
-        <line x1="378" y1="0" x2="378" y2="88" stroke="#6A0A0A" strokeWidth="0.6" opacity="0.6"/>
-        <line x1="504" y1="0" x2="504" y2="88" stroke="#6A0A0A" strokeWidth="0.6" opacity="0.6"/>
-
-        {/* ── ENTROPY — chromatic aberration style ── */}
-        {/* Red fringe (bottom-right offset) */}
-        <text x="28" y="69" transform="translate(4,3)"
-          fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
-          fontWeight="900" fontSize="62" letterSpacing="2"
-          fill="#BB0000" opacity="0.5">ENTROPY</text>
-        {/* Blue fringe (top-left offset) */}
-        <text x="28" y="69" transform="translate(-2,-2)"
-          fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
-          fontWeight="900" fontSize="62" letterSpacing="2"
-          fill="#2244CC" opacity="0.2">ENTROPY</text>
-        {/* Main white — glitch animates this group */}
-        <g className="entropy-g">
-          <text x="28" y="69"
-            fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
-            fontWeight="900" fontSize="62" letterSpacing="2"
-            fill="#F7F3EE" filter="url(#etxtGlow)">ENTROPY</text>
-        </g>
-
-        {/* ── THE X — layered energy blade ── */}
-        {/* X center: (440, 44). Arms: TL(388,5)→BR(492,83) and TR(492,5)→BL(388,83) */}
-        <g className="x-pulse" clipPath="url(#bClip)">
-          {/* Halo bloom — widest, darkest */}
-          <g filter="url(#xHalo)">
-            <line x1="388" y1="5"  x2="492" y2="83" stroke="#880000" strokeWidth="22" strokeLinecap="round"/>
-            <line x1="492" y1="5"  x2="388" y2="83" stroke="#880000" strokeWidth="22" strokeLinecap="round"/>
-          </g>
-          {/* Mid glow layer */}
-          <g filter="url(#xGlow)">
-            <line x1="388" y1="5"  x2="492" y2="83" stroke="#CC1515" strokeWidth="12" strokeLinecap="round"/>
-            <line x1="492" y1="5"  x2="388" y2="83" stroke="#CC1515" strokeWidth="12" strokeLinecap="round"/>
-          </g>
-          {/* Solid arm base */}
-          <line x1="388" y1="5"  x2="492" y2="83" stroke="#B81010" strokeWidth="9" strokeLinecap="round"/>
-          <line x1="492" y1="5"  x2="388" y2="83" stroke="#B81010" strokeWidth="9" strokeLinecap="round"/>
-          {/* Bright inner edge */}
-          <line x1="388" y1="5"  x2="492" y2="83" stroke="#FF4040" strokeWidth="4" strokeLinecap="round"/>
-          <line x1="492" y1="5"  x2="388" y2="83" stroke="#FF4040" strokeWidth="4" strokeLinecap="round"/>
-          {/* White-hot core line */}
-          <line x1="388" y1="5"  x2="492" y2="83" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" opacity="0.85"/>
-          <line x1="492" y1="5"  x2="388" y2="83" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" opacity="0.85"/>
-
-          {/* Center burst */}
-          <circle cx="440" cy="44" r="22" fill="#BB0000" filter="url(#burstF)"/>
-          <circle cx="440" cy="44" r="11" fill="#FF2020" filter="url(#xGlow)"/>
-
-          {/* 4-point impact star */}
-          <g filter="url(#starF)" opacity="0.5">
-            <polygon points="440,26 442.5,41.5 440,57 437.5,41.5" fill="white"/>
-            <polygon points="422,44 437.5,41.5 454,44 437.5,46.5" fill="white"/>
-          </g>
-          <polygon points="440,26 442.5,41.5 440,57 437.5,41.5" fill="white" opacity="0.7"/>
-          <polygon points="422,44 437.5,41.5 454,44 437.5,46.5" fill="white" opacity="0.7"/>
-
-          {/* White core dot */}
-          <circle className="core-flare" cx="440" cy="44" r="5" fill="white"/>
-        </g>
-
-        {/* Tip sparks at arm endpoints */}
-        <circle className="tip-spark" cx="388" cy="5"  r="3" fill="#FF9090" filter="url(#tipF)"/>
-        <circle className="tip-spark" cx="492" cy="5"  r="3" fill="#FF9090" filter="url(#tipF)" style={{animationDelay:"0.4s"}}/>
-        <circle className="tip-spark" cx="388" cy="83" r="3" fill="#FF9090" filter="url(#tipF)" style={{animationDelay:"0.8s"}}/>
-        <circle className="tip-spark" cx="492" cy="83" r="3" fill="#FF9090" filter="url(#tipF)" style={{animationDelay:"1.2s"}}/>
-
-        {/* Diagonal slash decorations — thin energy echoes of the X arms */}
-        <line x1="355" y1="5"  x2="375" y2="30" stroke="#550808" strokeWidth="1" opacity="0.5"/>
-        <line x1="505" y1="58" x2="525" y2="83" stroke="#550808" strokeWidth="1" opacity="0.5"/>
-        <line x1="505" y1="5"  x2="525" y2="30" stroke="#550808" strokeWidth="1" opacity="0.5"/>
-        <line x1="355" y1="58" x2="375" y2="83" stroke="#550808" strokeWidth="1" opacity="0.5"/>
-
-        {/* ── OVERRIDE — gold ── */}
-        {/* Gold shadow fringe */}
-        <text x="528" y="69" transform="translate(3,3)"
-          fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
-          fontWeight="900" fontSize="62" letterSpacing="2"
-          fill="#7A5000" opacity="0.45">OVERRIDE</text>
-        {/* Main gold */}
-        <g className="gold-txt">
-          <text x="528" y="69"
-            fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
-            fontWeight="900" fontSize="62" letterSpacing="2"
-            fill="url(#goldG)" filter="url(#gtxtGlow)">OVERRIDE</text>
-        </g>
-
-        {/* ── HUD PANEL — right side ── */}
-        {/* Vertical accent */}
-        <line x1="1042" y1="8" x2="1042" y2="80" stroke="#3A0808" strokeWidth="0.8" opacity="0.7"/>
-
-        {/* HUD readout */}
-        <g className="hud-blink">
-          <text x="1055" y="28"
-            fontFamily="'Courier Prime','Courier New',monospace"
-            fontSize="10" letterSpacing="2" fill="#5A1010">SYS::ONLINE</text>
-          <text x="1055" y="44"
-            fontFamily="'Courier Prime','Courier New',monospace"
-            fontSize="10" letterSpacing="2" fill="#4A2A00">16 · UNITS</text>
-          <text x="1055" y="60"
-            fontFamily="'Courier Prime','Courier New',monospace"
-            fontSize="10" letterSpacing="2" fill="#5A1010">48 · BUILDS</text>
-          <text x="1055" y="76"
-            fontFamily="'Courier Prime','Courier New',monospace"
-            fontSize="10" letterSpacing="2" fill="#3A2800">15 · TACTICS</text>
-        </g>
-
-        {/* Top-right corner bracket */}
-        <path d="M1188,4 L1196,4 L1196,16" fill="none" stroke="#6A0A0A" strokeWidth="1.2"/>
-        <path d="M1188,84 L1196,84 L1196,72" fill="none" stroke="#6A0A0A" strokeWidth="1.2"/>
-      </svg>
+      {/* Scan shimmer */}
+      <div className="scan-bar" style={{
+        position:"absolute", inset:0, width:"15%",
+        background:"linear-gradient(90deg,transparent,rgba(255,255,255,0.03),transparent)",
+        pointerEvents:"none",
+      }}/>
     </div>
   );
 }
