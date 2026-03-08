@@ -1133,121 +1133,108 @@ function HomePage({setTab}) {
         .enter-btn { transition: background 0.15s ease, color 0.15s ease; }
       `}</style>
 
-      {/* ── HERO — pure atmospheric, no image ── */}
-      <div className="home-hero" style={{position:"relative", overflow:"hidden", height:340, background:"#030303"}}>
-        {/* Noise grain overlay */}
-        <svg style={{position:"absolute",inset:0,width:"100%",height:"100%",opacity:0.04,pointerEvents:"none"}} xmlns="http://www.w3.org/2000/svg">
-          <filter id="heroNoise"><feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="4" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
-          <rect width="100%" height="100%" filter="url(#heroNoise)"/>
-        </svg>
+      {/* ── HERO ── */}
+      <div className="home-hero" style={{position:"relative",overflow:"hidden",height:360,background:"#030303",display:"flex"}}>
 
-        {/* Deep radial gradient backdrop */}
-        <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse 70% 90% at 30% 60%, rgba(120,8,8,0.45) 0%, rgba(8,8,8,0) 70%)"}}/>
-        <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse 50% 60% at 75% 40%, rgba(50,30,0,0.25) 0%, rgba(8,8,8,0) 65%)"}}/>
-
-        {/* SVG — particles, glow orbs, speed lines, X mark */}
-        <svg style={{position:"absolute",inset:0,width:"100%",height:"100%",pointerEvents:"none"}}
-          viewBox="0 0 1200 340" preserveAspectRatio="xMidYMid slice">
-          <defs>
-            <filter id="heroGlow" x="-80%" y="-80%" width="260%" height="260%">
-              <feGaussianBlur stdDeviation="28"/>
-            </filter>
-            <filter id="heroGlowSm" x="-60%" y="-60%" width="220%" height="220%">
-              <feGaussianBlur stdDeviation="12"/>
-            </filter>
-            <filter id="tipGlow" x="-200%" y="-200%" width="500%" height="500%">
-              <feGaussianBlur stdDeviation="5"/>
-            </filter>
-            <linearGradient id="hScanGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%"   stopColor="white" stopOpacity="0"/>
-              <stop offset="40%"  stopColor="white" stopOpacity="0.025"/>
-              <stop offset="60%"  stopColor="white" stopOpacity="0.025"/>
-              <stop offset="100%" stopColor="white" stopOpacity="0"/>
-            </linearGradient>
-            <radialGradient id="heroVignette" cx="50%" cy="50%" r="50%">
-              <stop offset="0%"   stopColor="#030303" stopOpacity="0"/>
-              <stop offset="100%" stopColor="#030303" stopOpacity="0.7"/>
-            </radialGradient>
-          </defs>
-
-          {/* Background speed lines radiating from center-left */}
-          {Array.from({length:24},(_,i)=>{
-            const a=(i/24)*Math.PI*2;
-            const len=500+i*18;
-            return <line key={i} x1={360} y1={170} x2={360+Math.cos(a)*len} y2={170+Math.sin(a)*len}
-              stroke="#660000" strokeWidth={i%4===0?"0.8":"0.35"} opacity={0.04+i*0.003}/>;
-          })}
-
-          {/* Main glow halo */}
-          <ellipse cx="360" cy="170" rx="200" ry="160" fill="#AA0A0A" filter="url(#heroGlow)"
-            style={{animation:"glowPulse 3s ease-in-out infinite", transformOrigin:"360px 170px"}}/>
-
-          {/* Particle field — red + gold + dim */}
-          {Array.from({length:40},(_,i)=>{
-            const px=50+(i*73.1)%1100;
-            const py=10+(i*41.7)%320;
-            const type=i%3;
-            const r=0.8+(i%3)*0.6;
-            return <circle key={i} cx={px} cy={py} r={r}
-              fill={type===0?"#FF2010":type===1?"#C9A227":"#555"}
-              opacity={type===2?0.08:0.3}
-              style={{
-                animation:`particleFloat ${2.5+(i%5)*0.6}s ease-in-out infinite`,
-                animationDelay:`${(i*0.22)%4}s`,
-                "--op-lo":type===2?"0.04":type===1?"0.15":"0.18",
-                "--op-md":type===2?"0.07":type===1?"0.25":"0.30",
-                "--op-hi":type===2?"0.12":type===1?"0.42":"0.52",
-              }}/>;
-          })}
-
-
-
-          {/* Scan shimmer */}
-          <rect x="-250" y="0" width="350" height="340" fill="url(#hScanGrad)"
-            style={{animation:"scanBanner 8s linear infinite 0.5s"}}/>
-
-          {/* Edge vignette */}
-          <rect x="0" y="0" width="1200" height="340" fill="url(#heroVignette)"/>
-
-          {/* Bottom fade */}
-          <defs>
-            <linearGradient id="botFade" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#030303" stopOpacity="0"/>
-              <stop offset="100%" stopColor="#030303" stopOpacity="1"/>
-            </linearGradient>
-          </defs>
-          <rect x="0" y="200" width="1200" height="140" fill="url(#botFade)"/>
-        </svg>
-
-        {/* Horizontal scan line on hero */}
-        <div style={{position:"absolute",inset:0,overflow:"hidden",pointerEvents:"none"}}>
-          <div style={{position:"absolute",left:0,right:0,height:"1px",background:"rgba(255,255,255,0.03)",animation:"scanH 5s linear infinite"}}/>
+        {/* Character portrait strip — left 55%, stacked 4 tall */}
+        <div style={{position:"absolute",inset:0,display:"flex",gap:0}}>
+          {/* 8 portrait columns, each clipped diagonally */}
+          {[
+            {img:"/chars/naoto.png",  col:"#F87171"},
+            {img:"/chars/hakumen.png",col:"#F1F5F9"},
+            {img:"/chars/jin.png",    col:"#4EA8D8"},
+            {img:"/chars/es.png",     col:"#E878A0"},
+            {img:"/chars/hibiki.png", col:"#7B8FE4"},
+            {img:"/chars/ragna.png",  col:"#D93025"},
+            {img:"/chars/noel.png",   col:"#60A5FA"},
+            {img:"/chars/kokonoe.png",col:"#E8714A"},
+          ].map((c,i)=>(
+            <div key={i} style={{
+              flex:1,
+              clipPath:`polygon(${i===0?0:8}% 0%, 100% 0%, ${i===7?100:92}% 100%, 0% 100%)`,
+              position:"relative",overflow:"hidden",
+              marginLeft: i>0 ? "-2%" : 0,
+            }}>
+              <img src={c.img} alt="" style={{
+                width:"100%",height:"100%",objectFit:"cover",objectPosition:"top center",
+                display:"block",
+                filter:"brightness(0.28) saturate(0.6)",
+                transition:"filter 0.3s",
+              }}/>
+              {/* Thin color accent at bottom */}
+              <div style={{position:"absolute",bottom:0,left:0,right:0,height:"2px",background:c.col,opacity:0.5}}/>
+            </div>
+          ))}
         </div>
 
-        {/* Hero text — right side, away from X */}
-        <div style={{position:"absolute",bottom:0,right:0,padding:"0 52px 40px",textAlign:"right"}}>
+        {/* Progressive overlay — dark left, fades right where text lives */}
+        <div style={{position:"absolute",inset:0,background:"linear-gradient(105deg, rgba(3,3,3,0.15) 0%, rgba(3,3,3,0.5) 42%, rgba(3,3,3,0.92) 62%, #030303 100%)"}}/>
+        {/* Top fade */}
+        <div style={{position:"absolute",top:0,left:0,right:0,height:80,background:"linear-gradient(#030303,transparent)"}}/>
+        {/* Bottom fade */}
+        <div style={{position:"absolute",bottom:0,left:0,right:0,height:100,background:"linear-gradient(transparent,#080808)"}}/>
+
+        {/* Vertical divider line */}
+        <div style={{position:"absolute",left:"58%",top:0,bottom:0,width:"1px",
+          background:"linear-gradient(to bottom,transparent 5%,rgba(185,28,28,0.4) 30%,rgba(201,162,39,0.3) 70%,transparent 95%)"}}/>
+
+        {/* ── TEXT BLOCK — right side ── */}
+        <div style={{
+          position:"absolute",right:0,top:0,bottom:0,
+          width:"46%",
+          display:"flex",flexDirection:"column",justifyContent:"center",
+          padding:"0 52px 24px 32px",
+        }}>
+          {/* Eyebrow */}
           <div style={{
-            fontSize:10,letterSpacing:6,color:"#B91C1C",fontWeight:900,
-            marginBottom:10,fontFamily:"'Barlow Condensed',sans-serif",
-          }}>BLAZBLUE ENTROPY EFFECT X</div>
+            fontSize:9,letterSpacing:5,color:"#B91C1C",fontWeight:900,
+            fontFamily:"'Barlow Condensed',sans-serif",
+            marginBottom:16,
+            display:"flex",alignItems:"center",gap:10,
+          }}>
+            <div style={{width:20,height:"1px",background:"#B91C1C"}}/>
+            BLAZBLUE ENTROPY EFFECT X
+            <div style={{width:20,height:"1px",background:"#B91C1C"}}/>
+          </div>
+
+          {/* Main title */}
           <div style={{
             fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",
-            fontWeight:900,fontSize:"clamp(40px,5vw,72px)",letterSpacing:"3px",
-            lineHeight:0.9,color:"#F7F3EE",
-            textShadow:"4px 4px 0 rgba(0,0,0,0.8), 0 0 40px rgba(185,28,28,0.3)",
+            fontWeight:900,
+            lineHeight:0.88,
+            letterSpacing:"1px",
+            marginBottom:20,
           }}>
-            TACTICS<br/>
-            <span style={{color:"#B91C1C",textShadow:"0 0 30px rgba(185,28,28,0.8)"}}>CODEX</span>
+            <div style={{fontSize:"clamp(52px,5.5vw,80px)",color:"#F7F3EE",display:"block"}}>TACTICS</div>
+            <div style={{
+              fontSize:"clamp(52px,5.5vw,80px)",
+              color:"#B91C1C",
+              display:"block",
+              WebkitTextStroke:"1px rgba(255,80,40,0.4)",
+              textShadow:"0 0 40px rgba(185,28,28,0.5)",
+            }}>CODEX</div>
           </div>
-          <div style={{marginTop:16,fontSize:11,letterSpacing:4,color:"#3A3A3A",fontFamily:"'Courier Prime',monospace"}}>
-            THE DEFINITIVE BUILD REFERENCE — V4.0
+
+          {/* Descriptor */}
+          <div style={{
+            fontSize:11,letterSpacing:3,color:"#3A3A3A",
+            fontFamily:"'Courier Prime',monospace",
+            marginBottom:28,
+          }}>THE DEFINITIVE BUILD REFERENCE — V4.0</div>
+
+          {/* Quick stats inline */}
+          <div style={{display:"flex",gap:24,alignItems:"center"}}>
+            {[["16","CHARS"],["48","BUILDS"],["15","TACTICS"]].map(([n,l])=>(
+              <div key={l}>
+                <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontWeight:900,fontSize:26,color:"#F0EDE5",lineHeight:1}}>{n}</div>
+                <div style={{fontSize:8,letterSpacing:3,color:"#444",fontFamily:"'Barlow Condensed',sans-serif",fontWeight:700}}>{l}</div>
+              </div>
+            ))}
+            <div style={{width:"1px",height:30,background:"#1A1A1A",marginLeft:4}}/>
+            <div style={{fontSize:9,color:"#2A2A2A",letterSpacing:2,fontFamily:"'Courier Prime',monospace"}}>v4.0</div>
           </div>
         </div>
-
-        {/* Left vertical accent line */}
-        <div style={{position:"absolute",left:520,top:0,bottom:0,width:"1px",background:"linear-gradient(to bottom,transparent,rgba(185,28,28,0.3),transparent)"}}/>
       </div>
-
       {/* ── STATS BAR ── */}
       <div className="home-stats" style={{
         display:"flex", alignItems:"stretch",
