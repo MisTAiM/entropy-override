@@ -1,5 +1,6 @@
 import { useState } from "react";
 import CharacterGuide from "./components/CharacterGuide";
+import AdminPanel from "./components/AdminPanel";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
   RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
@@ -1132,33 +1133,151 @@ function HomePage({setTab}) {
         .enter-btn { transition: background 0.15s ease, color 0.15s ease; }
       `}</style>
 
-      {/* ── HERO ── */}
-      <div className="home-hero" style={{position:"relative", overflow:"hidden"}}>
-        <img src="/banner.png" alt="" style={{
-          display:"block", width:"100%", height:"340px",
-          objectFit:"cover", objectPosition:"center 40%",
-          filter:"brightness(0.55) saturate(1.2)",
-        }}/>
-        {/* Dark gradient overlay */}
-        <div style={{position:"absolute",inset:0,background:"linear-gradient(to bottom, rgba(8,8,8,0.1) 0%, rgba(8,8,8,0.4) 60%, #080808 100%)"}}/>
-        {/* Diagonal slash accent */}
-        <div style={{position:"absolute",top:0,left:0,right:0,bottom:0,overflow:"hidden",pointerEvents:"none"}}>
-          <div style={{position:"absolute",top:"-10%",left:"45%",width:"2px",height:"120%",background:"linear-gradient(to bottom,transparent,rgba(185,28,28,0.6),transparent)",transform:"rotate(12deg)"}}/>
-          <div style={{position:"absolute",top:"-10%",left:"47%",width:"1px",height:"120%",background:"linear-gradient(to bottom,transparent,rgba(201,162,39,0.3),transparent)",transform:"rotate(12deg)"}}/>
-        </div>
-        {/* Hero text */}
-        <div style={{position:"absolute",bottom:0,left:0,right:0,padding:"0 48px 44px"}}>
-          <div style={{fontSize:11,letterSpacing:5,color:"#B91C1C",fontWeight:900,marginBottom:8,fontFamily:"'Barlow Condensed',sans-serif"}}>BLAZBLUE ENTROPY EFFECT X</div>
-          <div style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontWeight:900,fontSize:"clamp(36px,5vw,68px)",letterSpacing:"2px",lineHeight:0.95,color:"#F7F3EE",textShadow:"0 0 60px rgba(185,28,28,0.5)"}}>
-            TACTICS<br/>
-            <span style={{color:"#B91C1C"}}>CODEX</span>
-          </div>
-          <div style={{marginTop:14,fontSize:13,letterSpacing:3,color:"#666",fontFamily:"'Courier Prime',monospace"}}>THE DEFINITIVE BUILD REFERENCE — V4.0</div>
-        </div>
-        {/* Horizontal scan line */}
+      {/* ── HERO — pure atmospheric, no image ── */}
+      <div className="home-hero" style={{position:"relative", overflow:"hidden", height:340, background:"#030303"}}>
+        {/* Noise grain overlay */}
+        <svg style={{position:"absolute",inset:0,width:"100%",height:"100%",opacity:0.04,pointerEvents:"none"}} xmlns="http://www.w3.org/2000/svg">
+          <filter id="heroNoise"><feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="4" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+          <rect width="100%" height="100%" filter="url(#heroNoise)"/>
+        </svg>
+
+        {/* Deep radial gradient backdrop */}
+        <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse 70% 90% at 30% 60%, rgba(120,8,8,0.45) 0%, rgba(8,8,8,0) 70%)"}}/>
+        <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse 50% 60% at 75% 40%, rgba(50,30,0,0.25) 0%, rgba(8,8,8,0) 65%)"}}/>
+
+        {/* SVG — particles, glow orbs, speed lines, X mark */}
+        <svg style={{position:"absolute",inset:0,width:"100%",height:"100%",pointerEvents:"none"}}
+          viewBox="0 0 1200 340" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <filter id="heroGlow" x="-80%" y="-80%" width="260%" height="260%">
+              <feGaussianBlur stdDeviation="28"/>
+            </filter>
+            <filter id="heroGlowSm" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="12"/>
+            </filter>
+            <filter id="tipGlow" x="-200%" y="-200%" width="500%" height="500%">
+              <feGaussianBlur stdDeviation="5"/>
+            </filter>
+            <linearGradient id="hScanGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%"   stopColor="white" stopOpacity="0"/>
+              <stop offset="40%"  stopColor="white" stopOpacity="0.025"/>
+              <stop offset="60%"  stopColor="white" stopOpacity="0.025"/>
+              <stop offset="100%" stopColor="white" stopOpacity="0"/>
+            </linearGradient>
+            <radialGradient id="heroVignette" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"   stopColor="#030303" stopOpacity="0"/>
+              <stop offset="100%" stopColor="#030303" stopOpacity="0.7"/>
+            </radialGradient>
+          </defs>
+
+          {/* Background speed lines radiating from center-left */}
+          {Array.from({length:24},(_,i)=>{
+            const a=(i/24)*Math.PI*2;
+            const len=500+i*18;
+            return <line key={i} x1={360} y1={170} x2={360+Math.cos(a)*len} y2={170+Math.sin(a)*len}
+              stroke="#660000" strokeWidth={i%4===0?"0.8":"0.35"} opacity={0.04+i*0.003}/>;
+          })}
+
+          {/* Main glow halo */}
+          <ellipse cx="360" cy="170" rx="200" ry="160" fill="#AA0A0A" filter="url(#heroGlow)"
+            style={{animation:"glowPulse 3s ease-in-out infinite", transformOrigin:"360px 170px"}}/>
+
+          {/* X blades */}
+          <g style={{animation:"xPulse 3.5s ease-in-out infinite"}}>
+            <line x1="285" y1="85"  x2="435" y2="255" stroke="#881010" strokeWidth="40" strokeLinecap="round"/>
+            <line x1="435" y1="85"  x2="285" y2="255" stroke="#881010" strokeWidth="40" strokeLinecap="round"/>
+            <line x1="285" y1="85"  x2="435" y2="255" stroke="#CC2020" strokeWidth="18" strokeLinecap="round"/>
+            <line x1="435" y1="85"  x2="285" y2="255" stroke="#CC2020" strokeWidth="18" strokeLinecap="round"/>
+            <line x1="285" y1="85"  x2="435" y2="255" stroke="#FF5040" strokeWidth="7" strokeLinecap="round"/>
+            <line x1="435" y1="85"  x2="285" y2="255" stroke="#FF5040" strokeWidth="7" strokeLinecap="round"/>
+            <line x1="285" y1="85"  x2="435" y2="255" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.7"/>
+            <line x1="435" y1="85"  x2="285" y2="255" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.7"/>
+          </g>
+
+          {/* Center core */}
+          <circle cx="360" cy="170" r="28" fill="#CC1010" filter="url(#heroGlowSm)" style={{animation:"coreFlare 2s ease-in-out infinite"}}/>
+          <circle cx="360" cy="170" r="7" fill="white" style={{animation:"coreFlare 2s ease-in-out infinite"}}/>
+
+          {/* 4-pt impact star */}
+          <polygon points="360,145 362,168 360,191 358,168" fill="white" opacity="0.6"/>
+          <polygon points="335,170 358,168 381,170 358,172" fill="white" opacity="0.6"/>
+
+          {/* Tip sparks */}
+          {[[285,85],[435,85],[285,255],[435,255]].map(([x,y],i)=>(
+            <g key={i}>
+              <circle cx={x} cy={y} r="10" fill="#FF3020" filter="url(#tipGlow)" style={{animation:`tipSpark ${1.8+i*0.3}s ease-in-out infinite`,animationDelay:`${i*0.4}s`}}/>
+              <circle cx={x} cy={y} r="3" fill="white" opacity="0.85"/>
+            </g>
+          ))}
+
+          {/* Particle field — red + gold + dim */}
+          {Array.from({length:40},(_,i)=>{
+            const px=50+(i*73.1)%1100;
+            const py=10+(i*41.7)%320;
+            const type=i%3;
+            const r=0.8+(i%3)*0.6;
+            return <circle key={i} cx={px} cy={py} r={r}
+              fill={type===0?"#FF2010":type===1?"#C9A227":"#555"}
+              opacity={type===2?0.08:0.3}
+              style={{
+                animation:`particleFloat ${2.5+(i%5)*0.6}s ease-in-out infinite`,
+                animationDelay:`${(i*0.22)%4}s`,
+                "--op-lo":type===2?"0.04":type===1?"0.15":"0.18",
+                "--op-md":type===2?"0.07":type===1?"0.25":"0.30",
+                "--op-hi":type===2?"0.12":type===1?"0.42":"0.52",
+              }}/>;
+          })}
+
+          {/* Diagonal slash decorations flanking X */}
+          <line x1="250" y1="80" x2="270" y2="110" stroke="#440000" strokeWidth="1.2" opacity="0.6"/>
+          <line x1="450" y1="230" x2="470" y2="260" stroke="#440000" strokeWidth="1.2" opacity="0.6"/>
+          <line x1="450" y1="80" x2="470" y2="110" stroke="#440000" strokeWidth="1.2" opacity="0.6"/>
+          <line x1="250" y1="230" x2="270" y2="260" stroke="#440000" strokeWidth="1.2" opacity="0.6"/>
+
+          {/* Scan shimmer */}
+          <rect x="-250" y="0" width="350" height="340" fill="url(#hScanGrad)"
+            style={{animation:"scanBanner 8s linear infinite 0.5s"}}/>
+
+          {/* Edge vignette */}
+          <rect x="0" y="0" width="1200" height="340" fill="url(#heroVignette)"/>
+
+          {/* Bottom fade */}
+          <defs>
+            <linearGradient id="botFade" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#030303" stopOpacity="0"/>
+              <stop offset="100%" stopColor="#030303" stopOpacity="1"/>
+            </linearGradient>
+          </defs>
+          <rect x="0" y="200" width="1200" height="140" fill="url(#botFade)"/>
+        </svg>
+
+        {/* Horizontal scan line on hero */}
         <div style={{position:"absolute",inset:0,overflow:"hidden",pointerEvents:"none"}}>
-          <div style={{position:"absolute",left:0,right:0,height:"1px",background:"rgba(255,255,255,0.04)",animation:"scanH 4s linear infinite"}}/>
+          <div style={{position:"absolute",left:0,right:0,height:"1px",background:"rgba(255,255,255,0.03)",animation:"scanH 5s linear infinite"}}/>
         </div>
+
+        {/* Hero text — right side, away from X */}
+        <div style={{position:"absolute",bottom:0,right:0,padding:"0 52px 40px",textAlign:"right"}}>
+          <div style={{
+            fontSize:10,letterSpacing:6,color:"#B91C1C",fontWeight:900,
+            marginBottom:10,fontFamily:"'Barlow Condensed',sans-serif",
+          }}>BLAZBLUE ENTROPY EFFECT X</div>
+          <div style={{
+            fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",
+            fontWeight:900,fontSize:"clamp(40px,5vw,72px)",letterSpacing:"3px",
+            lineHeight:0.9,color:"#F7F3EE",
+            textShadow:"4px 4px 0 rgba(0,0,0,0.8), 0 0 40px rgba(185,28,28,0.3)",
+          }}>
+            TACTICS<br/>
+            <span style={{color:"#B91C1C",textShadow:"0 0 30px rgba(185,28,28,0.8)"}}>CODEX</span>
+          </div>
+          <div style={{marginTop:16,fontSize:11,letterSpacing:4,color:"#3A3A3A",fontFamily:"'Courier Prime',monospace"}}>
+            THE DEFINITIVE BUILD REFERENCE — V4.0
+          </div>
+        </div>
+
+        {/* Left vertical accent line */}
+        <div style={{position:"absolute",left:520,top:0,bottom:0,width:"1px",background:"linear-gradient(to bottom,transparent,rgba(185,28,28,0.3),transparent)"}}/>
       </div>
 
       {/* ── STATS BAR ── */}
@@ -1278,17 +1397,11 @@ function HomePage({setTab}) {
 
 // Animated Full-Width Banner
 function Banner() {
-  const [posY,     setPosY]     = useState(() => parseFloat(localStorage.getItem("bannerPosY")  ?? "50"));
-  const [height,   setHeight]   = useState(() => parseFloat(localStorage.getItem("bannerH")     ?? "120"));
-  const [imgSrc,   setImgSrc]   = useState(() => localStorage.getItem("bannerImg") || "/banner.png");
-  const [uploading,setUploading] = useState(false);
-  const [uploadErr,setUploadErr] = useState("");
-  const [showAdmin,setShowAdmin] = useState(false);
-  const [authed,   setAuthed]   = useState(() => sessionStorage.getItem("adminAuth") === "1");
-  const [loginUser,setLoginUser] = useState("");
-  const [loginPw,  setLoginPw]   = useState("");
-  const [loginErr, setLoginErr]  = useState("");
-  const [clicks,   setClicks]   = useState(0);
+  const [posY,      setPosY]     = useState(() => parseFloat(localStorage.getItem("bannerPosY") ?? "50"));
+  const [height,    setHeight]   = useState(() => parseFloat(localStorage.getItem("bannerH")    ?? "120"));
+  const [imgSrc,    setImgSrc]   = useState(() => localStorage.getItem("bannerImg") || "/banner.png");
+  const [showAdmin, setShowAdmin] = useState(false);
+  const [clicks,    setClicks]   = useState(0);
   const clickTimer = useState(null);
 
   const handleBannerClick = () => {
@@ -1299,158 +1412,118 @@ function Banner() {
     if (next >= 5) { setShowAdmin(true); setClicks(0); }
   };
 
-  const login = () => {
-    if (loginUser.toLowerCase() === "morpheus" && loginPw === "8193") {
-      sessionStorage.setItem("adminAuth","1");
-      setAuthed(true); setLoginErr("");
-    } else {
-      setLoginErr("Access denied.");
-    }
-  };
-
-  const handleUpload = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    if (!file.type.startsWith("image/")) { setUploadErr("Not an image file."); return; }
-    if (file.size > 8 * 1024 * 1024) { setUploadErr("File too large (max 8MB)."); return; }
-    setUploading(true); setUploadErr("");
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      setImgSrc(ev.target.result);
-      setUploading(false);
-    };
-    reader.onerror = () => { setUploadErr("Failed to read file."); setUploading(false); };
-    reader.readAsDataURL(file);
-  };
-
-  const resetImg = () => {
-    setImgSrc("/banner.png");
-    localStorage.removeItem("bannerImg");
-  };
-
-  const save = () => {
-    localStorage.setItem("bannerPosY", posY);
-    localStorage.setItem("bannerH",    height);
-    if (imgSrc !== "/banner.png") localStorage.setItem("bannerImg", imgSrc);
+  const handleSave = (vals) => {
+    if (vals) { setPosY(vals.posY); setHeight(vals.height); setImgSrc(vals.imgSrc); }
     setShowAdmin(false);
   };
 
-  const logout = () => {
-    sessionStorage.removeItem("adminAuth");
-    setAuthed(false); setShowAdmin(false);
-  };
-
-  const panelStyle = {
-    position:"fixed", top:0, left:0, right:0, bottom:0,
-    background:"rgba(0,0,0,0.85)", zIndex:9999,
-    display:"flex", alignItems:"center", justifyContent:"center",
-  };
-  const boxStyle = {
-    background:"#0D0D0D", border:"1px solid #B91C1C",
-    padding:"28px 32px", minWidth:"340px",
-    fontFamily:"'Courier Prime','Courier New',monospace",
-    color:"#F0EDE5",
-  };
-  const labelStyle = { fontSize:"11px", letterSpacing:"2px", color:"#888", display:"block", marginBottom:"6px" };
-  const inputStyle = {
-    width:"100%", background:"#1A1A1A", border:"1px solid #333",
-    color:"#F0EDE5", padding:"8px 10px", fontSize:"13px",
-    fontFamily:"inherit", outline:"none", boxSizing:"border-box",
-  };
-  const btnStyle = {
-    background:"#B91C1C", border:"none", color:"#fff",
-    padding:"9px 22px", cursor:"pointer", fontFamily:"inherit",
-    fontSize:"12px", letterSpacing:"2px", fontWeight:700,
-  };
+  // Particle positions — seeded so they don't jump on re-render
+  const particles = Array.from({length:22}, (_,i) => ({
+    cx: 8 + (i * 53.7) % 84,
+    cy: 10 + (i * 37.3) % 80,
+    r:  0.6 + (i % 3) * 0.5,
+    dur: 2.2 + (i % 5) * 0.7,
+    del: (i * 0.31) % 3,
+    type: i % 3, // 0=red, 1=gold, 2=dim
+  }));
 
   return (
     <>
-      <div style={{width:"100%", lineHeight:0, background:"#000", borderBottom:"2px solid #B91C1C", cursor:"default"}}
+      <style>{`
+        @keyframes particleFloat {
+          0%,100% { transform: translateY(0px) translateX(0px); opacity: var(--op-lo); }
+          33%     { transform: translateY(-5px) translateX(2px); opacity: var(--op-hi); }
+          66%     { transform: translateY(-2px) translateX(-3px); opacity: var(--op-md); }
+        }
+        @keyframes glowPulse {
+          0%,100% { opacity:0.18; r:30; }
+          50%     { opacity:0.38; r:42; }
+        }
+        @keyframes glowPulse2 {
+          0%,100% { opacity:0.10; r:20; }
+          50%     { opacity:0.22; r:28; }
+        }
+        @keyframes scanBanner {
+          0%   { transform:translateX(-40%); opacity:0; }
+          8%   { opacity:1; }
+          92%  { opacity:1; }
+          100% { transform:translateX(160%); opacity:0; }
+        }
+        @keyframes borderBreathe {
+          0%,100% { opacity:0.7; }
+          50%     { opacity:1; box-shadow:0 0 8px rgba(185,28,28,0.6); }
+        }
+        .banner-border-b { animation: borderBreathe 3s ease-in-out infinite; }
+        .banner-scan     { animation: scanBanner 7s linear infinite 1s; }
+        .glow-1          { animation: glowPulse  2.4s ease-in-out infinite; }
+        .glow-2          { animation: glowPulse2 3.1s ease-in-out infinite 0.8s; }
+      `}</style>
+
+      <div style={{position:"relative", width:"100%", lineHeight:0, background:"#000", cursor:"default", overflow:"hidden"}}
         onClick={handleBannerClick}>
-        <img
-          src={imgSrc}
-          alt="Entropy Override"
+
+        {/* Base image */}
+        <img src={imgSrc} alt="Entropy Override"
           style={{
-            display:"block", width:"100%",
-            height:`${height}px`,
-            objectFit:"cover",
-            objectPosition:`center ${posY}%`,
+            display:"block", width:"100%", height:`${height}px`,
+            objectFit:"cover", objectPosition:`center ${posY}%`,
             pointerEvents:"none",
           }}
         />
+
+        {/* SVG overlay — particles + glow pulses + scan */}
+        <svg style={{position:"absolute",inset:0,width:"100%",height:"100%",pointerEvents:"none"}}
+          viewBox="0 0 100 100" preserveAspectRatio="none">
+
+          {/* Radial glow pulses at the X center (approx 37% across) */}
+          <circle className="glow-1" cx="37" cy="50" r="30"
+            fill="#CC1010" filter="url(#bGlow)" opacity="0.18"/>
+          <circle className="glow-2" cx="37" cy="50" r="20"
+            fill="#FF4020" filter="url(#bGlow)" opacity="0.10"/>
+
+          {/* Secondary glow right side */}
+          <circle cx="72" cy="50" r="18" fill="#C9A227" opacity="0.04"
+            style={{animation:"glowPulse2 4s ease-in-out infinite 1.5s"}}/>
+
+          {/* Particles */}
+          {particles.map((p,i) => (
+            <circle key={i} cx={p.cx} cy={p.cy} r={p.r}
+              fill={p.type===0?"#FF3020":p.type===1?"#C9A227":"#888"}
+              opacity={p.type===2?0.12:0.35}
+              style={{
+                animation:`particleFloat ${p.dur}s ease-in-out infinite`,
+                animationDelay:`${p.del}s`,
+                "--op-lo": p.type===2?"0.06":p.type===1?"0.18":"0.20",
+                "--op-md": p.type===2?"0.09":p.type===1?"0.28":"0.32",
+                "--op-hi": p.type===2?"0.14":p.type===1?"0.45":"0.55",
+              }}
+            />
+          ))}
+
+          {/* Scan shimmer */}
+          <rect className="banner-scan" x="-25" y="0" width="30" height="100"
+            fill="url(#scanGrad)" opacity="0.6"/>
+
+          <defs>
+            <filter id="bGlow" x="-100%" y="-100%" width="300%" height="300%">
+              <feGaussianBlur stdDeviation="8"/>
+            </filter>
+            <linearGradient id="scanGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%"   stopColor="white" stopOpacity="0"/>
+              <stop offset="50%"  stopColor="white" stopOpacity="0.03"/>
+              <stop offset="100%" stopColor="white" stopOpacity="0"/>
+            </linearGradient>
+          </defs>
+        </svg>
+
+        {/* Bottom breathing border */}
+        <div className="banner-border-b" style={{
+          position:"absolute", bottom:0, left:0, right:0,
+          height:"2px", background:"#B91C1C",
+        }}/>
       </div>
 
-      {showAdmin && (
-        <div style={panelStyle} onClick={e=>{ if(e.target===e.currentTarget) setShowAdmin(false); }}>
-          <div style={boxStyle}>
-            <div style={{display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:"20px"}}>
-              <span style={{fontSize:"13px", letterSpacing:"3px", color:"#B91C1C", fontWeight:700}}>ADMIN PANEL</span>
-              {authed && <button onClick={logout} style={{...btnStyle, background:"#333", padding:"5px 12px", fontSize:"10px"}}>LOGOUT</button>}
-            </div>
-
-            {!authed ? (
-              <div>
-                <label style={labelStyle}>USERNAME</label>
-                <input style={{...inputStyle, marginBottom:"12px"}} value={loginUser}
-                  onChange={e=>setLoginUser(e.target.value)} autoFocus/>
-                <label style={labelStyle}>PASSWORD</label>
-                <input style={{...inputStyle, marginBottom:"16px"}} type="password" value={loginPw}
-                  onChange={e=>setLoginPw(e.target.value)}
-                  onKeyDown={e=>e.key==="Enter"&&login()}/>
-                {loginErr && <div style={{color:"#EF4444", fontSize:"11px", marginBottom:"12px"}}>{loginErr}</div>}
-                <button style={btnStyle} onClick={login}>LOGIN</button>
-              </div>
-            ) : (
-              <div>
-                <label style={labelStyle}>BANNER IMAGE</label>
-                <div style={{marginBottom:"20px"}}>
-                  <div style={{display:"flex", gap:"8px", alignItems:"center", flexWrap:"wrap"}}>
-                    <label style={{
-                      ...btnStyle, display:"inline-block",
-                      background: uploading ? "#444" : "#1A1A1A",
-                      border:"1px solid #444", cursor:"pointer", padding:"8px 16px",
-                    }}>
-                      {uploading ? "LOADING…" : "UPLOAD IMAGE"}
-                      <input type="file" accept="image/*" style={{display:"none"}}
-                        onChange={handleUpload} disabled={uploading}/>
-                    </label>
-                    <button style={{...btnStyle, background:"#222", padding:"8px 14px", fontSize:"10px"}}
-                      onClick={resetImg}>RESET DEFAULT</button>
-                  </div>
-                  {uploadErr && <div style={{color:"#EF4444", fontSize:"11px", marginTop:"8px"}}>{uploadErr}</div>}
-                  {imgSrc !== "/banner.png" && !uploading && (
-                    <div style={{marginTop:"10px", fontSize:"10px", color:"#4ADE80", letterSpacing:"1px"}}>✓ Custom image loaded</div>
-                  )}
-                </div>
-
-                <label style={labelStyle}>BANNER HEIGHT (px)</label>
-                <div style={{display:"flex", alignItems:"center", gap:"12px", marginBottom:"20px"}}>
-                  <input type="range" min="60" max="300" value={height}
-                    onChange={e=>setHeight(Number(e.target.value))}
-                    style={{flex:1, accentColor:"#B91C1C"}}/>
-                  <span style={{fontSize:"13px", color:"#F0EDE5", minWidth:"40px"}}>{height}px</span>
-                </div>
-
-                <label style={labelStyle}>VERTICAL POSITION (top ← → bottom)</label>
-                <div style={{display:"flex", alignItems:"center", gap:"12px", marginBottom:"24px"}}>
-                  <input type="range" min="0" max="100" value={posY}
-                    onChange={e=>setPosY(Number(e.target.value))}
-                    style={{flex:1, accentColor:"#B91C1C"}}/>
-                  <span style={{fontSize:"13px", color:"#F0EDE5", minWidth:"32px"}}>{posY}%</span>
-                </div>
-
-                <div style={{display:"flex", gap:"10px"}}>
-                  <button style={btnStyle} onClick={save}>SAVE</button>
-                  <button style={{...btnStyle, background:"#222"}} onClick={()=>setShowAdmin(false)}>CANCEL</button>
-                </div>
-                <div style={{marginTop:"14px", fontSize:"10px", color:"#444", letterSpacing:"1px"}}>
-                  Click banner 5× to reopen panel
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+      <AdminPanel show={showAdmin} onClose={handleSave}/>
     </>
   );
 }
