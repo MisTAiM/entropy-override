@@ -1630,25 +1630,25 @@ export default function App() {
   const S = {
     wrap:{background:"#080808",height:"100vh",display:"flex",flexDirection:"column",overflow:"hidden",color:"#F0EDE5",fontFamily:"'Barlow Condensed','Arial Narrow',Arial,sans-serif"},
     header:{borderBottom:"2px solid #B91C1C",padding:"18px 28px 14px",background:"#0A0A0A",display:"flex",alignItems:"center",justifyContent:"space-between"},
-    nav:{display:"flex",gap:0,borderBottom:"3px solid #111",background:"#060606",padding:"0 20px",alignItems:"stretch",position:"relative"},
+    nav:{display:"flex",gap:0,background:"#060606",borderBottom:"2px solid #1A1A1A",padding:"0 20px",alignItems:"stretch",height:"44px"},
     navBtn:(a)=>({
       position:"relative",
-      background: a ? "#B91C1C" : "transparent",
+      background:"transparent",
       border:"none",
-      color: a ? "#FFFFFF" : "#404040",
-      padding:"0 28px",
-      fontSize:13,
+      borderBottom: a ? "3px solid #B91C1C" : "3px solid transparent",
+      borderTop: a ? "3px solid transparent" : "none",
+      color: a ? "#F0EDE5" : "#3A3A3A",
+      padding:"0 26px",
+      fontSize:12,
       letterSpacing:4,
       fontWeight:900,
       cursor:"pointer",
       fontFamily:"'Barlow Condensed','Arial Narrow',Arial,sans-serif",
-      transition:"color 0.12s, background 0.12s",
-      clipPath:"polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%)",
+      transition:"color 0.12s, border-color 0.12s",
       textTransform:"uppercase",
-      height:"42px",
-      marginRight:"3px",
-      zIndex: a ? 2 : 1,
-      borderBottom: a ? "3px solid #FF4040" : "none",
+      height:"100%",
+      outline:"none",
+      whiteSpace:"nowrap",
     }),
     main:{display:"grid",gridTemplateColumns:"272px 1fr",flex:1,overflow:"hidden"},
     sidebar:{background:"#080808",borderRight:"1px solid #141414",overflowY:"auto"},
@@ -1882,8 +1882,8 @@ export default function App() {
   return (
     <>
     <style>{`
-  .eo-nav-btn:hover { color: #F0EDE5 !important; background: #1A0000 !important; }
-  .eo-nav-btn.active { color: #FFFFFF !important; }
+  .eo-nav-btn:hover { color: #C0C0C0 !important; }
+  .eo-nav-btn.active { color: #F0EDE5 !important; }
 `}</style>
       <div style={S.wrap}>
       <style>{`
