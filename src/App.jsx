@@ -1085,9 +1085,6 @@ function HomePage({setTab}) {
   ];
 
   const stats = [
-    {val:"16", label:"PROTOTYPES"},
-    {val:"48", label:"BUILDS"},
-    {val:"15", label:"TACTICS"},
     {val:"5",  label:"ELEMENTS"},
     {val:"3",  label:"BUILDS / CHAR"},
   ];
@@ -1222,17 +1219,7 @@ function HomePage({setTab}) {
             marginBottom:28,
           }}>THE DEFINITIVE BUILD REFERENCE — V4.0</div>
 
-          {/* Quick stats inline */}
-          <div style={{display:"flex",gap:24,alignItems:"center"}}>
-            {[["16","CHARS"],["48","BUILDS"],["15","TACTICS"]].map(([n,l])=>(
-              <div key={l}>
-                <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontWeight:900,fontSize:26,color:"#F0EDE5",lineHeight:1}}>{n}</div>
-                <div style={{fontSize:8,letterSpacing:3,color:"#444",fontFamily:"'Barlow Condensed',sans-serif",fontWeight:700}}>{l}</div>
-              </div>
-            ))}
-            <div style={{width:"1px",height:30,background:"#1A1A1A",marginLeft:4}}/>
-            <div style={{fontSize:9,color:"#2A2A2A",letterSpacing:2,fontFamily:"'Courier Prime',monospace"}}>v4.0</div>
-          </div>
+
         </div>
       </div>
       {/* ── STATS BAR ── */}
@@ -1524,20 +1511,11 @@ function Banner() {
 
         <div className="eo-brand-fill">
           <div className="eo-brand-rule"/>
-          <span className="eo-brand-tag">BLAZBLUE ENTROPY EFFECT X — BUILD REFERENCE v4.0</span>
+          <span className="eo-brand-tag">BLAZBLUE ENTROPY EFFECT X</span>
           <div className="eo-brand-rule" style={{background:"linear-gradient(to left, #1A1A1A 0%, transparent 100%)"}}/>
         </div>
 
         <div className="eo-brand-meta">
-          {[["16","CHARS"],["48","BUILDS"],["15","TACTICS"]].map(([v,k])=>(
-            <React.Fragment key={k}>
-              <div className="eo-meta-item">
-                <span className="eo-meta-val">{v}</span>
-                <span className="eo-meta-key">{k}</span>
-              </div>
-              <div className="eo-meta-div"/>
-            </React.Fragment>
-          ))}
           <div style={{display:"flex",alignItems:"center",gap:6}}>
             <div className="eo-status-dot"/>
             <span className="eo-status-label">ACTIVE</span>
