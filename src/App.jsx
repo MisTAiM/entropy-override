@@ -778,7 +778,7 @@ function BuildRadar({radar, color}) {
     <ResponsiveContainer width="100%" height={200}>
       <RadarChart data={data} margin={{top:8,right:28,bottom:8,left:28}}>
         <PolarGrid stroke="#252525"/>
-        <PolarAngleAxis dataKey="subject" tick={{fill:"#777",fontSize:10,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:700,letterSpacing:1}}/>
+        <PolarAngleAxis dataKey="subject" tick={{fill:"#777",fontSize:12,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:700,letterSpacing:1}}/>
         <PolarRadiusAxis angle={90} domain={[0,100]} tick={false} axisLine={false}/>
         <Radar dataKey="value" stroke={color} fill={color} fillOpacity={0.22} strokeWidth={2}/>
       </RadarChart>
@@ -789,7 +789,7 @@ function BuildRadar({radar, color}) {
 const CustomTip = ({active,payload,label}) => {
   if(!active||!payload?.length) return null;
   return (
-    <div style={{background:"#0A0A0A",border:"1px solid #2A2A2A",padding:"8px 14px",fontFamily:"'Courier Prime',monospace",fontSize:12,color:"#F0EDE5"}}>
+    <div style={{background:"#0A0A0A",border:"1px solid #2A2A2A",padding:"8px 14px",fontFamily:"'Courier Prime',monospace",fontSize:14,color:"#F0EDE5"}}>
       <div style={{color:"#C9A227",fontWeight:700,marginBottom:2}}>{payload[0]?.payload?.n || label}</div>
       <div>{(payload[0]?.value||0).toLocaleString()} est. DPS</div>
     </div>
@@ -801,8 +801,8 @@ function DPSChart({data,color}) {
     <ResponsiveContainer width="100%" height={175}>
       <BarChart data={data} margin={{top:4,right:8,bottom:28,left:8}}>
         <CartesianGrid stroke="#181818" vertical={false}/>
-        <XAxis dataKey="n" tick={{fill:"#666",fontSize:9,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:700}} angle={-35} textAnchor="end" interval={0}/>
-        <YAxis tick={{fill:"#555",fontSize:10,fontFamily:"'Courier Prime',monospace"}} width={50}/>
+        <XAxis dataKey="n" tick={{fill:"#666",fontSize:12,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:700}} angle={-35} textAnchor="end" interval={0}/>
+        <YAxis tick={{fill:"#555", fontSize:12,fontFamily:"'Courier Prime',monospace"}} width={50}/>
         <Tooltip content={<CustomTip/>}/>
         <Bar dataKey="v" radius={[2,2,0,0]} maxBarSize={44}>
           {data.map((_,i)=>(
@@ -816,7 +816,7 @@ function DPSChart({data,color}) {
 
 function RarityChart({tactic}) {
   if(!tactic||tactic.vals.every(v=>v===0)) return (
-    <div style={{padding:24,textAlign:"center",color:"#444",fontSize:12,fontFamily:"'Courier Prime',monospace",lineHeight:1.8}}>
+    <div style={{padding:24,textAlign:"center",color:"#444",fontSize:14,fontFamily:"'Courier Prime',monospace",lineHeight:1.8}}>
       CONTROL TACTIC<br/>Power measured by crowd control uptime, not direct damage values.
     </div>
   );
@@ -826,8 +826,8 @@ function RarityChart({tactic}) {
       <BarChart data={tactic.vals.map((v,i)=>({name:RARITY[i],value:v}))} margin={{top:4,right:8,bottom:4,left:8}}>
         <CartesianGrid stroke="#181818" vertical={false}/>
         <XAxis dataKey="name" tick={{fill:"#888",fontSize:11,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:700}}/>
-        <YAxis tick={{fill:"#555",fontSize:10,fontFamily:"'Courier Prime',monospace"}} width={45}/>
-        <Tooltip contentStyle={{background:"#0A0A0A",border:`1px solid ${ec}44`,fontFamily:"'Courier Prime',monospace",fontSize:12,color:"#F0EDE5"}}/>
+        <YAxis tick={{fill:"#555", fontSize:12,fontFamily:"'Courier Prime',monospace"}} width={45}/>
+        <Tooltip contentStyle={{background:"#0A0A0A",border:`1px solid ${ec}44`,fontFamily:"'Courier Prime',monospace",fontSize:14,color:"#F0EDE5"}}/>
         <Bar dataKey="value" fill={ec} radius={[2,2,0,0]} maxBarSize={50}/>
       </BarChart>
     </ResponsiveContainer>
@@ -848,19 +848,19 @@ export default function App() {
     wrap:{background:"#080808",minHeight:"100vh",color:"#F0EDE5",fontFamily:"'Barlow Condensed','Arial Narrow',Arial,sans-serif"},
     header:{borderBottom:"2px solid #B91C1C",padding:"18px 28px 14px",background:"#0A0A0A",display:"flex",alignItems:"center",justifyContent:"space-between"},
     nav:{display:"flex",gap:0,borderBottom:"1px solid #161616",padding:"0 28px",background:"#090909"},
-    navBtn:(a)=>({background:"transparent",border:"none",borderBottom:a?"3px solid #B91C1C":"3px solid transparent",color:a?"#F0EDE5":"#505050",padding:"13px 26px",fontSize:13,letterSpacing:3,fontWeight:700,cursor:"pointer",fontFamily:"'Barlow Condensed','Arial Narrow',Arial,sans-serif",transition:"all 0.15s"}),
+    navBtn:(a)=>({background:"transparent",border:"none",borderBottom:a?"3px solid #B91C1C":"3px solid transparent",color:a?"#F0EDE5":"#505050",padding:"14px 28px",fontSize:15,letterSpacing:3,fontWeight:700,cursor:"pointer",fontFamily:"'Barlow Condensed','Arial Narrow',Arial,sans-serif",transition:"all 0.15s"}),
     main:{display:"grid",gridTemplateColumns:"272px 1fr",minHeight:"calc(100vh - 126px)"},
     sidebar:{background:"#080808",borderRight:"1px solid #141414"},
     charRow:(a,col)=>({display:"flex",alignItems:"center",gap:10,padding:"10px 14px",cursor:"pointer",background:a?`${col}14`:"transparent",borderLeft:a?`3px solid ${col}`:"3px solid transparent",transition:"all 0.1s"}),
     content:{padding:"22px 26px",overflowY:"auto"},
-    card:{background:"#0D0D0D",border:"1px solid #1A1A1A",padding:"18px",marginBottom:14},
-    label:{fontSize:10,letterSpacing:3,color:"#4A4A4A",fontWeight:700,marginBottom:8,fontFamily:"'Barlow Condensed',sans-serif"},
-    h1:(col="#F0EDE5")=>({fontSize:21,fontWeight:900,letterSpacing:3,color:col,marginBottom:3}),
+    card:{background:"#0D0D0D",border:"1px solid #1A1A1A",padding:"20px",marginBottom:14},
+    label:{fontSize:12,letterSpacing:3,color:"#4A4A4A",fontWeight:700,marginBottom:10,fontFamily:"'Barlow Condensed',sans-serif"},
+    h1:(col="#F0EDE5")=>({fontSize:22,fontWeight:900,letterSpacing:3,color:col,marginBottom:3}),
     mono:{fontFamily:"'Courier Prime','Courier New',monospace"},
-    mathBox:{background:"#0B0B0B",border:"1px solid #B91C1C",borderLeft:"4px solid #B91C1C",padding:"14px 18px",fontFamily:"'Courier Prime','Courier New',monospace",fontSize:13,color:"#C9A227",lineHeight:1.9,marginBottom:14},
+    mathBox:{background:"#0B0B0B",border:"1px solid #B91C1C",borderLeft:"4px solid #B91C1C",padding:"14px 18px",fontFamily:"'Courier Prime','Courier New',monospace",fontSize:14,color:"#C9A227",lineHeight:2,marginBottom:14},
     g2:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16},
-    buildTabBtn:(a,col)=>({background:a?`${col}1A`:"#111",border:`2px solid ${a?col:"#1E1E1E"}`,color:a?col:"#505050",padding:"9px 20px",fontSize:13,letterSpacing:2,fontWeight:700,cursor:"pointer",fontFamily:"'Barlow Condensed','Arial Narrow',Arial,sans-serif",clipPath:"polygon(0 0,100% 0,94% 100%,0 100%)",transition:"all 0.15s",marginRight:6}),
-    tacticElem:(col)=>({background:`${col}1A`,color:col,padding:"2px 9px",fontSize:10,fontWeight:900,letterSpacing:1,fontFamily:"'Barlow Condensed',sans-serif",flexShrink:0}),
+    buildTabBtn:(a,col)=>({background:a?`${col}1A`:"#111",border:`2px solid ${a?col:"#1E1E1E"}`,color:a?col:"#505050",padding:"10px 22px",fontSize:14,letterSpacing:2,fontWeight:700,cursor:"pointer",fontFamily:"'Barlow Condensed','Arial Narrow',Arial,sans-serif",clipPath:"polygon(0 0,100% 0,94% 100%,0 100%)",transition:"all 0.15s",marginRight:6}),
+    tacticElem:(col)=>({background:`${col}1A`,color:col,padding:"3px 10px",fontSize:12,fontWeight:900,letterSpacing:1,fontFamily:"'Barlow Condensed',sans-serif",flexShrink:0}),
     ratingBadge:(v)=>({display:"inline-block",background:v>=90?"#0F2710":v>=80?"#211D00":"#1F0A0A",border:`2px solid ${v>=90?"#22C55E":v>=80?"#EAB308":"#EF4444"}`,color:v>=90?"#22C55E":v>=80?"#EAB308":"#EF4444",padding:"3px 14px",fontSize:18,fontWeight:900,letterSpacing:2,fontFamily:"'Barlow Condensed',sans-serif"}),
   };
 
@@ -881,9 +881,9 @@ export default function App() {
               <div style={S.h1(char.color)}>{build.name}</div>
               <div style={S.ratingBadge(build.rating)}>{build.rating}</div>
             </div>
-            <div style={{fontSize:12,letterSpacing:2,color:"#666",marginBottom:14}}>{build.arch}</div>
+            <div style={{fontSize:14,letterSpacing:2,color:"#666",marginBottom:14}}>{build.arch}</div>
             <div style={S.mathBox}>
-              <div style={{color:"#5A5A5A",fontSize:10,letterSpacing:2,marginBottom:5}}>MATH SUMMARY</div>
+              <div style={{color:"#5A5A5A",fontSize:12,letterSpacing:2,marginBottom:5}}>MATH SUMMARY</div>
               {build.mathKey}
             </div>
           </div>
@@ -905,7 +905,7 @@ export default function App() {
                 <div key={i} style={{display:"flex",alignItems:"flex-start",gap:8,padding:"9px 11px",marginBottom:5,background:"#111",borderLeft:`3px solid ${ec}`}}>
                   <div style={S.tacticElem(ec)}>{elem.toUpperCase()}</div>
                   <div>
-                    <div style={{fontSize:13,color:"#E8E8E8",fontWeight:700,letterSpacing:0.5}}>{t}</div>
+                    <div style={{fontSize:14,color:"#E8E8E8",fontWeight:700,letterSpacing:0.5}}>{t}</div>
                     <div style={{fontSize:11,color:"#525252",marginTop:2,lineHeight:1.5}}>{build.reasoning[i]}</div>
                   </div>
                 </div>
@@ -916,7 +916,7 @@ export default function App() {
             <div style={S.label}>RECOMMENDED MIND CRYSTALS</div>
             <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
               {build.crystals.map(c=>(
-                <div key={c} style={{background:"#131313",border:"1px solid #2A2A2A",padding:"6px 14px",fontSize:12,fontWeight:700,letterSpacing:1,color:"#C9A227"}}>{c}</div>
+                <div key={c} style={{background:"#131313",border:"1px solid #2A2A2A",padding:"6px 14px",fontSize:13,fontWeight:700,letterSpacing:1,color:"#C9A227"}}>{c}</div>
               ))}
             </div>
           </div>
@@ -924,10 +924,10 @@ export default function App() {
         <div>
           <div style={S.card}>
             <div style={S.label}>EFFECTIVE DPS BREAKDOWN — LEGENDARY RARITY</div>
-            <div style={{color:"#3A3A3A",fontSize:10,marginBottom:8,...S.mono}}>Source: BlazBlue Wiki base values + community play data</div>
+            <div style={{color:"#3A3A3A",fontSize:12,marginBottom:8,...S.mono}}>Source: BlazBlue Wiki base values + community play data</div>
             <DPSChart data={build.dps} color={char.color}/>
             <div style={{marginTop:10,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-              <div style={{fontSize:11,color:"#3A3A3A",...S.mono}}>estimates — actual varies by entropy + attack speed</div>
+              <div style={{fontSize:13,color:"#3A3A3A",...S.mono}}>estimates — actual varies by entropy + attack speed</div>
               <div style={{fontSize:22,fontWeight:700,color:char.color,...S.mono}}>~{build.dps[build.dps.length-1].v.toLocaleString()}</div>
             </div>
           </div>
@@ -948,10 +948,10 @@ export default function App() {
               style={{display:"flex",alignItems:"center",gap:8,padding:"9px 12px",marginBottom:3,cursor:"pointer",background:a?"#131313":"transparent",borderLeft:`3px solid ${a?ec:"#181818"}`,transition:"all 0.1s"}}>
               <div style={S.tacticElem(ec)}>{t.element.toUpperCase()}</div>
               <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:12,color:"#E0E0E0",fontWeight:700}}>{t.name}</div>
-                <div style={{fontSize:10,color:"#505050",...S.mono}}>{t.unit}</div>
+                <div style={{fontSize:14,color:"#E0E0E0",fontWeight:700}}>{t.name}</div>
+                <div style={{fontSize:12,color:"#505050",...S.mono}}>{t.unit}</div>
               </div>
-              <div style={{background:`${TIER_COLORS[t.tier.charAt(0)]}1A`,color:TIER_COLORS[t.tier.charAt(0)],border:`1px solid ${TIER_COLORS[t.tier.charAt(0)]}`,padding:"1px 8px",fontSize:10,fontWeight:900,flexShrink:0}}>{t.tier}</div>
+              <div style={{background:`${TIER_COLORS[t.tier.charAt(0)]}1A`,color:TIER_COLORS[t.tier.charAt(0)],border:`1px solid ${TIER_COLORS[t.tier.charAt(0)]}`,padding:"2px 8px",fontSize:12,fontWeight:900,flexShrink:0}}>{t.tier}</div>
             </div>
           );
         })}
@@ -963,7 +963,7 @@ export default function App() {
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:14}}>
                 <div>
                   <div style={S.h1(ELEM_COLORS[selectedTactic.element]||"#F0EDE5")}>{selectedTactic.name}</div>
-                  <div style={{fontSize:12,color:"#666",letterSpacing:2,...S.mono,marginTop:3}}>{selectedTactic.unit}</div>
+                  <div style={{fontSize:14,color:"#666",letterSpacing:2,...S.mono,marginTop:3}}>{selectedTactic.unit}</div>
                 </div>
                 <div style={{background:`${TIER_COLORS[selectedTactic.tier.charAt(0)]}1A`,color:TIER_COLORS[selectedTactic.tier.charAt(0)],border:`2px solid ${TIER_COLORS[selectedTactic.tier.charAt(0)]}`,padding:"4px 18px",fontSize:20,fontWeight:900,letterSpacing:2}}>{selectedTactic.tier}</div>
               </div>
@@ -973,7 +973,7 @@ export default function App() {
                 <div style={{display:"flex",gap:8,marginTop:10,marginBottom:14}}>
                   {selectedTactic.vals.map((v,i)=>(
                     <div key={i} style={{flex:1,background:"#111",padding:"8px 10px",textAlign:"center",border:`1px solid ${i===3?"#C9A227":"#1A1A1A"}`}}>
-                      <div style={{fontSize:10,color:"#505050",fontWeight:700,letterSpacing:1}}>{RARITY[i]}</div>
+                      <div style={{fontSize:12,color:"#505050",fontWeight:700,letterSpacing:1}}>{RARITY[i]}</div>
                       <div style={{fontSize:20,fontWeight:900,color:i===3?"#C9A227":"#888",...S.mono}}>{v}</div>
                       {i===3&&<div style={{fontSize:9,color:"#454545"}}>MAX</div>}
                     </div>
@@ -981,14 +981,14 @@ export default function App() {
                 </div>
               )}
               <div style={S.mathBox}>
-                <div style={{color:"#4A4A4A",fontSize:10,letterSpacing:2,marginBottom:5}}>WHY TIER {selectedTactic.tier}</div>
+                <div style={{color:"#4A4A4A",fontSize:12,letterSpacing:2,marginBottom:5}}>WHY TIER {selectedTactic.tier}</div>
                 {selectedTactic.note}
               </div>
             </div>
             {selectedTactic.vals.some(v=>v>0) && (
               <div style={S.card}>
                 <div style={S.label}>DAMAGE SCALING MATH — BASE 500 DPS EXAMPLE</div>
-                <div style={{...S.mono,fontSize:13,lineHeight:2.2,color:"#666"}}>
+                <div style={{... S.mono,fontSize:14,lineHeight:2.2,color:"#666"}}>
                   {selectedTactic.vals.map((v,i)=>{
                     const isPct=selectedTactic.unit.includes("%");
                     const result=isPct?Math.round(500*(1+v/100)):v;
@@ -1001,7 +1001,7 @@ export default function App() {
                     );
                   })}
                   {selectedTactic.unit.includes("%") && (
-                    <div style={{marginTop:10,color:"#666",fontSize:11}}>
+                    <div style={{marginTop:10,color:"#666",fontSize:13}}>
                       Legendary over Common gain: +{selectedTactic.vals[3]-selectedTactic.vals[0]}% — equivalent to{" "}
                       <span style={{color:"#C9A227"}}>{Math.round(500*(selectedTactic.vals[3]-selectedTactic.vals[0])/100)} extra DPS</span> on a 500-base character
                     </div>
@@ -1059,8 +1059,8 @@ export default function App() {
                 <img src={c.img} alt={c.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"top center"}} onError={e=>{e.target.style.display="none"}}/>
               </div>
               <div style={{flex:1,minWidth:0}}>
-                <div style={{fontSize:13,fontWeight:900,color:activeChar===c.id?c.color:"#C0C0C0",letterSpacing:0.5,lineHeight:1.2}}>{c.name}</div>
-                <div style={{fontSize:9,color:"#484848",letterSpacing:1,marginTop:1}}>{c.tag}</div>
+                <div style={{fontSize:14,fontWeight:900,color:activeChar===c.id?c.color:"#C0C0C0",letterSpacing:0.5,lineHeight:1.2}}>{c.name}</div>
+                <div style={{fontSize:11,color:"#484848",letterSpacing:1,marginTop:1}}>{c.tag}</div>
                 <div style={{display:"flex",gap:6,marginTop:4}}>
                   <span style={{background:`${TIER_COLORS[c.tier]}1A`,color:TIER_COLORS[c.tier],border:`1px solid ${TIER_COLORS[c.tier]}`,padding:"0 6px",fontSize:10,fontWeight:900}}>TIER {c.tier}</span>
                 </div>
@@ -1072,7 +1072,7 @@ export default function App() {
             <div style={{position:"relative",overflow:"hidden",height:180}}>
               <img src={char.img} alt={char.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"top center",filter:"contrast(1.05) saturate(0.88)",opacity:0.8}} onError={e=>{e.target.style.display="none"}}/>
               <div style={{position:"absolute",bottom:0,left:0,right:0,height:72,background:"linear-gradient(transparent,#080808 88%)"}}/>
-              <div style={{position:"absolute",bottom:8,left:14,fontWeight:900,fontSize:12,color:char.color,letterSpacing:2}}>{char.name.toUpperCase()}</div>
+              <div style={{position:"absolute",bottom:8,left:14,fontWeight:900,fontSize:14,color:char.color,letterSpacing:2}}>{char.name.toUpperCase()}</div>
             </div>
           </div>
         </div>
