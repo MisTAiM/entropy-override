@@ -737,20 +737,135 @@ const CHARACTERS = [
 
 // Animated Full-Width Banner
 function Banner() {
+  const [posY,     setPosY]     = useState(() => parseFloat(localStorage.getItem("bannerPosY")  ?? "50"));
+  const [height,   setHeight]   = useState(() => parseFloat(localStorage.getItem("bannerH")     ?? "120"));
+  const [showAdmin,setShowAdmin] = useState(false);
+  const [authed,   setAuthed]   = useState(() => sessionStorage.getItem("adminAuth") === "1");
+  const [loginUser,setLoginUser] = useState("");
+  const [loginPw,  setLoginPw]   = useState("");
+  const [loginErr, setLoginErr]  = useState("");
+  const [clicks,   setClicks]   = useState(0);
+  const clickTimer = useState(null);
+
+  const handleBannerClick = () => {
+    const next = clicks + 1;
+    setClicks(next);
+    clearTimeout(clickTimer[0]);
+    clickTimer[0] = setTimeout(() => setClicks(0), 1500);
+    if (next >= 5) { setShowAdmin(true); setClicks(0); }
+  };
+
+  const login = () => {
+    if (loginUser.toLowerCase() === "morpheus" && loginPw === "8193") {
+      sessionStorage.setItem("adminAuth","1");
+      setAuthed(true); setLoginErr("");
+    } else {
+      setLoginErr("Access denied.");
+    }
+  };
+
+  const save = () => {
+    localStorage.setItem("bannerPosY", posY);
+    localStorage.setItem("bannerH",    height);
+    setShowAdmin(false);
+  };
+
+  const logout = () => {
+    sessionStorage.removeItem("adminAuth");
+    setAuthed(false); setShowAdmin(false);
+  };
+
+  const panelStyle = {
+    position:"fixed", top:0, left:0, right:0, bottom:0,
+    background:"rgba(0,0,0,0.85)", zIndex:9999,
+    display:"flex", alignItems:"center", justifyContent:"center",
+  };
+  const boxStyle = {
+    background:"#0D0D0D", border:"1px solid #B91C1C",
+    padding:"28px 32px", minWidth:"340px",
+    fontFamily:"'Courier Prime','Courier New',monospace",
+    color:"#F0EDE5",
+  };
+  const labelStyle = { fontSize:"11px", letterSpacing:"2px", color:"#888", display:"block", marginBottom:"6px" };
+  const inputStyle = {
+    width:"100%", background:"#1A1A1A", border:"1px solid #333",
+    color:"#F0EDE5", padding:"8px 10px", fontSize:"13px",
+    fontFamily:"inherit", outline:"none", boxSizing:"border-box",
+  };
+  const btnStyle = {
+    background:"#B91C1C", border:"none", color:"#fff",
+    padding:"9px 22px", cursor:"pointer", fontFamily:"inherit",
+    fontSize:"12px", letterSpacing:"2px", fontWeight:700,
+  };
+
   return (
-    <div style={{width:"100%", lineHeight:0, background:"#000", borderBottom:"2px solid #B91C1C"}}>
-      <img
-        src="/banner.png"
-        alt="Entropy Override"
-        style={{
-          display:"block",
-          width:"100%",
-          height:"120px",
-          objectFit:"cover",
-          objectPosition:"center center",
-        }}
-      />
-    </div>
+    <>
+      <div style={{width:"100%", lineHeight:0, background:"#000", borderBottom:"2px solid #B91C1C", cursor:"default"}}
+        onClick={handleBannerClick}>
+        <img
+          src="/banner.png"
+          alt="Entropy Override"
+          style={{
+            display:"block", width:"100%",
+            height:`${height}px`,
+            objectFit:"cover",
+            objectPosition:`center ${posY}%`,
+            pointerEvents:"none",
+          }}
+        />
+      </div>
+
+      {showAdmin && (
+        <div style={panelStyle} onClick={e=>{ if(e.target===e.currentTarget) setShowAdmin(false); }}>
+          <div style={boxStyle}>
+            <div style={{display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:"20px"}}>
+              <span style={{fontSize:"13px", letterSpacing:"3px", color:"#B91C1C", fontWeight:700}}>ADMIN PANEL</span>
+              {authed && <button onClick={logout} style={{...btnStyle, background:"#333", padding:"5px 12px", fontSize:"10px"}}>LOGOUT</button>}
+            </div>
+
+            {!authed ? (
+              <div>
+                <label style={labelStyle}>USERNAME</label>
+                <input style={{...inputStyle, marginBottom:"12px"}} value={loginUser}
+                  onChange={e=>setLoginUser(e.target.value)} autoFocus/>
+                <label style={labelStyle}>PASSWORD</label>
+                <input style={{...inputStyle, marginBottom:"16px"}} type="password" value={loginPw}
+                  onChange={e=>setLoginPw(e.target.value)}
+                  onKeyDown={e=>e.key==="Enter"&&login()}/>
+                {loginErr && <div style={{color:"#EF4444", fontSize:"11px", marginBottom:"12px"}}>{loginErr}</div>}
+                <button style={btnStyle} onClick={login}>LOGIN</button>
+              </div>
+            ) : (
+              <div>
+                <label style={labelStyle}>BANNER HEIGHT (px)</label>
+                <div style={{display:"flex", alignItems:"center", gap:"12px", marginBottom:"20px"}}>
+                  <input type="range" min="60" max="300" value={height}
+                    onChange={e=>setHeight(Number(e.target.value))}
+                    style={{flex:1, accentColor:"#B91C1C"}}/>
+                  <span style={{fontSize:"13px", color:"#F0EDE5", minWidth:"40px"}}>{height}px</span>
+                </div>
+
+                <label style={labelStyle}>VERTICAL POSITION (top ← → bottom)</label>
+                <div style={{display:"flex", alignItems:"center", gap:"12px", marginBottom:"24px"}}>
+                  <input type="range" min="0" max="100" value={posY}
+                    onChange={e=>setPosY(Number(e.target.value))}
+                    style={{flex:1, accentColor:"#B91C1C"}}/>
+                  <span style={{fontSize:"13px", color:"#F0EDE5", minWidth:"32px"}}>{posY}%</span>
+                </div>
+
+                <div style={{display:"flex", gap:"10px"}}>
+                  <button style={btnStyle} onClick={save}>SAVE</button>
+                  <button style={{...btnStyle, background:"#222"}} onClick={()=>setShowAdmin(false)}>CANCEL</button>
+                </div>
+                <div style={{marginTop:"14px", fontSize:"10px", color:"#444", letterSpacing:"1px"}}>
+                  Click banner 5× to reopen panel
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 const RADAR_AXES = ["burst","sustain","aoe","control","survival"];
