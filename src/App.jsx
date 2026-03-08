@@ -745,9 +745,12 @@ function Banner() {
           90%  { opacity: 1; }
           100% { transform: translateX(200%); opacity: 0; }
         }
-        @keyframes xPulse {
-          0%, 100% { filter: drop-shadow(0 0 4px #B91C1C) drop-shadow(0 0 12px #7A0A0A); opacity: 1; }
-          50%       { filter: drop-shadow(0 0 10px #FF3020) drop-shadow(0 0 28px #B91C1C); opacity: 0.85; }
+        @keyframes xSpin {
+          0%   { transform: rotate(0deg);   filter: drop-shadow(0 0 4px #B91C1C) drop-shadow(0 0 12px #7A0A0A); }
+          25%  { filter: drop-shadow(0 0 14px #FF3020) drop-shadow(0 0 30px #B91C1C); }
+          50%  { transform: rotate(180deg); filter: drop-shadow(0 0 4px #B91C1C) drop-shadow(0 0 12px #7A0A0A); }
+          75%  { filter: drop-shadow(0 0 14px #FF3020) drop-shadow(0 0 30px #B91C1C); }
+          100% { transform: rotate(360deg); filter: drop-shadow(0 0 4px #B91C1C) drop-shadow(0 0 12px #7A0A0A); }
         }
         @keyframes bladeShimmer {
           0%, 100% { opacity: 0.9; }
@@ -773,7 +776,7 @@ function Banner() {
           0%,100% { opacity: 0.5; }
           50%     { opacity: 1; }
         }
-        .entropy-x  { animation: xPulse 3s ease-in-out infinite; }
+        .entropy-x  { animation: xSpin 4s linear infinite; transform-origin: 425px 44px; transform-box: fill-box; }
         .blade-left { animation: bladeShimmer 4s ease-in-out infinite; }
         .blade-right{ animation: bladeShimmer 4s ease-in-out infinite 0.8s; }
         .gold-text  { animation: goldPulse 5s ease-in-out infinite; }
