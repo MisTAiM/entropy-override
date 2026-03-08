@@ -737,6 +737,33 @@ const CHARACTERS = [
 
 // Animated Full-Width Banner
 function Banner() {
+  // 3D X — proper geometric polygon, not text stacking
+  // Front face: 12-pt X polygon centered at (415,44)
+  // Extrusion offset: dx=4, dy=5  (light source top-left)
+  const xPath = "M393,17 L408,17 L415,24 L422,17 L437,17 L430,44 L437,71 L422,71 L415,64 L408,71 L393,71 L400,44 Z";
+  const d = {x:4, y:5}; // extrusion depth
+
+  // 12 edges → side face quads [x1,y1, x2,y2, brightness]
+  // brightness key: 0=darkest(bottom), 1=dark(right), 2=medium(left), 3=bright(top)
+  const edges = [
+    [393,17, 408,17, 3], // top of TL arm        — TOP BRIGHT
+    [408,17, 415,24, 3], // inner notch top-L     — TOP BRIGHT
+    [415,24, 422,17, 3], // inner notch top-R     — TOP BRIGHT
+    [422,17, 437,17, 3], // top of TR arm         — TOP BRIGHT
+    [437,17, 430,44, 1], // right of TR arm       — RIGHT DARK
+    [430,44, 437,71, 1], // right of BR arm       — RIGHT DARK
+    [437,71, 422,71, 0], // bottom of BR arm      — BOTTOM DARKEST
+    [422,71, 415,64, 0], // inner notch bot-R     — BOTTOM DARKEST
+    [415,64, 408,71, 0], // inner notch bot-L     — BOTTOM DARKEST
+    [408,71, 393,71, 0], // bottom of BL arm      — BOTTOM DARKEST
+    [393,71, 400,44, 2], // left of BL arm        — LEFT MEDIUM
+    [400,44, 393,17, 2], // left of TL arm        — LEFT MEDIUM
+  ];
+  const faceColors = ["#2A0303","#580808","#7A1010","#C41616"];
+
+  const quad = ([x1,y1, x2,y2, b]) =>
+    `${x1},${y1} ${x2},${y2} ${x2+d.x},${y2+d.y} ${x1+d.x},${y1+d.y}`;
+
   return (
     <div style={{position:"relative",width:"100%",overflow:"hidden",background:"#080808",borderBottom:"2px solid #B91C1C"}}>
       <style>{`
@@ -777,14 +804,19 @@ function Banner() {
           0%,100% { opacity: 0.5; }
           50%     { opacity: 1; }
         }
-        .entropy-x  { animation: xTurn 2.5s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
-        .blade-left { animation: bladeShimmer 4s ease-in-out infinite; }
-        .blade-right{ animation: bladeShimmer 4s ease-in-out infinite 0.8s; }
-        .gold-text  { animation: goldPulse 5s ease-in-out infinite; }
-        .entropy-word { animation: glitchH 8s steps(1) infinite; }
-        .scan-bar   { animation: scanline 6s linear infinite 1.5s; }
-        .top-border { animation: borderPulse 3s ease-in-out infinite; }
-        .bot-border { animation: borderPulse 3s ease-in-out infinite 1.5s; }
+        @keyframes glowBreath {
+          0%,100% { opacity: 0.18; r: 34; }
+          50%     { opacity: 0.30; r: 38; }
+        }
+        .blade-left  { animation: bladeShimmer 4s ease-in-out infinite; }
+        .blade-right { animation: bladeShimmer 4s ease-in-out infinite 0.8s; }
+        .gold-text   { animation: goldPulse 5s ease-in-out infinite; }
+        .entropy-word{ animation: glitchH 8s steps(1) infinite; }
+        .scan-bar    { animation: scanline 6s linear infinite 1.5s; }
+        .top-border  { animation: borderPulse 3s ease-in-out infinite; }
+        .bot-border  { animation: borderPulse 3s ease-in-out infinite 1.5s; }
+        .x-turn      { animation: xTurn 3s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
+        .x-glow      { animation: glowBreath 2.5s ease-in-out infinite; }
       `}</style>
 
       <svg viewBox="0 0 1200 88" preserveAspectRatio="xMidYMid meet"
@@ -802,111 +834,104 @@ function Banner() {
             <stop offset="60%" stopColor="#B91C1C" stopOpacity="0"/>
             <stop offset="100%" stopColor="#B91C1C" stopOpacity="0.06"/>
           </linearGradient>
+          {/* 3D X face gradient — lit top-left */}
+          <linearGradient id="xFace" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%"   stopColor="#FF5540"/>
+            <stop offset="35%"  stopColor="#D91818"/>
+            <stop offset="70%"  stopColor="#A01010"/>
+            <stop offset="100%" stopColor="#6A0808"/>
+          </linearGradient>
+          {/* Specular shine */}
+          <linearGradient id="xShine" x1="0%" y1="0%" x2="50%" y2="100%">
+            <stop offset="0%"   stopColor="#FFFFFF" stopOpacity="0.28"/>
+            <stop offset="60%"  stopColor="#FFFFFF" stopOpacity="0.06"/>
+            <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0"/>
+          </linearGradient>
+          {/* Soft glow filter */}
+          <filter id="xGlowFilter" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="10" result="b"/>
+            <feColorMatrix type="matrix"
+              values="1 0 0 0 0.72  0 0 0 0 0.05  0 0 0 0 0.02  0 0 0 1 0"
+              in="b" result="tinted"/>
+            <feMerge><feMergeNode in="tinted"/></feMerge>
+          </filter>
           <filter id="redglow">
             <feGaussianBlur stdDeviation="3" result="b"/>
             <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
           </filter>
-          <filter id="strongglow">
-            <feGaussianBlur stdDeviation="5" result="b"/>
-            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-          </filter>
           <clipPath id="bannerClip"><rect x="0" y="0" width="1200" height="88"/></clipPath>
-
-          {/* 3D X gradients */}
-          <linearGradient id="xFaceG" x1="0%" y1="0%" x2="20%" y2="100%">
-            <stop offset="0%" stopColor="#FF7050"/>
-            <stop offset="30%" stopColor="#EF2010"/>
-            <stop offset="70%" stopColor="#C01010"/>
-            <stop offset="100%" stopColor="#6A0808"/>
-          </linearGradient>
-          <linearGradient id="xSideG" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#5A0808"/>
-            <stop offset="100%" stopColor="#2A0404"/>
-          </linearGradient>
-          <linearGradient id="xShineG" x1="0%" y1="0%" x2="60%" y2="100%">
-            <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.35"/>
-            <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0"/>
-          </linearGradient>
-          <filter id="xglow" x="-40%" y="-40%" width="180%" height="180%">
-            <feGaussianBlur stdDeviation="6" result="b"/>
-            <feColorMatrix type="matrix" values="1 0 0 0 0.5  0 0 0 0 0  0 0 0 0 0  0 0 0 0.5 0" in="b" result="colored"/>
-            <feMerge><feMergeNode in="colored"/><feMergeNode in="SourceGraphic"/></feMerge>
-          </filter>
         </defs>
 
         {/* Background vignette */}
         <rect x="0" y="0" width="1200" height="88" fill="url(#bgFade)"/>
-
-        {/* Animated scan bar */}
-        <rect className="scan-bar" x="0" y="0" width="120" height="88"
-          fill="url(#bgFade)" opacity="0.4" clipPath="url(#bannerClip)"/>
-
-        {/* Top border line */}
+        <rect className="scan-bar" x="0" y="0" width="120" height="88" fill="url(#bgFade)" opacity="0.4" clipPath="url(#bannerClip)"/>
         <line className="top-border" x1="0" y1="2" x2="1200" y2="2" stroke="#C62020" strokeWidth="1.5"/>
 
         {/* ── LEFT BLADES ── */}
         <g className="blade-left">
           <polygon points="8,6 20,6 30,82 18,82" fill="url(#bladeG)" filter="url(#redglow)"/>
           <polygon points="20,6 30,6 40,82 28,82" fill="#C62020" opacity="0.35"/>
-          {/* Tiny accent blade */}
           <polygon points="42,6 48,6 54,82 48,82" fill="#B91C1C" opacity="0.2"/>
         </g>
 
         {/* ── MAIN TITLE ── */}
         <g className="entropy-word">
-          <text x="62" y="63"
-            fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
+          <text x="62" y="63" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
             fontWeight="900" fontSize="68" letterSpacing="5" fill="#F0EDE5">ENTROPY</text>
         </g>
 
-        {/* ── 3D X ── */}
-        {/* Static glow — does NOT animate */}
-        <ellipse cx="408" cy="44" rx="32" ry="36" fill="#B91C1C" opacity="0.18" filter="url(#xglow)"/>
-        <g className="entropy-x">
-          {/* Deep shadow base */}
-          <text x="385" y="68" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="#1A0000" opacity="0.6">X</text>
-          {/* Extrusion layers - bottom to top, right to left */}
-          <text x="384" y="67.5" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="#2A0404">X</text>
-          <text x="383" y="67" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="#380505">X</text>
-          <text x="382" y="66.5" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="#470606">X</text>
-          <text x="381" y="66" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="#580707">X</text>
-          <text x="380.5" y="65.5" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="#6A0808">X</text>
-          <text x="380" y="65" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="#7A0A0A">X</text>
-          <text x="379.5" y="64.5" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="#8C0C0C">X</text>
-          <text x="379" y="64" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="#9E0E0E">X</text>
-          {/* Face — gradient lit from top-left */}
-          <text x="378" y="63" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="url(#xFaceG)">X</text>
-          {/* Specular shine layer on top-left */}
-          <text x="378" y="63" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="url(#xShineG)" opacity="0.6">X</text>
-          {/* Thin bright rim on top edge */}
-          <text x="377.5" y="62.5" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="#FF9070" opacity="0.25">X</text>
+        {/* ── 3D X ── static glow behind, never animates ── */}
+        <ellipse className="x-glow" cx="415" cy="44" rx="34" ry="38"
+          fill="#CC1010" filter="url(#xGlowFilter)"/>
+
+        {/* Animated 3D X geometry */}
+        <g className="x-turn">
+          {/* Back face */}
+          <path d={xPath.split(' ').map(pt => {
+            const [px,py] = pt.replace(/[MLZ]/g,'').split(',');
+            if(!px) return pt;
+            return `${pt.startsWith('M')?'M':'L'}${parseFloat(px)+d.x},${parseFloat(py)+d.y}`;
+          }).join(' ')} fill="#1A0202"/>
+
+          {/* Side faces — each edge gets its brightness-appropriate color */}
+          {edges.map(([x1,y1,x2,y2,b],i) => (
+            <polygon key={i}
+              points={`${x1},${y1} ${x2},${y2} ${x2+d.x},${y2+d.y} ${x1+d.x},${y1+d.y}`}
+              fill={faceColors[b]}/>
+          ))}
+
+          {/* Front face — gradient lit top-left */}
+          <path d={xPath} fill="url(#xFace)"/>
+
+          {/* Specular shine on front face */}
+          <path d={xPath} fill="url(#xShine)"/>
+
+          {/* Top rim highlight — thin bright edge */}
+          <polyline points="393,17 408,17 415,24 422,17 437,17"
+            fill="none" stroke="#FF8060" strokeWidth="1" opacity="0.5"/>
         </g>
 
         {/* ── OVERRIDE subtitle ── */}
         <g className="gold-text">
-          <text x="62" y="82"
-            fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
+          <text x="62" y="82" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
             fontWeight="700" fontSize="17" letterSpacing="16" fill="url(#goldG)">OVERRIDE</text>
         </g>
 
-        {/* ── CENTER DIVIDER TICK ── */}
+        {/* ── CENTER DIVIDER ── */}
         <line x1="600" y1="6" x2="600" y2="82" stroke="#1A1A1A" strokeWidth="1" opacity="0.5"/>
 
         {/* ── RIGHT SIDE INFO ── */}
-        <text x="640" y="42"
-          fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
+        <text x="640" y="42" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
           fontWeight="700" fontSize="13" letterSpacing="4" fill="#2A2A2A">TACTICS CODEX</text>
-        <text x="640" y="60"
-          fontFamily="'Courier Prime','Courier New',monospace"
+        <text x="640" y="60" fontFamily="'Courier Prime','Courier New',monospace"
           fontSize="11" fill="#222" letterSpacing="1">16 CHARACTERS · 48 BUILDS · 15 TACTICS</text>
-        <text x="640" y="76"
-          fontFamily="'Courier Prime','Courier New',monospace"
+        <text x="640" y="76" fontFamily="'Courier Prime','Courier New',monospace"
           fontSize="10" fill="#1A1A1A" letterSpacing="1">BlazBlue Entropy Effect X — v4.0</text>
 
-        {/* Particle dots (animated at different delays) */}
+        {/* Particle dots */}
         <circle cx="580" cy="20" r="1.5" fill="#B91C1C" opacity="0.4" style={{animation:"particleDrift 4s ease-in-out infinite"}}/>
-        <circle cx="590" cy="68" r="1" fill="#C9A227" opacity="0.3" style={{animation:"particleDrift 5s ease-in-out infinite 1s"}}/>
-        <circle cx="570" cy="44" r="1" fill="#B91C1C" opacity="0.25" style={{animation:"particleDrift 6s ease-in-out infinite 2s"}}/>
+        <circle cx="590" cy="68" r="1"   fill="#C9A227" opacity="0.3" style={{animation:"particleDrift 5s ease-in-out infinite 1s"}}/>
+        <circle cx="570" cy="44" r="1"   fill="#B91C1C" opacity="0.25" style={{animation:"particleDrift 6s ease-in-out infinite 2s"}}/>
 
         {/* ── RIGHT BLADES ── */}
         <g className="blade-right">
@@ -915,13 +940,11 @@ function Banner() {
           <polygon points="1180,6 1188,6 1194,82 1186,82" fill="#C62020" opacity="0.25"/>
         </g>
 
-        {/* Bottom border line */}
         <line className="bot-border" x1="0" y1="86" x2="1200" y2="86" stroke="#C62020" strokeWidth="1.5"/>
       </svg>
     </div>
   );
 }
-
 const RADAR_AXES = ["burst","sustain","aoe","control","survival"];
 const RADAR_LABELS = {burst:"BURST",sustain:"SUSTAIN",aoe:"AoE",control:"CONTROL",survival:"SURVIVE"};
 const TIER_COLORS = {S:"#E53935",A:"#FF8F00",B:"#1976D2",C:"#757575"};
