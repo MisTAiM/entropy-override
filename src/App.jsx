@@ -737,210 +737,280 @@ const CHARACTERS = [
 
 // Animated Full-Width Banner
 function Banner() {
-  // 3D X — proper geometric polygon, not text stacking
-  // Front face: 12-pt X polygon centered at (415,44)
-  // Extrusion offset: dx=4, dy=5  (light source top-left)
-  const xPath = "M393,17 L408,17 L415,24 L422,17 L437,17 L430,44 L437,71 L422,71 L415,64 L408,71 L393,71 L400,44 Z";
-  const d = {x:4, y:5}; // extrusion depth
-
-  // 12 edges → side face quads [x1,y1, x2,y2, brightness]
-  // brightness key: 0=darkest(bottom), 1=dark(right), 2=medium(left), 3=bright(top)
-  const edges = [
-    [393,17, 408,17, 3], // top of TL arm        — TOP BRIGHT
-    [408,17, 415,24, 3], // inner notch top-L     — TOP BRIGHT
-    [415,24, 422,17, 3], // inner notch top-R     — TOP BRIGHT
-    [422,17, 437,17, 3], // top of TR arm         — TOP BRIGHT
-    [437,17, 430,44, 1], // right of TR arm       — RIGHT DARK
-    [430,44, 437,71, 1], // right of BR arm       — RIGHT DARK
-    [437,71, 422,71, 0], // bottom of BR arm      — BOTTOM DARKEST
-    [422,71, 415,64, 0], // inner notch bot-R     — BOTTOM DARKEST
-    [415,64, 408,71, 0], // inner notch bot-L     — BOTTOM DARKEST
-    [408,71, 393,71, 0], // bottom of BL arm      — BOTTOM DARKEST
-    [393,71, 400,44, 2], // left of BL arm        — LEFT MEDIUM
-    [400,44, 393,17, 2], // left of TL arm        — LEFT MEDIUM
-  ];
-  const faceColors = ["#2A0303","#580808","#7A1010","#C41616"];
-
-  const quad = ([x1,y1, x2,y2, b]) =>
-    `${x1},${y1} ${x2},${y2} ${x2+d.x},${y2+d.y} ${x1+d.x},${y1+d.y}`;
+  // Speed lines radiating from X center (440, 44)
+  const leftLines  = Array.from({length:16}, (_,i) => {
+    const a = (155 + i * 4.5) * Math.PI / 180;
+    const len = 300 + i * 18;
+    return [510 + Math.cos(a)*len, 44 + Math.sin(a)*len];
+  });
+  const rightLines = Array.from({length:16}, (_,i) => {
+    const a = (-25 + i * 4.5) * Math.PI / 180;
+    const len = 300 + i * 18;
+    return [440 + Math.cos(a)*len, 44 + Math.sin(a)*len];
+  });
 
   return (
-    <div style={{position:"relative",width:"100%",overflow:"hidden",background:"#080808",borderBottom:"2px solid #B91C1C"}}>
+    <div style={{position:"relative",width:"100%",overflow:"hidden",background:"#030303"}}>
       <style>{`
-        @keyframes scanline {
-          0%   { transform: translateX(-100%); opacity: 0; }
-          10%  { opacity: 1; }
-          90%  { opacity: 1; }
-          100% { transform: translateX(200%); opacity: 0; }
+        @keyframes xPulse {
+          0%,100% { opacity:1; }
+          45%      { opacity:0.7; }
+          50%      { opacity:1; filter:brightness(1.6); }
+          55%      { opacity:0.8; }
         }
-        @keyframes xTurn {
-          0%        { transform: rotateY(0deg)   scaleY(1); }
-          20%       { transform: rotateY(90deg)  scaleY(1.04); }
-          40%       { transform: rotateY(180deg) scaleY(1); }
-          60%       { transform: rotateY(270deg) scaleY(1.04); }
-          80%, 100% { transform: rotateY(360deg) scaleY(1); }
+        @keyframes coreFlare {
+          0%,100% { r:5;  opacity:1; }
+          50%     { r:9;  opacity:0.9; }
         }
-        @keyframes bladeShimmer {
-          0%, 100% { opacity: 0.9; }
-          40%       { opacity: 0.5; }
-          60%       { opacity: 1; }
+        @keyframes glitchE {
+          0%,88%,100% { transform:translate(0,0) skewX(0deg); clip-path:none; }
+          89%  { transform:translate(-4px,0) skewX(-1deg); }
+          91%  { transform:translate(3px,0)  skewX(1deg); }
+          93%  { transform:translate(-2px,0) skewX(-0.5deg); }
+          95%  { transform:translate(0,0) skewX(0deg); }
         }
-        @keyframes goldPulse {
-          0%, 100% { opacity: 1; }
-          50%       { opacity: 0.7; }
+        @keyframes goldFlow {
+          0%,100% { opacity:1; }
+          50%     { opacity:0.72; }
         }
-        @keyframes glitchH {
-          0%,94%,100% { transform: translateX(0); }
-          95%  { transform: translateX(-3px); }
-          97%  { transform: translateX(4px); }
-          99%  { transform: translateX(-1px); }
-        }
-        @keyframes particleDrift {
-          0%   { transform: translateY(0px) translateX(0px); opacity: 0.6; }
-          50%  { transform: translateY(-8px) translateX(4px); opacity: 1; }
-          100% { transform: translateY(0px) translateX(0px); opacity: 0.6; }
+        @keyframes scanMove {
+          0%   { transform:translateX(-30%); }
+          100% { transform:translateX(120%); }
         }
         @keyframes borderPulse {
-          0%,100% { opacity: 0.5; }
-          50%     { opacity: 1; }
+          0%,100% { opacity:0.65; }
+          50%     { opacity:1; }
         }
-        @keyframes glowBreath {
-          0%,100% { opacity: 0.18; r: 34; }
-          50%     { opacity: 0.30; r: 38; }
+        @keyframes tipSpark {
+          0%,100% { opacity:0.9; r:3; }
+          50%     { opacity:0.4; r:1.5; }
         }
-        .blade-left  { animation: bladeShimmer 4s ease-in-out infinite; }
-        .blade-right { animation: bladeShimmer 4s ease-in-out infinite 0.8s; }
-        .gold-text   { animation: goldPulse 5s ease-in-out infinite; }
-        .entropy-word{ animation: glitchH 8s steps(1) infinite; }
-        .scan-bar    { animation: scanline 6s linear infinite 1.5s; }
-        .top-border  { animation: borderPulse 3s ease-in-out infinite; }
-        .bot-border  { animation: borderPulse 3s ease-in-out infinite 1.5s; }
-        .x-turn      { animation: xTurn 3s ease-in-out infinite; transform-origin: center; transform-box: fill-box; }
-        .x-glow      { animation: glowBreath 2.5s ease-in-out infinite; }
+        @keyframes hudBlink {
+          0%,94%,100% { opacity:1; }
+          95%  { opacity:0.2; }
+          97%  { opacity:1; }
+          98%  { opacity:0.4; }
+        }
+        .x-pulse    { animation: xPulse 3s ease-in-out infinite; }
+        .core-flare { animation: coreFlare 1.8s ease-in-out infinite; }
+        .entropy-g  { animation: glitchE 8s steps(1) infinite; }
+        .gold-txt   { animation: goldFlow 4s ease-in-out infinite; }
+        .scan-bar   { animation: scanMove 6s linear infinite 0.5s; }
+        .t-border   { animation: borderPulse 3s ease-in-out infinite; }
+        .b-border   { animation: borderPulse 3s ease-in-out infinite 1.5s; }
+        .tip-spark  { animation: tipSpark 1.8s ease-in-out infinite; }
+        .hud-blink  { animation: hudBlink 7s steps(1) infinite; }
       `}</style>
 
       <svg viewBox="0 0 1200 88" preserveAspectRatio="xMidYMid meet"
-        style={{width:"100%",height:"auto",display:"block",minHeight:60}} xmlns="http://www.w3.org/2000/svg">
+        style={{width:"100%",height:"auto",display:"block",minHeight:52}}>
         <defs>
-          <linearGradient id="bladeG" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#FF3020"/><stop offset="100%" stopColor="#7A0A0A"/>
-          </linearGradient>
+          {/* --- FILTERS --- */}
+          {/* Large X halo */}
+          <filter id="xHalo" x="-200%" y="-200%" width="500%" height="500%">
+            <feGaussianBlur stdDeviation="22" result="b"/>
+            <feColorMatrix in="b" type="matrix"
+              values="2.5 0 0 0 0.55  0 0 0 0 0  0 0 0 0 0  0 0 0 1.4 0"/>
+          </filter>
+          {/* Mid X glow */}
+          <filter id="xGlow" x="-80%" y="-80%" width="260%" height="260%">
+            <feGaussianBlur stdDeviation="9" result="b"/>
+            <feColorMatrix in="b" type="matrix"
+              values="2 0 0 0 0.3  0 0 0 0 0  0 0 0 0 0  0 0 0 1.2 0" result="c"/>
+            <feMerge><feMergeNode in="c"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          {/* Center burst */}
+          <filter id="burstF" x="-300%" y="-300%" width="700%" height="700%">
+            <feGaussianBlur stdDeviation="16" result="b"/>
+            <feColorMatrix in="b" type="matrix"
+              values="4 0 0 0 1  0.2 0 0 0 0  0 0 0 0 0  0 0 0 2 0"/>
+          </filter>
+          {/* White star glow */}
+          <filter id="starF" x="-200%" y="-200%" width="500%" height="500%">
+            <feGaussianBlur stdDeviation="5"/>
+          </filter>
+          {/* Entropy text glow */}
+          <filter id="etxtGlow" x="-15%" y="-40%" width="130%" height="180%">
+            <feGaussianBlur stdDeviation="5" result="b"/>
+            <feColorMatrix in="b" type="matrix"
+              values="2 0 0 0 0.15  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="c"/>
+            <feMerge><feMergeNode in="c"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          {/* Gold text glow */}
+          <filter id="gtxtGlow" x="-15%" y="-40%" width="130%" height="180%">
+            <feGaussianBlur stdDeviation="5" result="b"/>
+            <feColorMatrix in="b" type="matrix"
+              values="1.2 0.5 0 0 0.15  0 1 0 0 0.05  0 0 0 0 0  0 0 0 1 0" result="c"/>
+            <feMerge><feMergeNode in="c"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          {/* Tip spark glow */}
+          <filter id="tipF" x="-300%" y="-300%" width="700%" height="700%">
+            <feGaussianBlur stdDeviation="4"/>
+          </filter>
+
+          {/* --- GRADIENTS --- */}
+          <radialGradient id="bgRadial" cx="37%" cy="50%" r="45%">
+            <stop offset="0%" stopColor="#4A0808" stopOpacity="0.85"/>
+            <stop offset="45%" stopColor="#1C0303" stopOpacity="0.5"/>
+            <stop offset="100%" stopColor="#030303" stopOpacity="0"/>
+          </radialGradient>
           <linearGradient id="goldG" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#C9931A"/><stop offset="100%" stopColor="#F2C94C"/>
+            <stop offset="0%"   stopColor="#A0700A"/>
+            <stop offset="30%"  stopColor="#F5CB45"/>
+            <stop offset="60%"  stopColor="#C9A227"/>
+            <stop offset="100%" stopColor="#7A5208"/>
           </linearGradient>
-          <linearGradient id="bgFade" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#B91C1C" stopOpacity="0.08"/>
-            <stop offset="40%" stopColor="#B91C1C" stopOpacity="0"/>
-            <stop offset="60%" stopColor="#B91C1C" stopOpacity="0"/>
-            <stop offset="100%" stopColor="#B91C1C" stopOpacity="0.06"/>
+          <linearGradient id="scanG" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   stopColor="#ffffff" stopOpacity="0"/>
+            <stop offset="40%"  stopColor="#ffffff" stopOpacity="0.025"/>
+            <stop offset="60%"  stopColor="#ffffff" stopOpacity="0.025"/>
+            <stop offset="100%" stopColor="#ffffff" stopOpacity="0"/>
           </linearGradient>
-          {/* 3D X face gradient — lit top-left */}
-          <linearGradient id="xFace" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%"   stopColor="#FF5540"/>
-            <stop offset="35%"  stopColor="#D91818"/>
-            <stop offset="70%"  stopColor="#A01010"/>
-            <stop offset="100%" stopColor="#6A0808"/>
-          </linearGradient>
-          {/* Specular shine */}
-          <linearGradient id="xShine" x1="0%" y1="0%" x2="50%" y2="100%">
-            <stop offset="0%"   stopColor="#FFFFFF" stopOpacity="0.28"/>
-            <stop offset="60%"  stopColor="#FFFFFF" stopOpacity="0.06"/>
-            <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0"/>
-          </linearGradient>
-          {/* Soft glow filter */}
-          <filter id="xGlowFilter" x="-60%" y="-60%" width="220%" height="220%">
-            <feGaussianBlur stdDeviation="10" result="b"/>
-            <feColorMatrix type="matrix"
-              values="1 0 0 0 0.72  0 0 0 0 0.05  0 0 0 0 0.02  0 0 0 1 0"
-              in="b" result="tinted"/>
-            <feMerge><feMergeNode in="tinted"/></feMerge>
-          </filter>
-          <filter id="redglow">
-            <feGaussianBlur stdDeviation="3" result="b"/>
-            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-          </filter>
-          <clipPath id="bannerClip"><rect x="0" y="0" width="1200" height="88"/></clipPath>
+          <clipPath id="bClip"><rect x="0" y="0" width="1200" height="88"/></clipPath>
         </defs>
 
-        {/* Background vignette */}
-        <rect x="0" y="0" width="1200" height="88" fill="url(#bgFade)"/>
-        <rect className="scan-bar" x="0" y="0" width="120" height="88" fill="url(#bgFade)" opacity="0.4" clipPath="url(#bannerClip)"/>
-        <line className="top-border" x1="0" y1="2" x2="1200" y2="2" stroke="#C62020" strokeWidth="1.5"/>
+        {/* ── BG ── */}
+        <rect x="0" y="0" width="1200" height="88" fill="#030303"/>
+        <rect x="0" y="0" width="1200" height="88" fill="url(#bgRadial)"/>
 
-        {/* ── LEFT BLADES ── */}
-        <g className="blade-left">
-          <polygon points="8,6 20,6 30,82 18,82" fill="url(#bladeG)" filter="url(#redglow)"/>
-          <polygon points="20,6 30,6 40,82 28,82" fill="#C62020" opacity="0.35"/>
-          <polygon points="42,6 48,6 54,82 48,82" fill="#B91C1C" opacity="0.2"/>
+        {/* ── SPEED LINES (left side, radiating from X toward ENTROPY) ── */}
+        {leftLines.map(([x2,y2],i) => (
+          <line key={`sl${i}`} x1="440" y1="44" x2={x2} y2={y2}
+            stroke="#991010" strokeWidth={i % 3 === 0 ? "0.8" : "0.4"}
+            opacity={0.04 + i * 0.006} clipPath="url(#bClip)"/>
+        ))}
+        {/* Speed lines right side */}
+        {rightLines.map(([x2,y2],i) => (
+          <line key={`sr${i}`} x1="440" y1="44" x2={x2} y2={y2}
+            stroke="#991010" strokeWidth={i % 3 === 0 ? "0.8" : "0.4"}
+            opacity={0.03 + i * 0.005} clipPath="url(#bClip)"/>
+        ))}
+
+        {/* Horizontal manga scan lines — very subtle */}
+        {Array.from({length:6}, (_,i) => (
+          <line key={`hl${i}`} x1="0" y1={i*15+7} x2="1200" y2={i*15+7}
+            stroke="#1A0000" strokeWidth="0.5" opacity="0.35"/>
+        ))}
+
+        {/* Scan bar */}
+        <rect className="scan-bar" x="-300" y="0" width="500" height="88"
+          fill="url(#scanG)" clipPath="url(#bClip)"/>
+
+        {/* Borders */}
+        <line className="t-border" x1="0" y1="1.5" x2="1200" y2="1.5" stroke="#D42020" strokeWidth="2"/>
+        <line className="b-border" x1="0" y1="86.5" x2="1200" y2="86.5" stroke="#D42020" strokeWidth="2"/>
+
+        {/* Thin vertical frame lines flanking X */}
+        <line x1="378" y1="0" x2="378" y2="88" stroke="#6A0A0A" strokeWidth="0.6" opacity="0.6"/>
+        <line x1="504" y1="0" x2="504" y2="88" stroke="#6A0A0A" strokeWidth="0.6" opacity="0.6"/>
+
+        {/* ── ENTROPY — chromatic aberration style ── */}
+        {/* Red fringe (bottom-right offset) */}
+        <text x="28" y="69" transform="translate(4,3)"
+          fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
+          fontWeight="900" fontSize="62" letterSpacing="2"
+          fill="#BB0000" opacity="0.5">ENTROPY</text>
+        {/* Blue fringe (top-left offset) */}
+        <text x="28" y="69" transform="translate(-2,-2)"
+          fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
+          fontWeight="900" fontSize="62" letterSpacing="2"
+          fill="#2244CC" opacity="0.2">ENTROPY</text>
+        {/* Main white — glitch animates this group */}
+        <g className="entropy-g">
+          <text x="28" y="69"
+            fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
+            fontWeight="900" fontSize="62" letterSpacing="2"
+            fill="#F7F3EE" filter="url(#etxtGlow)">ENTROPY</text>
         </g>
 
-        {/* ── MAIN TITLE ── */}
-        <g className="entropy-word">
-          <text x="62" y="63" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
-            fontWeight="900" fontSize="68" letterSpacing="5" fill="#F0EDE5">ENTROPY</text>
+        {/* ── THE X — layered energy blade ── */}
+        {/* X center: (440, 44). Arms: TL(388,5)→BR(492,83) and TR(492,5)→BL(388,83) */}
+        <g className="x-pulse" clipPath="url(#bClip)">
+          {/* Halo bloom — widest, darkest */}
+          <g filter="url(#xHalo)">
+            <line x1="388" y1="5"  x2="492" y2="83" stroke="#880000" strokeWidth="22" strokeLinecap="round"/>
+            <line x1="492" y1="5"  x2="388" y2="83" stroke="#880000" strokeWidth="22" strokeLinecap="round"/>
+          </g>
+          {/* Mid glow layer */}
+          <g filter="url(#xGlow)">
+            <line x1="388" y1="5"  x2="492" y2="83" stroke="#CC1515" strokeWidth="12" strokeLinecap="round"/>
+            <line x1="492" y1="5"  x2="388" y2="83" stroke="#CC1515" strokeWidth="12" strokeLinecap="round"/>
+          </g>
+          {/* Solid arm base */}
+          <line x1="388" y1="5"  x2="492" y2="83" stroke="#B81010" strokeWidth="9" strokeLinecap="round"/>
+          <line x1="492" y1="5"  x2="388" y2="83" stroke="#B81010" strokeWidth="9" strokeLinecap="round"/>
+          {/* Bright inner edge */}
+          <line x1="388" y1="5"  x2="492" y2="83" stroke="#FF4040" strokeWidth="4" strokeLinecap="round"/>
+          <line x1="492" y1="5"  x2="388" y2="83" stroke="#FF4040" strokeWidth="4" strokeLinecap="round"/>
+          {/* White-hot core line */}
+          <line x1="388" y1="5"  x2="492" y2="83" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" opacity="0.85"/>
+          <line x1="492" y1="5"  x2="388" y2="83" stroke="#FFFFFF" strokeWidth="1.5" strokeLinecap="round" opacity="0.85"/>
+
+          {/* Center burst */}
+          <circle cx="440" cy="44" r="22" fill="#BB0000" filter="url(#burstF)"/>
+          <circle cx="440" cy="44" r="11" fill="#FF2020" filter="url(#xGlow)"/>
+
+          {/* 4-point impact star */}
+          <g filter="url(#starF)" opacity="0.5">
+            <polygon points="440,26 442.5,41.5 440,57 437.5,41.5" fill="white"/>
+            <polygon points="422,44 437.5,41.5 454,44 437.5,46.5" fill="white"/>
+          </g>
+          <polygon points="440,26 442.5,41.5 440,57 437.5,41.5" fill="white" opacity="0.7"/>
+          <polygon points="422,44 437.5,41.5 454,44 437.5,46.5" fill="white" opacity="0.7"/>
+
+          {/* White core dot */}
+          <circle className="core-flare" cx="440" cy="44" r="5" fill="white"/>
         </g>
 
-        {/* ── 3D X ── static glow behind, never animates ── */}
-        <ellipse className="x-glow" cx="415" cy="44" rx="34" ry="38"
-          fill="#CC1010" filter="url(#xGlowFilter)"/>
+        {/* Tip sparks at arm endpoints */}
+        <circle className="tip-spark" cx="388" cy="5"  r="3" fill="#FF9090" filter="url(#tipF)"/>
+        <circle className="tip-spark" cx="492" cy="5"  r="3" fill="#FF9090" filter="url(#tipF)" style={{animationDelay:"0.4s"}}/>
+        <circle className="tip-spark" cx="388" cy="83" r="3" fill="#FF9090" filter="url(#tipF)" style={{animationDelay:"0.8s"}}/>
+        <circle className="tip-spark" cx="492" cy="83" r="3" fill="#FF9090" filter="url(#tipF)" style={{animationDelay:"1.2s"}}/>
 
-        {/* Animated 3D X geometry */}
-        <g className="x-turn">
-          {/* Back face */}
-          <path d={xPath.split(' ').map(pt => {
-            const [px,py] = pt.replace(/[MLZ]/g,'').split(',');
-            if(!px) return pt;
-            return `${pt.startsWith('M')?'M':'L'}${parseFloat(px)+d.x},${parseFloat(py)+d.y}`;
-          }).join(' ')} fill="#1A0202"/>
+        {/* Diagonal slash decorations — thin energy echoes of the X arms */}
+        <line x1="355" y1="5"  x2="375" y2="30" stroke="#550808" strokeWidth="1" opacity="0.5"/>
+        <line x1="505" y1="58" x2="525" y2="83" stroke="#550808" strokeWidth="1" opacity="0.5"/>
+        <line x1="505" y1="5"  x2="525" y2="30" stroke="#550808" strokeWidth="1" opacity="0.5"/>
+        <line x1="355" y1="58" x2="375" y2="83" stroke="#550808" strokeWidth="1" opacity="0.5"/>
 
-          {/* Side faces — each edge gets its brightness-appropriate color */}
-          {edges.map(([x1,y1,x2,y2,b],i) => (
-            <polygon key={i}
-              points={`${x1},${y1} ${x2},${y2} ${x2+d.x},${y2+d.y} ${x1+d.x},${y1+d.y}`}
-              fill={faceColors[b]}/>
-          ))}
-
-          {/* Front face — gradient lit top-left */}
-          <path d={xPath} fill="url(#xFace)"/>
-
-          {/* Specular shine on front face */}
-          <path d={xPath} fill="url(#xShine)"/>
-
-          {/* Top rim highlight — thin bright edge */}
-          <polyline points="393,17 408,17 415,24 422,17 437,17"
-            fill="none" stroke="#FF8060" strokeWidth="1" opacity="0.5"/>
+        {/* ── OVERRIDE — gold ── */}
+        {/* Gold shadow fringe */}
+        <text x="528" y="69" transform="translate(3,3)"
+          fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
+          fontWeight="900" fontSize="62" letterSpacing="2"
+          fill="#7A5000" opacity="0.45">OVERRIDE</text>
+        {/* Main gold */}
+        <g className="gold-txt">
+          <text x="528" y="69"
+            fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
+            fontWeight="900" fontSize="62" letterSpacing="2"
+            fill="url(#goldG)" filter="url(#gtxtGlow)">OVERRIDE</text>
         </g>
 
-        {/* ── OVERRIDE subtitle ── */}
-        <g className="gold-text">
-          <text x="62" y="82" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
-            fontWeight="700" fontSize="17" letterSpacing="16" fill="url(#goldG)">OVERRIDE</text>
+        {/* ── HUD PANEL — right side ── */}
+        {/* Vertical accent */}
+        <line x1="1042" y1="8" x2="1042" y2="80" stroke="#3A0808" strokeWidth="0.8" opacity="0.7"/>
+
+        {/* HUD readout */}
+        <g className="hud-blink">
+          <text x="1055" y="28"
+            fontFamily="'Courier Prime','Courier New',monospace"
+            fontSize="10" letterSpacing="2" fill="#5A1010">SYS::ONLINE</text>
+          <text x="1055" y="44"
+            fontFamily="'Courier Prime','Courier New',monospace"
+            fontSize="10" letterSpacing="2" fill="#4A2A00">16 · UNITS</text>
+          <text x="1055" y="60"
+            fontFamily="'Courier Prime','Courier New',monospace"
+            fontSize="10" letterSpacing="2" fill="#5A1010">48 · BUILDS</text>
+          <text x="1055" y="76"
+            fontFamily="'Courier Prime','Courier New',monospace"
+            fontSize="10" letterSpacing="2" fill="#3A2800">15 · TACTICS</text>
         </g>
 
-        {/* ── CENTER DIVIDER ── */}
-        <line x1="600" y1="6" x2="600" y2="82" stroke="#1A1A1A" strokeWidth="1" opacity="0.5"/>
-
-        {/* ── RIGHT SIDE INFO ── */}
-        <text x="640" y="42" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
-          fontWeight="700" fontSize="13" letterSpacing="4" fill="#2A2A2A">TACTICS CODEX</text>
-        <text x="640" y="60" fontFamily="'Courier Prime','Courier New',monospace"
-          fontSize="11" fill="#222" letterSpacing="1">16 CHARACTERS · 48 BUILDS · 15 TACTICS</text>
-        <text x="640" y="76" fontFamily="'Courier Prime','Courier New',monospace"
-          fontSize="10" fill="#1A1A1A" letterSpacing="1">BlazBlue Entropy Effect X — v4.0</text>
-
-        {/* Particle dots */}
-        <circle cx="580" cy="20" r="1.5" fill="#B91C1C" opacity="0.4" style={{animation:"particleDrift 4s ease-in-out infinite"}}/>
-        <circle cx="590" cy="68" r="1"   fill="#C9A227" opacity="0.3" style={{animation:"particleDrift 5s ease-in-out infinite 1s"}}/>
-        <circle cx="570" cy="44" r="1"   fill="#B91C1C" opacity="0.25" style={{animation:"particleDrift 6s ease-in-out infinite 2s"}}/>
-
-        {/* ── RIGHT BLADES ── */}
-        <g className="blade-right">
-          <polygon points="1148,6 1160,6 1170,82 1158,82" fill="url(#bladeG)" opacity="0.6"/>
-          <polygon points="1160,6 1170,6 1180,82 1168,82" fill="url(#bladeG)" filter="url(#redglow)" opacity="0.8"/>
-          <polygon points="1180,6 1188,6 1194,82 1186,82" fill="#C62020" opacity="0.25"/>
-        </g>
-
-        <line className="bot-border" x1="0" y1="86" x2="1200" y2="86" stroke="#C62020" strokeWidth="1.5"/>
+        {/* Top-right corner bracket */}
+        <path d="M1188,4 L1196,4 L1196,16" fill="none" stroke="#6A0A0A" strokeWidth="1.2"/>
+        <path d="M1188,84 L1196,84 L1196,72" fill="none" stroke="#6A0A0A" strokeWidth="1.2"/>
       </svg>
     </div>
   );
