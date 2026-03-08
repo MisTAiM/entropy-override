@@ -25,6 +25,7 @@ const TACTICS_REFERENCE = [
 ];
 
 const RARITY = ["Common","Uncommon","Rare","Legendary"];
+const RARITY_COLORS = ["#9CA3AF","#4ADE80","#60A5FA","#C9A227"];
 const ELEM_COLORS = { ice:"#5BC4E8", fire:"#E84E25", umbra:"#A855F7", light:"#EDB72C", electric:"#00D9BB", blade:"#E05050" };
 
 const CHARACTERS = [
@@ -746,11 +747,11 @@ function Banner() {
           100% { transform: translateX(200%); opacity: 0; }
         }
         @keyframes xTurn {
-          0%        { transform: rotateY(0deg)   scaleY(1);    filter: drop-shadow(0 0 6px #B91C1C) drop-shadow(0 0 14px #7A0A0A); }
-          20%       { transform: rotateY(90deg)  scaleY(1.04); filter: drop-shadow(0 0 20px #FF3020) drop-shadow(0 0 40px #B91C1C); }
-          40%       { transform: rotateY(180deg) scaleY(1);    filter: drop-shadow(0 0 6px #B91C1C) drop-shadow(0 0 14px #7A0A0A); }
-          60%       { transform: rotateY(270deg) scaleY(1.04); filter: drop-shadow(0 0 20px #FF3020) drop-shadow(0 0 40px #B91C1C); }
-          80%, 100% { transform: rotateY(360deg) scaleY(1);    filter: drop-shadow(0 0 6px #B91C1C) drop-shadow(0 0 14px #7A0A0A); }
+          0%        { transform: rotateY(0deg)   scaleY(1); }
+          20%       { transform: rotateY(90deg)  scaleY(1.04); }
+          40%       { transform: rotateY(180deg) scaleY(1); }
+          60%       { transform: rotateY(270deg) scaleY(1.04); }
+          80%, 100% { transform: rotateY(360deg) scaleY(1); }
         }
         @keyframes bladeShimmer {
           0%, 100% { opacity: 0.9; }
@@ -826,9 +827,9 @@ function Banner() {
             <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.35"/>
             <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0"/>
           </linearGradient>
-          <filter id="xglow" x="-30%" y="-30%" width="160%" height="160%">
-            <feGaussianBlur stdDeviation="4" result="b"/>
-            <feColorMatrix type="matrix" values="1 0 0 0 0.7  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" in="b" result="colored"/>
+          <filter id="xglow" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="6" result="b"/>
+            <feColorMatrix type="matrix" values="1 0 0 0 0.5  0 0 0 0 0  0 0 0 0 0  0 0 0 0.5 0" in="b" result="colored"/>
             <feMerge><feMergeNode in="colored"/><feMergeNode in="SourceGraphic"/></feMerge>
           </filter>
         </defs>
@@ -859,6 +860,8 @@ function Banner() {
         </g>
 
         {/* ── 3D X ── */}
+        {/* Static glow — does NOT animate */}
+        <ellipse cx="408" cy="44" rx="32" ry="36" fill="#B91C1C" opacity="0.18" filter="url(#xglow)"/>
         <g className="entropy-x">
           {/* Deep shadow base */}
           <text x="385" y="68" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="#1A0000" opacity="0.6">X</text>
@@ -872,7 +875,7 @@ function Banner() {
           <text x="379.5" y="64.5" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="#8C0C0C">X</text>
           <text x="379" y="64" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="#9E0E0E">X</text>
           {/* Face — gradient lit from top-left */}
-          <text x="378" y="63" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="url(#xFaceG)" filter="url(#xglow)">X</text>
+          <text x="378" y="63" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="url(#xFaceG)">X</text>
           {/* Specular shine layer on top-left */}
           <text x="378" y="63" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="url(#xShineG)" opacity="0.6">X</text>
           {/* Thin bright rim on top edge */}
@@ -1123,10 +1126,10 @@ export default function App() {
               {selectedTactic.vals.some(v=>v>0) && (
                 <div style={{display:"flex",gap:8,marginTop:10,marginBottom:14}}>
                   {selectedTactic.vals.map((v,i)=>(
-                    <div key={i} style={{flex:1,background:"#111",padding:"8px 10px",textAlign:"center",border:`1px solid ${i===3?"#C9A227":"#1A1A1A"}`}}>
-                      <div style={{fontSize:12,color:"#505050",fontWeight:700,letterSpacing:1}}>{RARITY[i]}</div>
-                      <div style={{fontSize:20,fontWeight:900,color:i===3?"#C9A227":"#888",...S.mono}}>{v}</div>
-                      {i===3&&<div style={{fontSize:9,color:"#454545"}}>MAX</div>}
+                    <div key={i} style={{flex:1,background:"#111",padding:"8px 10px",textAlign:"center",border:`1px solid ${RARITY_COLORS[i]}44`}}>
+                      <div style={{fontSize:12,color:RARITY_COLORS[i],fontWeight:700,letterSpacing:1}}>{RARITY[i]}</div>
+                      <div style={{fontSize:20,fontWeight:900,color:RARITY_COLORS[i],...S.mono}}>{v}</div>
+                      {i===3&&<div style={{fontSize:9,color:"#C9A227",letterSpacing:1}}>MAX</div>}
                     </div>
                   ))}
                 </div>
@@ -1145,9 +1148,9 @@ export default function App() {
                     const result=isPct?Math.round(500*(1+v/100)):v;
                     return (
                       <div key={i} style={{display:"flex",justifyContent:"space-between",borderBottom:"1px solid #181818",paddingBottom:2}}>
-                        <span style={{color:i===3?"#C9A227":"#555"}}>{RARITY[i]}</span>
+                        <span style={{color:RARITY_COLORS[i]}}>{RARITY[i]}</span>
                         <span>{isPct?`500 × (1 + ${v}%) =`:`${v} ${selectedTactic.unit}`}</span>
-                        {isPct&&<span style={{color:i===3?"#F0EDE5":"#777",fontWeight:700}}>{result} effective</span>}
+                        {isPct&&<span style={{color:RARITY_COLORS[i],fontWeight:700}}>{result} effective</span>}
                       </div>
                     );
                   })}
