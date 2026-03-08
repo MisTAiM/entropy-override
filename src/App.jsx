@@ -746,11 +746,11 @@ function Banner() {
           100% { transform: translateX(200%); opacity: 0; }
         }
         @keyframes xTurn {
-          0%        { transform: rotateY(0deg);   filter: drop-shadow(0 0 4px #B91C1C) drop-shadow(0 0 12px #7A0A0A); }
-          40%       { transform: rotateY(180deg); filter: drop-shadow(0 0 16px #FF3020) drop-shadow(0 0 32px #B91C1C); }
-          50%       { transform: rotateY(180deg); }
-          90%       { transform: rotateY(360deg); filter: drop-shadow(0 0 4px #B91C1C) drop-shadow(0 0 12px #7A0A0A); }
-          100%      { transform: rotateY(360deg); }
+          0%        { transform: rotateY(0deg)   scaleY(1);    filter: drop-shadow(0 0 6px #B91C1C) drop-shadow(0 0 14px #7A0A0A); }
+          20%       { transform: rotateY(90deg)  scaleY(1.04); filter: drop-shadow(0 0 20px #FF3020) drop-shadow(0 0 40px #B91C1C); }
+          40%       { transform: rotateY(180deg) scaleY(1);    filter: drop-shadow(0 0 6px #B91C1C) drop-shadow(0 0 14px #7A0A0A); }
+          60%       { transform: rotateY(270deg) scaleY(1.04); filter: drop-shadow(0 0 20px #FF3020) drop-shadow(0 0 40px #B91C1C); }
+          80%, 100% { transform: rotateY(360deg) scaleY(1);    filter: drop-shadow(0 0 6px #B91C1C) drop-shadow(0 0 14px #7A0A0A); }
         }
         @keyframes bladeShimmer {
           0%, 100% { opacity: 0.9; }
@@ -810,6 +810,27 @@ function Banner() {
             <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
           </filter>
           <clipPath id="bannerClip"><rect x="0" y="0" width="1200" height="88"/></clipPath>
+
+          {/* 3D X gradients */}
+          <linearGradient id="xFaceG" x1="0%" y1="0%" x2="20%" y2="100%">
+            <stop offset="0%" stopColor="#FF7050"/>
+            <stop offset="30%" stopColor="#EF2010"/>
+            <stop offset="70%" stopColor="#C01010"/>
+            <stop offset="100%" stopColor="#6A0808"/>
+          </linearGradient>
+          <linearGradient id="xSideG" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#5A0808"/>
+            <stop offset="100%" stopColor="#2A0404"/>
+          </linearGradient>
+          <linearGradient id="xShineG" x1="0%" y1="0%" x2="60%" y2="100%">
+            <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.35"/>
+            <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0"/>
+          </linearGradient>
+          <filter id="xglow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="4" result="b"/>
+            <feColorMatrix type="matrix" values="1 0 0 0 0.7  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" in="b" result="colored"/>
+            <feMerge><feMergeNode in="colored"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
         </defs>
 
         {/* Background vignette */}
@@ -837,11 +858,25 @@ function Banner() {
             fontWeight="900" fontSize="68" letterSpacing="5" fill="#F0EDE5">ENTROPY</text>
         </g>
 
-        {/* ── X ── */}
+        {/* ── 3D X ── */}
         <g className="entropy-x">
-          <text x="378" y="63"
-            fontFamily="'Barlow Condensed','Arial Narrow',sans-serif"
-            fontWeight="900" fontSize="68" fill="url(#bladeG)" filter="url(#strongglow)">X</text>
+          {/* Deep shadow base */}
+          <text x="385" y="68" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="#1A0000" opacity="0.6">X</text>
+          {/* Extrusion layers - bottom to top, right to left */}
+          <text x="384" y="67.5" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="#2A0404">X</text>
+          <text x="383" y="67" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="#380505">X</text>
+          <text x="382" y="66.5" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="#470606">X</text>
+          <text x="381" y="66" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="#580707">X</text>
+          <text x="380.5" y="65.5" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="#6A0808">X</text>
+          <text x="380" y="65" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="#7A0A0A">X</text>
+          <text x="379.5" y="64.5" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="#8C0C0C">X</text>
+          <text x="379" y="64" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="#9E0E0E">X</text>
+          {/* Face — gradient lit from top-left */}
+          <text x="378" y="63" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="url(#xFaceG)" filter="url(#xglow)">X</text>
+          {/* Specular shine layer on top-left */}
+          <text x="378" y="63" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="url(#xShineG)" opacity="0.6">X</text>
+          {/* Thin bright rim on top edge */}
+          <text x="377.5" y="62.5" fontFamily="'Barlow Condensed','Arial Narrow',sans-serif" fontWeight="900" fontSize="68" fill="#FF9070" opacity="0.25">X</text>
         </g>
 
         {/* ── OVERRIDE subtitle ── */}
