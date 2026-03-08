@@ -31,6 +31,24 @@ const ELEM_COLORS = { ice:"#5BC4E8", fire:"#E84E25", umbra:"#A855F7", light:"#ED
 const CHARACTERS = [
   { id:"hibiki", name:"Hibiki Kohaku", tag:"SHADOW / CLONE", tier:"S", color:"#7B8FE4",
     img:"/chars/hibiki.png",
+    talent:"Way of Assassination — all attacks deal bonus damage when hitting enemies from behind. Clones inherit this bonus.",
+    legacySkill:"Shadow Ambush — spawns a clone that dashes behind the nearest enemy and strikes, dealing Umbra damage.",
+    mechanics:[
+      "Clones mirror ALL tactic procs — Shadow Spike, Thunderbolt, and elemental effects each trigger ×3",
+      "Back-attack positioning doubles Shadow Spike proc value when combined with Way of Assassination",
+      "Dodge has 3 charges — chain dodges cancel recovery frames entirely, enabling nearly limitless mobility",
+      "Clones despawn after a set duration or after taking enough hits — prioritize kill speed over tanking"
+    ],
+    synergies:[
+      "Jin (dodge slow field = free back-attacks)",
+      "Noel (Evotype boosts ranged damage for clone turrets)",
+      "Hakumen (AoE counter covers clone reset downtime)"
+    ],
+    tips:[
+      "Always reposition behind enemies after summoning clones — the damage bonus stacks with clone procs",
+      "Shadow Spike + 3 clones = 4 total procs per normal attack. At Legendary: 275 × 4 = 1100 per hit",
+      "Dodge-cancel heavy normals to maintain clone uptime without taking hits"
+    ],
     builds:[
       { id:"clone_army", name:"CLONE ARMY", arch:"AoE Dominance", rating:97,
         tactics:["Attack Shadow Spike (Umbra)","Skill Lightning Orb (Electric)","Dash Thunderbolt (Light)","Legacy Ice Spike (Ice)","Summon Chain Lightning (Light)"],
@@ -75,6 +93,24 @@ const CHARACTERS = [
   },
   { id:"ragna", name:"Ragna the Bloodedge", tag:"MELEE / LIFESTEAL", tier:"B", color:"#D93025",
     img:"/chars/ragna.png",
+    talent:"Blood Kain — HP falls below ~50% triggers a temporary multiplier on all damage output. The lower your HP, the more damage you deal.",
+    legacySkill:"Blood Scythe Strike — unleashes a wide AoE Scythe wave that consumes HP but restores it for every enemy hit.",
+    mechanics:[
+      "Blood Scythe costs 27% HP per cast but heals on hit — net positive when hitting 3+ enemies",
+      "Blood Kain activates at sub-50% HP — designed to be played in that range, not avoided",
+      "Heavy Strike potential gives Blood Scythe super armor — cast through enemy attacks freely",
+      "Invincibility frames on Blood Scythe activation can be used to absorb boss attacks"
+    ],
+    synergies:[
+      "Kokonoe (zoning covers Ragna's melee-only blind spots)",
+      "Hakumen (AoE counter = safety net during Blood Scythe recovery)",
+      "Es (Crest generation sustains Ragna during low HP windows)"
+    ],
+    tips:[
+      "Let your HP hover near 50% on purpose — this is Ragna's optimal combat state, not an emergency",
+      "Pair Cold Attack to slow enemies into Blood Scythe range — every hit heals, so more hits = more HP",
+      "Avoid max HP builds — more HP means Blood Kain activates less often"
+    ],
     builds:[
       { id:"bloodletting", name:"BLOODLETTING", arch:"Risk-Reward / Sustain", rating:85,
         tactics:["Attack Cold (Ice)","Skill Burn (Fire)","Dash Thunderbolt (Light)","Legacy Shadow Spike (Umbra)","Summon Lightning Orb (Electric)"],
@@ -119,6 +155,24 @@ const CHARACTERS = [
   },
   { id:"jin", name:"Jin Kisaragi", tag:"ICE / SWORD", tier:"S", color:"#4EA8D8",
     img:"/chars/jin.png",
+    talent:"Frost Dodge — perfect dodge creates a lingering slow field that persists for 2 seconds, reducing all enemy speed in range by ~60%.",
+    legacySkill:"Frost Coffin — encases all on-screen enemies in ice briefly, dealing Ice damage and stopping all movement.",
+    mechanics:[
+      "Ice stacks from normals and skills stack to 5 — at max, the next hit does bonus burst damage",
+      "Frost Dodge field stacks with Ice tactics — enemies inside the field take full Cold Attack bonus",
+      "Aerial normals have lower recovery than grounded — use jump-attacks to maintain ice stack pressure",
+      "Dodge timing window is generous — focus on perfect dodges over raw evasion to generate slow fields"
+    ],
+    synergies:[
+      "Hibiki (clones maintain Ice stacks in background while Jin repositions)",
+      "Kokonoe (missiles maintain stacks from range)",
+      "Rachel (wind control corrals enemies into Frost Dodge field)"
+    ],
+    tips:[
+      "Frost Dodge + Cold Attack = enemies at ~30% speed. At this point, landing full ice stack combos is trivial",
+      "Chain perfect dodges to maintain overlapping slow fields — near-permanent area slow on bosses",
+      "Ice spike summons hold ice stacks on an enemy while you target others"
+    ],
     builds:[
       { id:"freeze_god", name:"FREEZE GOD", arch:"Control / Auto Mode", rating:98,
         tactics:["Attack Cold (Ice)","Skill Cold (Ice)","Dash Shadow Ice Spike (Double)","Legacy Frost Burst (Ice)","Summon Ice Spike (Ice)"],
@@ -163,6 +217,24 @@ const CHARACTERS = [
   },
   { id:"kokonoe", name:"Kokonoe Mercury", tag:"ZONING / SCIENCE", tier:"A", color:"#E8714A",
     img:"/chars/kokonoe.png",
+    talent:"Missile Barrage — summon fires additional homing missiles passively after using skills, scaling with Summon potential upgrades.",
+    legacySkill:"Gravity Trap — drops a gravitational device that pulls all nearby enemies to its center while dealing persistent damage.",
+    mechanics:[
+      "Missiles and lasers are independent damage sources — both benefit from Tactic procs simultaneously",
+      "Laser has the highest single-target DPS in the game — prioritize Skill tactics for laser scaling",
+      "Summon potential tree buffs missile count and homing ability — more missiles = exponentially more proc opportunities",
+      "Kokonoe's hitbox is small — dodge is easier to time, enabling consistent Frost Dodge or similar combos from Evotypes"
+    ],
+    synergies:[
+      "Jin (Frost Dodge slow corrals enemies into missile cluster)",
+      "Es (Crest fields hold enemies still for laser)",
+      "Blackhole legacy (gravitational pull concentrates enemies for missile AoE)"
+    ],
+    tips:[
+      "Kokonoe's DPS ceiling is the highest in the roster — do not cap yourself by using attack-trigger tactics instead of skill-trigger",
+      "Gravity Trap legacy + missile barrage = enemies cluster and take 5× missile hits before escaping",
+      "Focus the Summon potential tree to missiles — each upgrade exponentially increases passive damage"
+    ],
     builds:[
       { id:"aerial_bomber", name:"AERIAL BOMBER", arch:"Aerial DoT / Untouchable", rating:94,
         tactics:["Skill Burn (Fire)","Attack Fire Spirit (Fire)","Dash Thunderbolt (Light)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
@@ -207,6 +279,24 @@ const CHARACTERS = [
   },
   { id:"es", name:"Es", tag:"CREST / SPATIAL", tier:"A", color:"#E878A0",
     img:"/chars/es.png",
+    talent:"Crest Resonance — placing multiple Crests near each other causes them to resonate, dealing bonus damage when enemies pass through the field.",
+    legacySkill:"Sealing Formation — places 4 Crests in a formation around the player that activate simultaneously on the next hit.",
+    mechanics:[
+      "Crests are placed by skills and remain on the field until triggered or expired — up to 8 active at once",
+      "Aerial Crest skills have wider placement radius — use air combos to cover more terrain",
+      "Crest Resonance damage is separate from the base Crest — it does not share the same cooldown",
+      "Es can make enemies airborne — juggled enemies cannot attack and take bonus aerial hit damage"
+    ],
+    synergies:[
+      "Kokonoe (Gravity Trap clusters enemies into Crest fields)",
+      "Rachel (Wind control pushes enemies through multiple Crest lines)",
+      "Hibiki (Shadow Clone triggers Crests independently of Es's attacks)"
+    ],
+    tips:[
+      "Pre-place Crests before engaging elites — walk into combat with the trap already set",
+      "Light Spear as Legacy fires into Crest clusters — each spear hit that passes through a Crest triggers it",
+      "Aerial build Es stays airborne above Crest fields, raining hits down to trigger them safely"
+    ],
     builds:[
       { id:"mine_bouncer", name:"MINE BOUNCER", arch:"Es-Exclusive / Highest Burst", rating:93,
         tactics:["Summon Mine (Fire)","Attack Cold (Ice)","Skill Burn (Fire)","Dash Shadow Spike (Umbra)","Legacy Thunderbolt (Light)"],
@@ -251,6 +341,24 @@ const CHARACTERS = [
   },
   { id:"noel", name:"Noel Vermillion", tag:"RAPID / DRIVE", tier:"A", color:"#60A5FA",
     img:"/chars/noel.png",
+    talent:"Drive Shot — attacking from maximum range triggers an additional Bloom hit that deals bonus damage. The farther you are, the more it adds.",
+    legacySkill:"Bloom — fires a rapid burst of Bloom bullets in a spread pattern that each apply tactic procs on hit.",
+    mechanics:[
+      "Hold Attack (charged X) builds Drive gauge — release at full charge for a single high-damage hit that ignores many resistances",
+      "Air combo (5-hit chain) can bypass most boss attack patterns — each hit applies elemental stacks",
+      "Drive Shot range bonus means kiting backwards while attacking is always the correct positioning",
+      "Bloom legacy fires multiple projectiles — each can independently proc Attack tactics like Cold Attack or Shadow Spike"
+    ],
+    synergies:[
+      "Hakumen (counter skill buys time to maintain max-range positioning)",
+      "Jin (Frost field keeps enemies at manageable range for Drive Shot bonus)",
+      "Lambda (Blade tactics complement Noel's rapid multi-hit pattern)"
+    ],
+    tips:[
+      "Never let enemies close distance — Drive Shot bonus only activates at max range",
+      "Charged hold attack is free damage — no MP cost, high value. Work it into every combo cycle",
+      "Bloom legacy fires spread pattern — position so multiple bullets hit the same target"
+    ],
     builds:[
       { id:"bullet_storm", name:"BULLET STORM", arch:"Rapid Fire / DPS Machine", rating:91,
         tactics:["Attack Cold (Ice)","Skill Chain Lightning (Light)","Dash Thunderbolt (Light)","Legacy Light Spear (Light)","Summon Lightning Orb (Electric)"],
@@ -295,6 +403,24 @@ const CHARACTERS = [
   },
   { id:"rachel", name:"Rachel Alucard", tag:"ZONING / WIND", tier:"A", color:"#D8B4FE",
     img:"/chars/rachel.png",
+    talent:"Wind Control — Rachel's attacks generate Wind stacks on enemies. At 5 stacks, a burst of wind launches them airborne.",
+    legacySkill:"Tempest Dahlia — fires a horizontal wind wave that gathers all enemies in its path toward the center of the screen.",
+    mechanics:[
+      "Sylph (wind familiar) attacks independently and generates its own Wind stacks — passive stack generation at all times",
+      "Tempest Dahlia legacy gathers enemies from across the entire screen — best setup tool in the game",
+      "George XIII (frog familiar) fires projectiles that apply elemental tactics on hit from the summon slot",
+      "Rachel's mobility is low — use Tempest Dahlia to bring enemies to you rather than chasing"
+    ],
+    synergies:[
+      "Kokonoe (missiles carpet-bomb the clustered enemies after Tempest Dahlia)",
+      "Es (Crests placed mid-screen get triggered by gathered enemy cluster)",
+      "Jin (Frost Dodge slows the gathered cluster for free stacks)"
+    ],
+    tips:[
+      "Use Tempest Dahlia to group all enemies before using AoE skills — position right then burst",
+      "Sylph uptime is more important than Rachel's direct attacks — always re-summon on cooldown",
+      "Rachel thrives on high-enemy-count stages where Tempest Dahlia's gathering effect is most impactful"
+    ],
     builds:[
       { id:"bat_swarm", name:"BAT SWARM", arch:"Legacy Spam / Passive DPS", rating:88,
         tactics:["Attack Chain Lightning (Light)","Skill Light Spear (Light)","Dash Thunderbolt (Light)","Legacy Chain Lightning (Light)","Summon Lightning Orb (Electric)"],
@@ -339,6 +465,24 @@ const CHARACTERS = [
   },
   { id:"taokaka", name:"Taokaka", tag:"RUSH / BEAST", tier:"B", color:"#FCD34D",
     img:"/chars/taokaka.png",
+    talent:"Combo Rush — each consecutive hit on the same enemy increases Taokaka's attack speed by 3% up to 10 stacks (30% total speed boost).",
+    legacySkill:"Claw Assault — Taokaka dashes across the screen clawing through every enemy in her path, dealing multi-hit Blade damage.",
+    mechanics:[
+      "Dash distance is among the longest in the roster — use it aggressively to reposition mid-combo without losing momentum",
+      "Combo Rush stacks reset if Taokaka stops attacking for more than 1 second — maintain pressure",
+      "Aerial normals have faster recovery than ground normals — stay airborne during extended combo chains",
+      "Taokaka's dodge has shortest recovery in the roster — mash dodge during boss patterns freely"
+    ],
+    synergies:[
+      "Hibiki (Shadow Clone extends combo chains with additional hits)",
+      "Noel (Bloom hits maintain combo momentum between Taokaka's gaps)",
+      "Bullet (CQC damage bonus synergizes with Taokaka's close-range dash pattern)"
+    ],
+    tips:[
+      "Prioritize Combo Rush maintenance — 30% attack speed translates to 30% more tactic procs per second",
+      "Dash through enemies rather than around them — Claw Assault legacy activates in-dash",
+      "Fire tactics suit Taokaka best — high hit frequency ignites burn stacks rapidly"
+    ],
     builds:[
       { id:"claw_blitz", name:"CLAW BLITZ", arch:"Hyper-Aggression / Speed", rating:86,
         tactics:["Attack Shadow Spike (Umbra)","Skill Chain Lightning (Light)","Dash Thunderbolt (Light)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
@@ -383,6 +527,24 @@ const CHARACTERS = [
   },
   { id:"lambda", name:"Lambda-11", tag:"BLADE / SWORDS", tier:"A", color:"#6EE7B7",
     img:"/chars/lambda.png",
+    talent:"Aerial Advantage — Lambda deals increased damage while airborne. All aerial attacks have bonus hit stun, keeping enemies in juggle state longer.",
+    legacySkill:"Sword Summoning — summons a ring of 8 spectral swords that orbit Lambda briefly then fire outward in all directions.",
+    mechanics:[
+      "Blade Summon (circle button) spawns orbiting swords that individually proc Attack tactics on each orbit pass",
+      "Aerial attacks apply Aerial Advantage bonus — jump before every attack for maximum damage",
+      "Sword Summoning legacy + Shadow Spike = 8 procs per cast at 275 each = 2200 burst from one button",
+      "Lambda lacks horizontal mobility compared to other S-tier picks — compensate with vertical positioning"
+    ],
+    synergies:[
+      "Es (Crest juggle keeps enemies airborne for Aerial Advantage duration)",
+      "Noel (Drive Shot range bonus on Lambda's Blade projectiles)",
+      "Hibiki (Clone shadow dashes maintain blade procs from multiple positions)"
+    ],
+    tips:[
+      "Never fight on the ground — Lambda's entire kit scales off aerial positioning",
+      "Sword Summoning legacy covers 360° — use it when surrounded rather than trying to dodge out",
+      "Blade tactics with Lambda's summon: each orbiting sword counts as an independent hit for proc purposes"
+    ],
     builds:[
       { id:"sword_rain", name:"SWORD RAIN", arch:"Multi-Hit / Turret Hybrid", rating:89,
         tactics:["Skill Light Spear (Light)","Attack Chain Lightning (Light)","Dash Thunderbolt (Light)","Legacy Light Spear (Light)","Summon Lightning Orb (Electric)"],
@@ -427,6 +589,24 @@ const CHARACTERS = [
   },
   { id:"mai", name:"Mai Natsume", tag:"SPEAR / NEEDLE", tier:"A", color:"#FB923C",
     img:"/chars/mai.png",
+    talent:"Needle Precision — charged attacks always critical hit. Critical hits deal 150% of normal damage and apply elemental effects at double the rate.",
+    legacySkill:"Tempest Throw — Mai throws multiple spears in a spreading fan formation that cover a wide horizontal area.",
+    mechanics:[
+      "Charge input: hold attack button to charge — releases automatically at max charge or on button release",
+      "Spear throw skill covers a longer range than most normals — use it to apply elemental stacks from safety",
+      "Needle Precision means charged attacks proc elemental tactics at double rate — Burn stacks hit 5 in half the time",
+      "Mai generates tornadoes from specific skill chains — tornado persists on field and applies continuous tactic procs"
+    ],
+    synergies:[
+      "Kokonoe (missile saturation covers Mai's charge downtime)",
+      "Rachel (Tempest Dahlia groups enemies for Tempest Throw fan coverage)",
+      "Jin (Ice stacks set up for Needle Precision crit chain)"
+    ],
+    tips:[
+      "Never use quick attacks — always charge. The crit bonus + double elemental rate means uncharged hits are always suboptimal",
+      "Tempest Throw + AoE Burn = massive DoT spread across fan range from a single legacy cast",
+      "Tornado generation chains — learn the specific skill order that triggers them for your main builds"
+    ],
     builds:[
       { id:"needle_storm", name:"NEEDLE STORM", arch:"Projectile / Long Range", rating:87,
         tactics:["Skill Fire Projectile (Fire)","Attack Burn (Fire)","Dash Thunderbolt (Light)","Legacy Light Spear (Light)","Summon Lightning Orb (Electric)"],
@@ -471,6 +651,24 @@ const CHARACTERS = [
   },
   { id:"hazama", name:"Hazama", tag:"CHAIN / COUNTER", tier:"B", color:"#86EFAC",
     img:"/chars/hazama.png",
+    talent:"Ouroboros Counter — perfectly timed block converts incoming damage into a counter-strike chain, dealing damage proportional to the attack blocked.",
+    legacySkill:"Chain Snare — fires a chain that hooks an enemy and holds them in place for 2 seconds, stunning them for guaranteed follow-up hits.",
+    mechanics:[
+      "Counter timing window is generous compared to Hakumen — can be held slightly longer before releasing",
+      "Chain Snare locks a single enemy — use it on elites or bosses during their attack windup",
+      "Ouroboros Counter damage scales with the ENEMY'S attack value — block strong hits to deal stronger counters",
+      "Hazama's normal attack chain ends with a wide-range chain sweep — prioritize reaching the final hit in combos"
+    ],
+    synergies:[
+      "Hakumen (counter stacking — both characters' counter skills can be cycled for near-continuous counter coverage)",
+      "Noel (Bloom fills Hazama's damage gap while he waits for counter windows)",
+      "Lambda (Sword Summoning covers the time between Hazama's counter opportunities)"
+    ],
+    tips:[
+      "Block intentionally on hard hitting enemies — Ouroboros Counter on a boss heavy attack is your highest damage window",
+      "Chain Snare + Shadow Spike = 2 seconds of free hits on a locked enemy. Cast every other proc in that window",
+      "Hazama's mid-tier status is entirely playstyle dependent — counter mains outperform his rating; dashers underperform it"
+    ],
     builds:[
       { id:"chain_venom", name:"CHAIN VENOM", arch:"Whip / Zoning", rating:83,
         tactics:["Attack Shadow Spike (Umbra)","Skill Chain Lightning (Light)","Dash Thunderbolt (Light)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
@@ -515,6 +713,24 @@ const CHARACTERS = [
   },
   { id:"hakumen", name:"Hakumen", tag:"VOID / COUNTER", tier:"S", color:"#F1F5F9",
     img:"/chars/hakumen.png",
+    talent:"Void Counter — any successful counter or block activates a brief period of super armor, making Hakumen immune to stagger during the counter animation.",
+    legacySkill:"Suzaku — Hakumen performs a wide rising counter-slash that hits all enemies in a large radius, dealing extreme Light damage.",
+    mechanics:[
+      "Hakumen's counter has the largest input window in the game — he is the best character for learning boss patterns",
+      "Super armor during counter means you can absorb multiple hits simultaneously and still activate the counter-strike",
+      "Light Spear tactics perfectly complement counter builds — Suzaku legacy activates Light procs on all hit enemies",
+      "Charged heavy attack hits a massive AoE zone — covers most of the screen, ideal for clearing enemy clusters"
+    ],
+    synergies:[
+      "Ragna (Blood Scythe during Hakumen counter window = both deal massive damage in same frame)",
+      "Kokonoe (missiles apply Light stacks between Hakumen's slow counter-timing windows)",
+      "Jin (Frost field freezes enemies, trivializing Hakumen counter timing)"
+    ],
+    tips:[
+      "Never rush. Hakumen is a read-based character — wait for enemy attack animation, then counter",
+      "Void Counter super armor means you can trade hits during the counter itself — don't dodge, block",
+      "Light Spear + Suzaku = every legacy cast spreads Light Spear procs to all on-screen enemies simultaneously"
+    ],
     builds:[
       { id:"void_counter", name:"VOID COUNTER", arch:"Counter God / Absolute", rating:96,
         tactics:["Skill Light Spear (Light)","Attack Chain Lightning (Light)","Dash Thunderbolt (Light)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
@@ -559,6 +775,24 @@ const CHARACTERS = [
   },
   { id:"bullet", name:"Bullet", tag:"SHELL / CQC", tier:"B", color:"#F97316",
     img:"/chars/bullet.png",
+    talent:"Shell Load — Bullet's specials load additional shell charges. At max charge, the next special deals 200% damage with added screen shake effect.",
+    legacySkill:"Inferno Divider — Bullet performs a high-speed spinning dive kick that deals massive CQC Fire damage in a vertical column.",
+    mechanics:[
+      "Shell gauge fills passively and from hits — manage it to ensure max-charge specials align with elite/boss spawn timing",
+      "CQC range requirement means Bullet must be in melee — prioritize survival through aggression, not evasion",
+      "Inferno Divider legacy is a vertical attack — effective against aerial enemies and as a launcher into juggle combos",
+      "Bullet's dash is shorter than most — compensate with aggression timing rather than distance-based repositioning"
+    ],
+    synergies:[
+      "Taokaka (Combo Rush attack speed synergizes with Bullet's high hit frequency CQC range)",
+      "Hazama (Chain Snare locks enemies in melee range for Bullet's optimal engagement zone)",
+      "Ragna (Blood Scythe AoE covers Bullet's limited range during shell loading downtime)"
+    ],
+    tips:[
+      "Shell Load max charge + Fire Double Tactic = one shot potential on most non-boss enemies",
+      "Inferno Divider can hit airborne enemies — use it as an anti-air launcher then continue with ground combos",
+      "Stay in melee at all times — Bullet is statistically worse the farther she is from her target"
+    ],
     builds:[
       { id:"heat_seeker", name:"HEAT SEEKER", arch:"Close Range / Overwhelm", rating:82,
         tactics:["Attack Fire Spirit (Fire)","Skill Burn (Fire)","Dash Thunderbolt (Light)","Legacy Ring of Fire (Fire)","Summon Lightning Orb (Electric)"],
@@ -603,6 +837,24 @@ const CHARACTERS = [
   },
   { id:"naoto", name:"Naoto Kurogane", tag:"BLOOD / HUNTER", tier:"S", color:"#F87171",
     img:"/chars/naoto.png",
+    talent:"Blood Weapon Charge — all of Naoto's attacks can be empowered by holding the attack button. Charged attacks deal 180-250% base damage and apply bonus elemental stacks.",
+    legacySkill:"Bloodline Annihilation — Naoto unleashes a full-screen blood wave in both directions, hitting all enemies and applying bleed stacks that deal damage over time.",
+    mechanics:[
+      "Dash into an attack immediately: charging dashes builds Blood Weapon charge faster than standing",
+      "Bleed stacks from Bloodline Annihilation stack with Fire Burn — two DoT sources running simultaneously",
+      "Naoto's charged attack animation has lower recovery than Ragna's Blood Scythe — safer burst window",
+      "X-exclusive character — only available in Entropy Effect X update content"
+    ],
+    synergies:[
+      "Hazama (Chain Snare locks enemies while Naoto charges Blood Weapon for free)",
+      "Mai (Needle Precision crit rate stacks with Naoto's Charge mechanic for guaranteed crits)",
+      "Hibiki (Shadow Clone procs Bloodline Annihilation legacy's proc count ×3)"
+    ],
+    tips:[
+      "Always dash before attacking — the momentum from dash-cancel into charge attack is Naoto's highest damage combo",
+      "Bloodline Annihilation hits both sides — position centrally before casting to hit maximum targets",
+      "Naoto is the recommended beginner character in X — his charged attack mechanic teaches fundamentals applicable to every character"
+    ],
     builds:[
       { id:"hunters_eye", name:"HUNTER'S EYE", arch:"Execute / Life Force", rating:93,
         tactics:["Attack Shadow Spike (Umbra)","Skill Light Spear (Light)","Dash Thunderbolt (Light)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
@@ -647,6 +899,24 @@ const CHARACTERS = [
   },
   { id:"icey", name:"ICEY", tag:"PIXEL / DANCER", tier:"A", color:"#A78BFA",
     img:"/chars/icey.jpg",
+    talent:"Pixel Perfect — ICEY's dash has the shortest iframe window in the game, but landing a kill within 0.5s of a dash grants a brief invincibility buff.",
+    legacySkill:"EX Mode — ICEY temporarily enters a powered state, increasing all damage by 30% and dash speed by 50% for 5 seconds.",
+    mechanics:[
+      "Unique crossover character with gameplay closer to her home game — attacks are faster and chain more fluidly than BlazBlue cast",
+      "EX Mode legacy stacks multiplicatively with elemental tactic bonuses — activate it during maximum tactic saturation for peak DPS",
+      "ICEY's aerial combos chain indefinitely with proper timing — airborne juggle is her strongest sustained DPS pattern",
+      "Her normal attack chain has the fastest animation frames on cancel — maximizes tactic proc frequency"
+    ],
+    synergies:[
+      "Lambda (Aerial Advantage + ICEY aerial combo = both characters' bonuses active simultaneously)",
+      "Noel (Drive Shot range adds to ICEY's normally close-range kit)",
+      "Naoto (Blood Weapon charge fills during ICEY's fast attack chains)"
+    ],
+    tips:[
+      "EX Mode + Shadow Spike at Legendary = 275 × 30% EX bonus per proc during EX window",
+      "Cancel every normal into a dash — Pixel Perfect kill-dash chain is ICEY's primary sustain mechanic",
+      "ICEY is the most beginner-accessible character for players unfamiliar with BlazBlue — her patterns are more forgiving"
+    ],
     builds:[
       { id:"pixel_storm", name:"PIXEL STORM", arch:"Mobile / DPS Dancer", rating:88,
         tactics:["Attack Chain Lightning (Light)","Skill Light Spear (Light)","Dash Thunderbolt (Light)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
@@ -691,6 +961,24 @@ const CHARACTERS = [
   },
   { id:"prisoner", name:"The Prisoner", tag:"DEAD CELLS / BRUTAL", tier:"A", color:"#94A3B8",
     img:"/chars/prisoner.png",
+    talent:"Dead Cells Arsenal — The Prisoner carries over one bonus weapon effect from the previous room as a passive buff. Each room cleared can change the active effect.",
+    legacySkill:"Brutality Surge — channels Dead Cells energy to instantly apply Burn, Bleed, and Ice stacks simultaneously to all visible enemies.",
+    mechanics:[
+      "Unique Dead Cells crossover character — mechanics are intentionally asymmetric to BlazBlue cast",
+      "Dead Cells Arsenal bonus changes each room — prioritize rooms with damage-type bonuses matching your tactic build",
+      "Brutality Surge applies three elemental stacks at once — enables triple-element tactic builds that other characters cannot achieve",
+      "The Prisoner has no fixed skill tree upgrades — potentials are drawn from a randomized Dead Cells loot table each run"
+    ],
+    synergies:[
+      "Rachel (Tempest Dahlia clusters enemies for Brutality Surge multi-stack application)",
+      "Kokonoe (missile saturation during Dead Cells Arsenal offensive buff windows)",
+      "Es (Crest fields hold enemies for Brutality Surge's triple elemental application)"
+    ],
+    tips:[
+      "Brutality Surge is the only ability in the game that applies three elements simultaneously — build your entire tactic set around all three",
+      "Monitor which Dead Cells Arsenal effect is active each room — adjust your engagement range accordingly",
+      "The Prisoner is highest-skill-ceiling character in X — mastery requires Dead Cells knowledge AND BlazBlue mechanics"
+    ],
     builds:[
       { id:"beheaded_run", name:"BEHEADED RUN", arch:"Roguelike / Adaptive", rating:90,
         tactics:["Attack Shadow Spike (Umbra)","Skill Chain Lightning (Light)","Dash Thunderbolt (Light)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
@@ -1077,6 +1365,65 @@ export default function App() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* ── NEW SECTIONS ── */}
+      <div style={S.g2}>
+        {/* TALENT + LEGACY SKILL */}
+        <div style={{...S.card, borderColor: char.color+"33"}}>
+          <div style={S.label}>EVOTYPE TALENT</div>
+          <div style={{display:"flex", alignItems:"flex-start", gap:12, marginBottom:18}}>
+            <div style={{background:char.color+"22", border:`2px solid ${char.color}`, padding:"6px 14px", fontSize:11, fontWeight:900, letterSpacing:2, color:char.color, flexShrink:0, alignSelf:"flex-start"}}>TALENT</div>
+            <div style={{fontSize:13, color:"#D0D0D0", lineHeight:1.7}}>{char.talent}</div>
+          </div>
+          <div style={S.label}>LEGACY SKILL</div>
+          <div style={{display:"flex", alignItems:"flex-start", gap:12}}>
+            <div style={{background:"#C9A22722", border:"2px solid #C9A227", padding:"6px 14px", fontSize:11, fontWeight:900, letterSpacing:2, color:"#C9A227", flexShrink:0, alignSelf:"flex-start"}}>LEGACY</div>
+            <div style={{fontSize:13, color:"#D0D0D0", lineHeight:1.7}}>{char.legacySkill}</div>
+          </div>
+        </div>
+
+        {/* BEST SYNERGY EVOTYPES */}
+        <div style={S.card}>
+          <div style={S.label}>BEST EVOTYPE SYNERGIES</div>
+          {char.synergies.map((s,i)=>{
+            const name = s.split(" (")[0].replace(/[()]/g,"").trim();
+            const reason = s.includes("(") ? s.substring(s.indexOf("(")+1, s.lastIndexOf(")")) : s;
+            return (
+              <div key={i} style={{display:"flex", alignItems:"flex-start", gap:10, padding:"9px 12px", marginBottom:5, background:"#111", borderLeft:`3px solid ${char.color}`}}>
+                <div style={{fontSize:11, fontWeight:900, letterSpacing:1, color:char.color, flexShrink:0, paddingTop:2}}>#{i+1}</div>
+                <div>
+                  <div style={{fontSize:13, color:"#E0E0E0", fontWeight:700}}>{name}</div>
+                  <div style={{fontSize:11, color:"#555", lineHeight:1.5}}>{reason}</div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* KEY MECHANICS */}
+      <div style={S.card}>
+        <div style={S.label}>KEY MECHANICS</div>
+        <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:10}}>
+          {char.mechanics.map((m,i)=>(
+            <div key={i} style={{display:"flex", gap:10, padding:"10px 13px", background:"#0D0D0D", border:"1px solid #1A1A1A", borderLeft:`3px solid ${char.color}44`}}>
+              <div style={{fontSize:18, color:char.color, fontWeight:900, flexShrink:0, lineHeight:1}}>{i+1}</div>
+              <div style={{fontSize:12, color:"#B0B0B0", lineHeight:1.65}}>{m}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* PRO TIPS */}
+      <div style={S.card}>
+        <div style={S.label}>MORPHEUS\'S TIPS</div>
+        {char.tips.map((t,i)=>(
+          <div key={i} style={{display:"flex", gap:12, padding:"9px 13px", marginBottom:6, background:"#0B0B0B", borderLeft:"3px solid #C9A227"}}>
+            <div style={{color:"#C9A227", fontWeight:900, fontSize:13, flexShrink:0}}>TIP {i+1}</div>
+            <div style={{fontSize:12, color:"#C0B070", lineHeight:1.65}}>{t}</div>
+          </div>
+        ))}
       </div>
     </div>
   );
