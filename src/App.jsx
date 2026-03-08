@@ -28,7 +28,7 @@ const ELEM_COLORS = { ice:"#5BC4E8", fire:"#E84E25", umbra:"#A855F7", light:"#ED
 
 const CHARACTERS = [
   { id:"hibiki", name:"Hibiki Kohaku", tag:"SHADOW / CLONE", tier:"S", color:"#7B8FE4",
-    img:"https://static.wikia.nocookie.net/blazblue/images/c/c7/Hibiki_Kohaku_%28Centralfiction%2C_Character_Select_Artwork%29.png/revision/latest",
+    img:"/chars/hibiki.png",
     builds:[
       { id:"clone_army", name:"CLONE ARMY", arch:"AoE Dominance", rating:97,
         tactics:["Attack Shadow Spike (Umbra)","Skill Lightning Orb (Electric)","Dash Thunderbolt (Light)","Legacy Ice Spike (Ice)","Summon Chain Lightning (Light)"],
@@ -72,7 +72,7 @@ const CHARACTERS = [
     ]
   },
   { id:"ragna", name:"Ragna the Bloodedge", tag:"MELEE / LIFESTEAL", tier:"B", color:"#D93025",
-    img:"https://static.wikia.nocookie.net/blazblue/images/1/16/Ragna_the_Bloodedge_%28Centralfiction%2C_Character_Select_Artwork%29.png/revision/latest",
+    img:"/chars/ragna.png",
     builds:[
       { id:"bloodletting", name:"BLOODLETTING", arch:"Risk-Reward / Sustain", rating:85,
         tactics:["Attack Cold (Ice)","Skill Burn (Fire)","Dash Thunderbolt (Light)","Legacy Shadow Spike (Umbra)","Summon Lightning Orb (Electric)"],
@@ -116,7 +116,7 @@ const CHARACTERS = [
     ]
   },
   { id:"jin", name:"Jin Kisaragi", tag:"ICE / SWORD", tier:"S", color:"#4EA8D8",
-    img:"https://static.wikia.nocookie.net/blazblue/images/b/ba/Jin_Kisaragi_%28Centralfiction%2C_Character_Select_Artwork%29.png/revision/latest",
+    img:"/chars/jin.png",
     builds:[
       { id:"freeze_god", name:"FREEZE GOD", arch:"Control / Auto Mode", rating:98,
         tactics:["Attack Cold (Ice)","Skill Cold (Ice)","Dash Shadow Ice Spike (Double)","Legacy Frost Burst (Ice)","Summon Ice Spike (Ice)"],
@@ -160,7 +160,7 @@ const CHARACTERS = [
     ]
   },
   { id:"kokonoe", name:"Kokonoe Mercury", tag:"ZONING / SCIENCE", tier:"A", color:"#E8714A",
-    img:"https://static.wikia.nocookie.net/blazblue/images/c/ce/Konoe_A._Mercury_%28Centralfiction%2C_Character_Select_Artwork%29.png/revision/latest",
+    img:"/chars/kokonoe.png",
     builds:[
       { id:"aerial_bomber", name:"AERIAL BOMBER", arch:"Aerial DoT / Untouchable", rating:94,
         tactics:["Skill Burn (Fire)","Attack Fire Spirit (Fire)","Dash Thunderbolt (Light)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
@@ -204,7 +204,7 @@ const CHARACTERS = [
     ]
   },
   { id:"es", name:"Es", tag:"CREST / SPATIAL", tier:"A", color:"#E878A0",
-    img:"https://static.wikia.nocookie.net/blazblue/images/5/57/Es_%28Centralfiction%2C_Character_Select_Artwork%29.png/revision/latest",
+    img:"/chars/es.png",
     builds:[
       { id:"mine_bouncer", name:"MINE BOUNCER", arch:"Es-Exclusive / Highest Burst", rating:93,
         tactics:["Summon Mine (Fire)","Attack Cold (Ice)","Skill Burn (Fire)","Dash Shadow Spike (Umbra)","Legacy Thunderbolt (Light)"],
@@ -245,6 +245,490 @@ const CHARACTERS = [
         radar:{burst:88,sustain:70,aoe:90,control:65,survival:72},
         crystals:["Kill Streak","Combo Counter","Crystal Resonance"],
         mathKey:"Taokaka speed: 2+ mine placements per second possible during combat. Fire Spirit Detonation on Burning enemies: chain explosions from Mine DoT. Ring of Fire burst: 770 every ~8 sec = 96 DPS average. Total active build: ~2493 DPS with highest mobility of any Es build." }
+    ]
+  },
+  { id:"noel", name:"Noel Vermillion", tag:"RAPID / DRIVE", tier:"A", color:"#60A5FA",
+    img:"/chars/noel.png",
+    builds:[
+      { id:"bullet_storm", name:"BULLET STORM", arch:"Rapid Fire / DPS Machine", rating:91,
+        tactics:["Attack Cold (Ice)","Skill Chain Lightning (Light)","Dash Thunderbolt (Light)","Legacy Light Spear (Light)","Summon Lightning Orb (Electric)"],
+        reasoning:[
+          "Noel Drive: fastest attack speed in roster — more hits per second = more Cold procs per second",
+          "Cold Attack (46%) on rapid normals: 46% on 5+ hits/sec = massive sustained DPS multiplier",
+          "Chain Lightning: 295 per proc × Noel attack rate = effectively continuous chain lightning field",
+          "Thunderbolt on each dash: Noel mobility-attacks are offense, each dash fires chain lightning",
+          "Lightning Orb autonomous: 245 DPS with zero input while Noel fires continuously"
+        ],
+        dps:[{n:"Base DPS",v:580},{n:"+ Cold (46%)",v:847},{n:"+ Chain Lightning",v:1732},{n:"+ Thunderbolt dash",v:2057},{n:"+ Orb Turret",v:2302}],
+        radar:{burst:70,sustain:100,aoe:80,control:65,survival:72},
+        crystals:["Kill Streak","Combo Counter","SP Refuel"],
+        mathKey:"Noel has highest attack rate of all characters — ~5 hits/sec base. Cold Attack at 46%: 580 → 847 per sec. Chain Lightning at 295/proc × 5 hits/sec = 1475 chain DPS alone. That's before base attack. Combined: 2302 sustained DPS with zero ceiling on attack speed scaling." },
+      { id:"artillery_queen", name:"ARTILLERY QUEEN", arch:"Zoner / Mid-Range", rating:85,
+        tactics:["Skill Burn (Fire)","Attack Fire Spirit (Fire)","Dash Shadow Spike (Umbra)","Legacy Ring of Fire (Fire)","Summon Lightning Orb (Electric)"],
+        reasoning:[
+          "Noel Drive: optimal spacing at mid-range where all projectile skills hit max hitboxes",
+          "Skill Burn: 360/s DoT stacks with every Drive B skill cast — Noel casts 2-3 skills per combo",
+          "Fire Spirit tracks targets automatically — pairs with Noel's aggressive forward pressure",
+          "Ring of Fire: 770 burst on legacy. Noel mobility options allow safe legacy windows on bosses",
+          "Shadow Spike: 275 proc on every normal — Drive A normals become burst damage tools"
+        ],
+        dps:[{n:"Base DPS",v:580},{n:"+ Burn DoT",v:940},{n:"+ Fire Spirit",v:1510},{n:"+ Shadow Spike",v:1785},{n:"+ Ring of Fire cycle",v:2130}],
+        radar:{burst:80,sustain:88,aoe:72,control:55,survival:68},
+        crystals:["Kill Streak","Crystal Resonance","SP Refuel"],
+        mathKey:"Drive B skills spam at 360 DoT/s each stack. Fire Spirit on 3 targets: 190×3 = 570 passive. Shadow Spike 275 per Drive A hit × 3/sec = 825 shadow DPS. Ring burst: 770 ÷ 8 sec = 96 avg. Combined: ~2130 DPS with Noel's highest sustained boss damage." },
+      { id:"frost_dancer", name:"FROST DANCER", arch:"Mobility / Untouchable", rating:82,
+        tactics:["Attack Cold (Ice)","Skill Cold (Ice)","Dash Shadow (Umbra)","Legacy Blackhole (Umbra)","Summon Ice Spike (Ice)"],
+        reasoning:[
+          "Double Cold on Noel's attack rate: max cold stacks reached in ~2 sec vs 5+ sec on other characters",
+          "Dash Shadow: dodge becomes invisible burst — Noel 3-dash kit means triple invisible procs",
+          "Blackhole legacy: Noel repositions mid-cast — full-screen slow while staying mobile",
+          "Ice Spike Respawn turrets: auto-fire from multiple angles, no upkeep while Noel kites",
+          "Frost Burst auto-clears rooms from rapid Cold stack accumulation — no stopping to cast AoE"
+        ],
+        dps:[{n:"Base DPS",v:580},{n:"+ Cold Atk (46%)",v:847},{n:"+ Skill Cold (47%)",v:1245},{n:"+ Blackhole ctrl",v:1495},{n:"+ Ice Spike Turrets",v:1745}],
+        radar:{burst:55,sustain:80,aoe:75,control:95,survival:90},
+        crystals:["Frost Shield","Phase Shift","Escape Death"],
+        mathKey:"Noel stacks Cold faster than any character — 5 hits/sec means max stacks in ~2 sec always. Double Cold: 580 → 847 normals, 1245 skills. Blackhole: zero incoming damage window every ~12 sec. Effective survivability: 95 — highest of all Noel builds by far." }
+    ]
+  },
+  { id:"rachel", name:"Rachel Alucard", tag:"ZONING / WIND", tier:"A", color:"#D8B4FE",
+    img:"/chars/rachel.png",
+    builds:[
+      { id:"bat_swarm", name:"BAT SWARM", arch:"Legacy Spam / Passive DPS", rating:88,
+        tactics:["Attack Chain Lightning (Light)","Skill Light Spear (Light)","Dash Thunderbolt (Light)","Legacy Chain Lightning (Light)","Summon Lightning Orb (Electric)"],
+        reasoning:[
+          "Steam (2025): 'Rachel bats trigger Attack Lightning even as Legacy = non-stop chain lightning, zero player input'",
+          "Bats as legacy: fire continuously without consuming skill slot — Chain Lightning procs on every bat hit",
+          "Chain Lightning at 295 × 3 enemies: Rachel's multi-bat spread means simultaneous multi-target procs",
+          "Light Spear: 490 per active skill — stacks on top of passive bat lightning chain",
+          "Thunderbolt on dash: Rachel wind-dash becomes offense, chains into bat spread"
+        ],
+        dps:[{n:"Base Bat DPS",v:520},{n:"+ Chain Lightning",v:1405},{n:"+ Light Spear skills",v:1895},{n:"+ Thunderbolt dash",v:2195},{n:"+ Orb Turret",v:2440}],
+        radar:{burst:78,sustain:95,aoe:88,control:75,survival:70},
+        crystals:["Crystal Resonance","Kill Streak","SP Refuel"],
+        mathKey:"Bats as legacy: continuous proc stream. Chain Lightning × 3 targets per bat hit = 295 × 3 = 885 per bat-hit proc. Rachel fires ~2 bats/sec = 1770 chain DPS from legacy alone — zero active input. Light Spear adds 490 per skill on top. Combined: ~2440 DPS while effectively afk." },
+      { id:"wind_barrier", name:"WIND BARRIER", arch:"Trap / Control Field", rating:84,
+        tactics:["Attack Cold (Ice)","Skill Frost Burst (Ice)","Dash Shadow Spike (Umbra)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
+        reasoning:[
+          "Rachel wind pushes enemies INTO Cold stacks faster — forced repositioning accelerates max-stack timing",
+          "Frost Burst on max Cold: Rachel's wind clusters enemies = AoE burst hits clustered group simultaneously",
+          "Blackhole + wind: double-layer CC — pull into Blackhole while wind pin + Cold slow active",
+          "Shadow Spike: 275 per normal on a character that normals from safe range = sustained shadow DPS",
+          "Lightning Orb field: Rachel places it at chokepoint, wind herds enemies through the turret"
+        ],
+        dps:[{n:"Base DPS",v:520},{n:"+ Cold (46%)",v:759},{n:"+ Frost Burst AoE",v:1209},{n:"+ Shadow Spike",v:1484},{n:"+ Orb Turret",v:1730}],
+        radar:{burst:72,sustain:78,aoe:95,control:98,survival:75},
+        crystals:["Frost Shield","Phase Shift","Crystal Resonance"],
+        mathKey:"Wind mechanic clusters enemies: Frost Burst hits 5+ enemies clustered = 520 × 5 in burst window. Blackhole + Cold: functional 0-movement for 4-6 sec. Highest control rating of any Rachel build at 98 — functionally reduces all incoming damage to near-zero during windows." },
+      { id:"pumpkin_artillery", name:"PUMPKIN ARTILLERY", arch:"Long Range / Screen Control", rating:80,
+        tactics:["Skill Burn (Fire)","Attack Fire Spirit (Fire)","Dash Thunderbolt (Light)","Legacy Ring of Fire (Fire)","Summon Lightning Orb (Electric)"],
+        reasoning:[
+          "Pumpkin bomb travels full screen — Skill Burn at 360/s stacks remotely on enemies across the stage",
+          "Fire Spirit attacks whatever Rachel's pumpkin last hit — remote DoT application",
+          "Ring of Fire: 770 burst on legacy. Rachel can trigger from full-screen safe distance",
+          "Thunderbolt dash: Rachel wind-dash fires chain to nearest enemy = free DPS on repositions",
+          "Orb turret covers Rachel's melee blind spot — pumpkin player never needs to close distance"
+        ],
+        dps:[{n:"Base DPS",v:520},{n:"+ Burn DoT",v:880},{n:"+ Fire Spirit",v:1450},{n:"+ Ring of Fire cycle",v:2220},{n:"+ Thunderbolt dash",v:2470}],
+        radar:{burst:82,sustain:75,aoe:80,control:70,survival:80},
+        crystals:["Kill Streak","SP Refuel","Combo Counter"],
+        mathKey:"Pumpkin range = full screen. Burn at 360/s: applied across stage with zero risk. Fire Spirit 190 × 3 = 570 remote passive. Ring of Fire 770 per legacy from safe range. Combined: 2470 DPS while maintaining maximum distance from all enemies." }
+    ]
+  },
+  { id:"taokaka", name:"Taokaka", tag:"RUSH / BEAST", tier:"B", color:"#FCD34D",
+    img:"/chars/taokaka.png",
+    builds:[
+      { id:"claw_blitz", name:"CLAW BLITZ", arch:"Hyper-Aggression / Speed", rating:86,
+        tactics:["Attack Shadow Spike (Umbra)","Skill Chain Lightning (Light)","Dash Thunderbolt (Light)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
+        reasoning:[
+          "Taokaka: fastest movement speed and highest dash count — more dashes = more Thunderbolt procs",
+          "Shadow Spike: 275 per normal. Taokaka's claw combos hit 4-6 times per string = 1100-1650 shadow burst",
+          "Chain Lightning: bounce clears groups Taokaka dashes through — movement is AoE clearing",
+          "Blackhole: stops multi-enemy groups Taokaka kites into. Best used on group before full claw string",
+          "Steam: 'Taokaka Evotype is standard on Es for speed — on Taokaka herself it enables mine-speed'",
+        ],
+        dps:[{n:"Base DPS",v:560},{n:"+ Shadow Spike",v:835},{n:"+ Chain Lightning",v:1720},{n:"+ Thunderbolt × dashes",v:2170},{n:"+ Blackhole ctrl",v:2420}],
+        radar:{burst:82,sustain:75,aoe:90,control:70,survival:72},
+        crystals:["Kill Streak","Combo Counter","SP Refuel"],
+        mathKey:"Taokaka 4-hit claw string: Shadow Spike × 4 = 275 × 4 = 1100 shadow burst per combo. At ~2 combos/sec = 2200 shadow DPS alone. Thunderbolt on fastest dash count in game: ~4 dashes/sec = 325 × 4 = 1300 Thunderbolt DPS. Combined peak: ~2420 with zero setup requirement." },
+      { id:"speed_demon", name:"SPEED DEMON", arch:"Hit-and-Run / Entropy Rush", rating:82,
+        tactics:["Attack Cold (Ice)","Skill Light Spear (Light)","Dash Thunderbolt (Light)","Legacy Ring of Fire (Fire)","Summon Lightning Orb (Electric)"],
+        reasoning:[
+          "Cold Attack: 46% on Taokaka's high-frequency hits. Stacks Cold in 1-2 sec vs slower characters' 5+ sec",
+          "Light Spear: 490 per skill hit — Taokaka jump-cancel skills keep this proccing on repositions",
+          "Ring of Fire: 770 burst on legacy. Taokaka's speed means legacy windows are safe vs any boss",
+          "Thunderbolt: each of Taokaka's 4+ dashes fires chain to nearest enemy = passive 1300 chain DPS",
+          "Lightning Orb: place, dash past enemies, let turret hit from behind while Taokaka attacks front"
+        ],
+        dps:[{n:"Base DPS",v:560},{n:"+ Cold (46%)",v:818},{n:"+ Light Spear",v:1308},{n:"+ Thunderbolt dashes",v:1958},{n:"+ Orb Turret",v:2208}],
+        radar:{burst:75,sustain:82,aoe:70,control:72,survival:78},
+        crystals:["Phase Shift","Kill Streak","Crystal Resonance"],
+        mathKey:"Cold stacks in 1-2 sec on Taokaka: 560 → 818. Thunderbolt on 4 dashes/sec: 325 × 4 = 1300 chain DPS. Light Spear 490 per skill, ~1 per 2 sec = 245 avg. Combined: 2208 DPS with run-speed stage clear significantly faster than other B-tier builds." },
+      { id:"ambush_cat", name:"AMBUSH CAT", arch:"Surprise Burst / Flanker", rating:78,
+        tactics:["Attack Cold (Ice)","Skill Burn (Fire)","Dash Shadow Spike (Umbra)","Legacy Blackhole (Umbra)","Summon Fire Spirit (Fire)"],
+        reasoning:[
+          "Dash Shadow Spike: Taokaka's dash IS a claw attack — every single dash procs 275 shadow damage",
+          "Combined: 4 dashes/sec × 275 = 1100 shadow DPS just from moving",
+          "Burn: 260 DoT/s on everything Taokaka's normals touch — always active given aggression playstyle",
+          "Blackhole: forces all enemies into Taokaka's claw range — no chasing required",
+          "Fire Spirit: auto-attacks, follows Taokaka's movement — forward pressure DPS with zero slot attention"
+        ],
+        dps:[{n:"Base DPS",v:560},{n:"+ Cold (46%)",v:818},{n:"+ Dash Shadow ×4",v:1918},{n:"+ Burn DoT",v:2178},{n:"+ Fire Spirit",v:2368}],
+        radar:{burst:88,sustain:68,aoe:65,control:80,survival:65},
+        crystals:["Combo Counter","Kill Streak","Blood Pact"],
+        mathKey:"Dash Shadow on Taokaka: 4 dashes/sec × 275 = 1100 shadow DPS from movement alone. Cold Attack: 560 → 818 normals. Burn DoT: 260 passive floor. Fire Spirit: 190/hit × 2 spirits = 380 passive. Peak burst from full claw string + 4 dashes: ~2368 DPS. Unique to Taokaka — no other character generates this much DPS from dashes." }
+    ]
+  },
+  { id:"lambda", name:"Lambda-11", tag:"BLADE / SWORDS", tier:"A", color:"#6EE7B7",
+    img:"/chars/lambda.png",
+    builds:[
+      { id:"sword_rain", name:"SWORD RAIN", arch:"Multi-Hit / Turret Hybrid", rating:89,
+        tactics:["Skill Light Spear (Light)","Attack Chain Lightning (Light)","Dash Thunderbolt (Light)","Legacy Light Spear (Light)","Summon Lightning Orb (Electric)"],
+        reasoning:[
+          "Lambda sword specials: multi-hit by nature — each sword counts as separate hit for Chain Lightning procs",
+          "Full Light tree: Chain Lightning + Thunderbolt + Orb + Spear = 4-slot synergy, rare in any character",
+          "Light Spear on both skill and legacy slots: 490 × 2 sources = 980 flat damage per combo rotation",
+          "Chain Lightning 295 × 3: Lambda sword spread = bounce to 3 targets guaranteed, every cast",
+          "Steam: 'Lambda sword turrets: just place and they attack — entire screen from one summon'"
+        ],
+        dps:[{n:"Base DPS",v:570},{n:"+ Light Spear ×2",v:1550},{n:"+ Chain Lightning",v:2435},{n:"+ Thunderbolt",v:2760},{n:"+ Orb Turret",v:3005}],
+        radar:{burst:88,sustain:82,aoe:90,control:60,survival:72},
+        crystals:["Kill Streak","SP Refuel","Crystal Resonance"],
+        mathKey:"Two Light Spear sources (Skill + Legacy): 490 × 2 = 980 flat per rotation. Chain Lightning 295 × 3: Lambda multi-sword = all 3 bounces guaranteed. At Lambda's skill rate: ~1560 chain DPS. Thunderbolt per dash: 325. Orb: 245. Total: ~3005 DPS — highest ceiling of all Lambda builds." },
+      { id:"cold_blades", name:"COLD BLADES", arch:"Freeze / Control", rating:85,
+        tactics:["Attack Cold (Ice)","Skill Cold (Ice)","Dash Shadow Spike (Umbra)","Legacy Frost Burst (Ice)","Summon Ice Spike (Ice)"],
+        reasoning:[
+          "Double Cold: Lambda swords count as attacks — each sword hit procs Cold, double-stacking fast",
+          "Frost Burst: Lambda's sword spread means AoE hits the entire enemy group simultaneously",
+          "Shadow Spike: 275 per sword hit — multi-sword combos mean 3-4 Shadow Spike procs per animation",
+          "Ice Spike Respawn turrets: self-maintaining turret field that combines with Lambda's own sword field",
+          "Frozen enemies with sword turrets active: entire screen of auto-damage from turrets and swords"
+        ],
+        dps:[{n:"Base DPS",v:570},{n:"+ Cold Attack (46%)",v:833},{n:"+ Skill Cold (47%)",v:1225},{n:"+ Shadow Spike",v:1775},{n:"+ Ice Spikes + Frost",v:2095}],
+        radar:{burst:70,sustain:88,aoe:88,control:95,survival:85},
+        crystals:["Frost Shield","Crystal Resonance","Phase Shift"],
+        mathKey:"Lambda multi-sword = 3 hits per cast = 3 Cold procs per cast. Max stacks in ~2 sec. Double Cold: 570 → 833 → 1225. Shadow Spike × 3 swords = 825 per skill cast. Frost Burst when stacked clears entire room. Control rating: 95 — enemies functionally unable to act." },
+      { id:"umbra_blades", name:"UMBRA BLADES", arch:"Shadow Burst", rating:82,
+        tactics:["Attack Shadow Spike (Umbra)","Skill Light Spear (Light)","Dash Shadow (Umbra)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
+        reasoning:[
+          "Shadow Spike × multi-hit swords: 275 × 3 sword hits = 825 shadow per cast, constant",
+          "Blackhole legacy: Lambda places sword turrets inside Blackhole radius = auto-hit on everything pulled in",
+          "Light Spear: 490 per skill — each Lambda skill cast is both swords AND spear, compounding",
+          "Dash Shadow: every lambda reposition procs 275 shadow independently of sword hits",
+          "Steam: 'Lambda sword summons are honestly free DPS — set them and they keep firing forever'"
+        ],
+        dps:[{n:"Base DPS",v:570},{n:"+ Shadow Spike ×3",v:1395},{n:"+ Light Spear",v:1885},{n:"+ Blackhole pull",v:2135},{n:"+ Orb Turret",v:2380}],
+        radar:{burst:90,sustain:72,aoe:80,control:85,survival:70},
+        crystals:["Kill Streak","Combo Counter","Blood Pact"],
+        mathKey:"Shadow Spike × Lambda 3-sword: 275 × 3 = 825 per cast. At 1.5 casts/sec = 1238 shadow DPS. Light Spear 490 per skill separately. Blackhole draws enemies into active sword field — all sword turrets confirm hits. Combined: 2380 DPS with highest boss burst pressure of any Lambda build." }
+    ]
+  },
+  { id:"mai", name:"Mai Natsume", tag:"SPEAR / NEEDLE", tier:"A", color:"#FB923C",
+    img:"/chars/mai.png",
+    builds:[
+      { id:"needle_storm", name:"NEEDLE STORM", arch:"Projectile / Long Range", rating:87,
+        tactics:["Skill Fire Projectile (Fire)","Attack Burn (Fire)","Dash Thunderbolt (Light)","Legacy Light Spear (Light)","Summon Lightning Orb (Electric)"],
+        reasoning:[
+          "Mai's spear throw: highest range in game, hits entire screen. Fire Projectile stacks on ALL spear hits",
+          "Focused Fire T2: 10 projectiles in 45° cone all hit single target at close range = 2800 burst per throw",
+          "Burn DoT: 260/s on every target thrown spear hits — Mai throws constantly, stacks everywhere",
+          "Light Spear: 490 per active skill — Mai jump-cancel skills keep this active at all times",
+          "Thunderbolt on dash: spear player repositions constantly — every movement fires chain lightning"
+        ],
+        dps:[{n:"Base DPS",v:560},{n:"+ Fire Proj 10×280",v:2800},{n:"+ Burn DoT",v:3060},{n:"+ Light Spear",v:3550},{n:"+ Thunderbolt dash",v:3875}],
+        radar:{burst:96,sustain:82,aoe:90,control:55,survival:70},
+        crystals:["Kill Streak","SP Refuel","Combo Counter"],
+        mathKey:"Mai spear: full-screen reach. Focused Fire T2 at close range: 10 × 280 = 2800 burst per skill cast. At 1 throw/1.5 sec = 1867 burst DPS. Burn 260/s passive on everything hit. Light Spear adds 490 per skill on same cast = triple damage per throw at close range. Peak: 3875 DPS." },
+      { id:"frost_spear", name:"FROST SPEAR", arch:"Slow + Burst Combo", rating:85,
+        tactics:["Attack Cold (Ice)","Skill Cold (Ice)","Dash Shadow Spike (Umbra)","Legacy Frost Burst (Ice)","Summon Ice Spike (Ice)"],
+        reasoning:[
+          "Mai spear hits from full screen — Cold Attack procs on every hit, building stacks across the room",
+          "Double Cold: 46%+47% on all spear throws regardless of range — unmatched safe damage boosting",
+          "Frost Burst: when enemy has max stacks, Mai's spear from across stage triggers AoE burst safely",
+          "Shadow Spike: 275 per spear hit — each throw procs shadow damage on every hit",
+          "Ice Spike turrets: Mai never needs to close distance — turrets defend close range while she throws"
+        ],
+        dps:[{n:"Base DPS",v:560},{n:"+ Cold Atk (46%)",v:818},{n:"+ Skill Cold (47%)",v:1202},{n:"+ Shadow Spike",v:1477},{n:"+ Frost Burst AoE",v:1827}],
+        radar:{burst:75,sustain:88,aoe:85,control:92,survival:88},
+        crystals:["Frost Shield","Crystal Resonance","Phase Shift"],
+        mathKey:"Full-screen Cold application: stacks from range = safest Cold build. Double Cold: 560 → 818 → 1202. Shadow Spike per throw: 275 independent DPS. Frost Burst AoE at max stacks: hits entire room from safe throw range. Highest survivability Mai build at 88." },
+      { id:"chain_spear", name:"CHAIN SPEAR", arch:"Multi-Hit Chain", rating:81,
+        tactics:["Skill Chain Lightning (Light)","Attack Cold (Ice)","Dash Thunderbolt (Light)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
+        reasoning:[
+          "Chain Lightning: Mai spear hits multiple enemies = guaranteed bounce to 3 targets every throw",
+          "295 × 3 enemies × Mai's throw rate = near-constant full-room chain lightning clearing",
+          "Cold: 46% on spear hits + chain lightning area slowing = enemies don't reach Mai",
+          "Blackhole: Mai throws spear INTO Blackhole center — chain lightning jumps to all pulled enemies",
+          "Lightning Orb at midfield: covers mid-range gap between full-screen spear range and melee"
+        ],
+        dps:[{n:"Base DPS",v:560},{n:"+ Chain Lightning",v:1445},{n:"+ Cold (46%)",v:1710},{n:"+ Thunderbolt",v:2035},{n:"+ Orb Turret",v:2280}],
+        radar:{burst:72,sustain:88,aoe:92,control:80,survival:82},
+        crystals:["Kill Streak","Crystal Resonance","SP Refuel"],
+        mathKey:"Chain Lightning from spear: 295 × 3 = 885 per throw. At 1.5 throws/sec = 1328 chain DPS from range. Cold adds 46% to spear base. Blackhole concentrates enemies into spear kill zone — all chain lightning bounces guaranteed. Combined: 2280 DPS with full-screen coverage." }
+    ]
+  },
+  { id:"hazama", name:"Hazama", tag:"CHAIN / COUNTER", tier:"B", color:"#86EFAC",
+    img:"/chars/hazama.png",
+    builds:[
+      { id:"chain_venom", name:"CHAIN VENOM", arch:"Whip / Zoning", rating:83,
+        tactics:["Attack Shadow Spike (Umbra)","Skill Chain Lightning (Light)","Dash Thunderbolt (Light)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
+        reasoning:[
+          "Hazama chain: hits from mid-range repeatedly. Shadow Spike 275 per chain hit = 275 × chain multihit",
+          "Chain Lightning: Hazama's chain spread to multiple enemies = guaranteed 3-target bounce every cast",
+          "Blackhole synergy: Hazama Ouroboros (chain) can reposition INTO Blackhole center for whip-trap combos",
+          "Thunderbolt: Hazama's counter-dash fires chain lightning — counter-attack becomes full offense",
+          "Steam: 'Hazama counter + Ouroboros chain = hit confirm into full combo, high ceiling skill builds'"
+        ],
+        dps:[{n:"Base DPS",v:530},{n:"+ Shadow Spike chain",v:805},{n:"+ Chain Lightning",v:1690},{n:"+ Thunderbolt",v:2015},{n:"+ Orb Turret",v:2260}],
+        radar:{burst:78,sustain:78,aoe:82,control:78,survival:68},
+        crystals:["Kill Streak","Combo Counter","SP Refuel"],
+        mathKey:"Hazama chain hits 2-3× per animation: Shadow Spike × 3 = 825 per chain use. Chain Lightning: 295 × 3 targets guaranteed via chain spread = 885 per proc. Thunderbolt on counter-dash: 325. Combined: 2260 DPS with skill-ceiling reward for Ouroboros users." },
+      { id:"snake_burn", name:"SNAKE BURN", arch:"DoT / Attrition", rating:78,
+        tactics:["Skill Burn (Fire)","Attack Fire Spirit (Fire)","Dash Shadow Spike (Umbra)","Legacy Ring of Fire (Fire)","Summon Lightning Orb (Electric)"],
+        reasoning:[
+          "Skill Burn: 360/s on every Hazama skill. Ouroboros skill-chain = DoT stacks mid-whip animation",
+          "Fire Spirit: auto-attacks everything Hazama's chain tagged — remote DoT application post-hit",
+          "Ring of Fire: Hazama's Ouroboros pull draws enemies into Ring of Fire 770 burst radius",
+          "Shadow Spike on dash: Hazama counter-dash 275 proc on every repositioning movement",
+          "Lightning Orb at center: Hazama's chain traps enemies at mid-range near turret field"
+        ],
+        dps:[{n:"Base DPS",v:530},{n:"+ Burn DoT",v:890},{n:"+ Fire Spirit",v:1460},{n:"+ Shadow Spike dash",v:1735},{n:"+ Ring of Fire",v:2080}],
+        radar:{burst:72,sustain:88,aoe:75,control:70,survival:65},
+        crystals:["Kill Streak","Crystal Resonance","Blood Pact"],
+        mathKey:"Burn at 360/s: Hazama's chain combos stack DoT remotely. Fire Spirit 190 × 3 = 570 passive following chain targets. Ring of Fire: Ouroboros pull sets up 770 burst on every boss. Combined: 2080 sustained DPS with Hazama's highest DoT uptime." },
+      { id:"counter_god", name:"COUNTER GOD", arch:"Parry / Punish", rating:80,
+        tactics:["Attack Cold (Ice)","Skill Light Spear (Light)","Dash Thunderbolt (Light)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
+        reasoning:[
+          "Hazama counter is core mechanic: Thunderbolt on counter-dash = parry fires chain lightning",
+          "Each successful counter: full Lightning chain + Cold stacking from the counter-attack follow-up",
+          "Light Spear: 490 per skill after parry window — uninterruptible punish combo",
+          "Blackhole on legacy: Hazama draws enemy in post-counter for extended punish window",
+          "Cold Attack: 46% on all counter follow-up attacks — every parry becomes a 1.46× damage window"
+        ],
+        dps:[{n:"Base DPS",v:530},{n:"+ Cold (46%)",v:774},{n:"+ Light Spear",v:1264},{n:"+ Thunderbolt counter",v:1589},{n:"+ Blackhole ctrl",v:1839}],
+        radar:{burst:85,sustain:65,aoe:62,control:85,survival:80},
+        crystals:["Phase Shift","Combo Counter","Escape Death"],
+        mathKey:"Hazama counter procs Thunderbolt: 325 per counter-dodge. Cold on all follow-up attacks: 46% multiplier post-parry. Light Spear 490 per skill = fully uninterruptible after successful parry. Best vs boss fights: 80 survival rating via counter windows negating most boss attacks." }
+    ]
+  },
+  { id:"hakumen", name:"Hakumen", tag:"VOID / COUNTER", tier:"S", color:"#F1F5F9",
+    img:"/chars/hakumen.png",
+    builds:[
+      { id:"void_counter", name:"VOID COUNTER", arch:"Counter God / Absolute", rating:96,
+        tactics:["Skill Light Spear (Light)","Attack Chain Lightning (Light)","Dash Thunderbolt (Light)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
+        reasoning:[
+          "Steam: 'Hakumen charged Up+Skill nearly one-shots bosses with Light Spear. Universal boss damage'",
+          "Hakumen counter magatama: every parry generates magatama, powering charged skill = free Light Spear",
+          "Chain Lightning: Hakumen's slow attack speed is offset — each hit procs massive 295×3 = 885 chain",
+          "Blackhole + Hakumen: full screen slow → charged counter = guaranteed hit, cannot miss",
+          "Steam: 'Hakumen becomes an unkillable murder machine the moment you figure out counter timing'"
+        ],
+        dps:[{n:"Base DPS",v:550},{n:"+ Light Spear charge",v:1490},{n:"+ Chain Lightning",v:2375},{n:"+ Thunderbolt parry",v:2700},{n:"+ Orb Turret",v:2945}],
+        radar:{burst:98,sustain:72,aoe:80,control:92,survival:90},
+        crystals:["Combo Counter","Kill Streak","Phase Shift"],
+        mathKey:"Hakumen charged Up+Skill at Legendary Light Spear: 490 flat added to charged skill = near-one-shot on most bosses. Chain Lightning × 3: 885 per hit. Hakumen's slow speed means each hit is calculated — 2-3 hits land before boss recovery = 2660 burst per engagement. Magatama economy: effectively free charged skills every 3-4 parries." },
+      { id:"magatama_field", name:"MAGATAMA FIELD", arch:"Attrition / Unstoppable", rating:88,
+        tactics:["Attack Cold (Ice)","Skill Cold (Ice)","Dash Shadow Spike (Umbra)","Legacy Frost Burst (Ice)","Summon Lightning Orb (Electric)"],
+        reasoning:[
+          "Double Cold: Hakumen's heavy hits stack Cold in 2-3 hits despite slower rate — per-hit Cold value maxes",
+          "Frost Burst: Hakumen's tank build — AoE burst on demand from Cold stacks, no positioning",
+          "Shadow Spike on dash counter: 275 on Hakumen's counter-dash = Shadow Spike + parry damage",
+          "Lightning Orb: 245 DPS turret autonomously maintains damage during Hakumen's long attack animations",
+          "Hakumen naturally survives everything — Cold+Orb means DPS runs even during recovery frames"
+        ],
+        dps:[{n:"Base DPS",v:550},{n:"+ Cold Atk (46%)",v:803},{n:"+ Skill Cold (47%)",v:1181},{n:"+ Frost Burst",v:1681},{n:"+ Shadow Spike + Orb",v:2201}],
+        radar:{burst:70,sustain:92,aoe:88,control:96,survival:95},
+        crystals:["Frost Shield","Escape Death","Crystal Resonance"],
+        mathKey:"Hakumen's heavy hits: even at 1.5 hits/sec, Cold stacks within 3 sec from high per-hit value. Double Cold: 550 → 803 → 1181. Frost Burst: 520 AoE. Orb: 245 autonomous. Shadow Spike on counter-dash: 275 per parry. Total: 2201 DPS with Hakumen's highest survival rating of 95." },
+      { id:"infinity_sword", name:"INFINITY SWORD", arch:"Burst / One-Shot Window", rating:84,
+        tactics:["Skill Light Spear (Light)","Attack Shadow Spike (Umbra)","Dash Thunderbolt (Light)","Legacy Ring of Fire (Fire)","Summon Lightning Orb (Electric)"],
+        reasoning:[
+          "Hakumen One-Eyed King magatama charge: full bar = fully invincible for 3 sec + multiplied skill",
+          "Light Spear on charged skill during invincible frame = 490 uncontested flat damage",
+          "Shadow Spike on every Hakumen normal: 275 per hit × slow-but-heavy normal = sustained shadow floor",
+          "Ring of Fire: Hakumen's One-Eyed King becomes Ring trigger — 770 burst guaranteed every cast",
+          "Steam: 'Hakumen is pure power fantasy when built correctly — one charged skill does boss phase skip'"
+        ],
+        dps:[{n:"Base DPS",v:550},{n:"+ Shadow Spike",v:825},{n:"+ Light Spear charge",v:1765},{n:"+ Thunderbolt",v:2090},{n:"+ Ring of Fire",v:2480}],
+        radar:{burst:100,sustain:60,aoe:70,control:78,survival:82},
+        crystals:["Kill Streak","Combo Counter","Blood Pact"],
+        mathKey:"One-Eyed King full bar: 3 sec invincibility + skill multiplier. Light Spear during invincible window: 490 fully uncontested per cast. Ring of Fire trigger per OEK: 770 burst. Combined burst window: 490 + 770 = 1260 guaranteed burst per OEK activation (approx every 8 sec). Burst rating: 100 — no other build has this ceiling." }
+    ]
+  },
+  { id:"bullet", name:"Bullet", tag:"SHELL / CQC", tier:"B", color:"#F97316",
+    img:"/chars/bullet.png",
+    builds:[
+      { id:"heat_seeker", name:"HEAT SEEKER", arch:"Close Range / Overwhelm", rating:82,
+        tactics:["Attack Fire Spirit (Fire)","Skill Burn (Fire)","Dash Thunderbolt (Light)","Legacy Ring of Fire (Fire)","Summon Lightning Orb (Electric)"],
+        reasoning:[
+          "Bullet CQC: melee-range grappler — Fire Spirit matches exactly, auto-attacks in melee hitbox range",
+          "Skill Burn: 360/s on every grab-skill. Bullet grabs count as skills = constant DoT stack",
+          "Thunderbolt: Bullet's dash-forward IS an attack setup — every approach fires chain lightning",
+          "Ring of Fire: 770 burst per legacy. Bullet's heat gauge charges legacy faster = more Ring procs",
+          "Steam: 'Bullet works best when built aggression — heat gauge + DoT = she never stops dealing damage'"
+        ],
+        dps:[{n:"Base DPS",v:540},{n:"+ Burn DoT",v:900},{n:"+ Fire Spirit",v:1470},{n:"+ Thunderbolt dash",v:1795},{n:"+ Ring of Fire",v:2305}],
+        radar:{burst:82,sustain:85,aoe:68,control:60,survival:68},
+        crystals:["Kill Streak","Combo Counter","SP Refuel"],
+        mathKey:"Skill Burn at 360/s: grab-skills stack DoT same as any skill. Fire Spirit: 190 × 3 in melee range = 570. Thunderbolt on approach dash: 325 per engage. Ring of Fire: 770 per heat legacy. Combined: 2305 DPS with Bullet's highest burst ceiling and aggressive uptime." },
+      { id:"steel_shell", name:"STEEL SHELL", arch:"Sustain / Counter-Damage", rating:79,
+        tactics:["Attack Cold (Ice)","Skill Light Spear (Light)","Dash Shadow Spike (Umbra)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
+        reasoning:[
+          "Cold Attack: 46% on Bullet's heavy normals. Slow + heavy = safe CQC extension windows",
+          "Light Spear: 490 per skill. Bullet's grab-skills are unblockable — Light Spear during grab = confirmed",
+          "Shadow Spike on dash: 275 per closing dash — Bullet's approach is always offensively valued",
+          "Blackhole: Bullet draws all enemies into CQC range — Blackhole IS Bullet's ideal state",
+          "Lightning Orb: covers Bullet's only weakness (full-screen ranged) — turret handles what Bullet can't"
+        ],
+        dps:[{n:"Base DPS",v:540},{n:"+ Cold (46%)",v:788},{n:"+ Light Spear grab",v:1278},{n:"+ Shadow Spike",v:1553},{n:"+ Orb Turret",v:1798}],
+        radar:{burst:72,sustain:80,aoe:60,control:82,survival:78},
+        crystals:["Phase Shift","Escape Death","Frost Shield"],
+        mathKey:"Light Spear on grab (unblockable): 490 confirmed per grab skill. Cold: 46% on all normals between grabs. Shadow Spike: 275 per approach dash. Orb turret covers full-screen gap. Combined: 1798 DPS — lower ceiling than Heat Seeker but 78 survival vs 68, better for high-entropy runs." },
+      { id:"demolition_round", name:"DEMOLITION ROUND", arch:"Burst Damage / All-In", rating:76,
+        tactics:["Attack Shadow Spike (Umbra)","Skill Chain Lightning (Light)","Dash Thunderbolt (Light)","Legacy Light Spear (Light)","Summon Lightning Orb (Electric)"],
+        reasoning:[
+          "Shadow Spike: 275 per Bullet normal. Bullet's combo strings hit 3-4 times = 825-1100 shadow per combo",
+          "Chain Lightning from Bullet's CQC position: guaranteed 3-target bounce at melee range every time",
+          "Light Spear on legacy: 490 burst during Bullet's invincible super = fully uncontested hit",
+          "Thunderbolt: approach dash fires lightning — every single engagement opens with chain lightning",
+          "Highest raw burst combo of any Bullet build — but fragile, requires good heat management"
+        ],
+        dps:[{n:"Base DPS",v:540},{n:"+ Shadow Spike ×4",v:1640},{n:"+ Chain Lightning",v:2525},{n:"+ Thunderbolt",v:2850},{n:"+ Light Spear legacy",v:3015}],
+        radar:{burst:95,sustain:55,aoe:75,control:65,survival:60},
+        crystals:["Kill Streak","Combo Counter","Blood Pact"],
+        mathKey:"Shadow Spike × 4-hit combo: 275 × 4 = 1100 shadow burst per string. At 2 combos/sec = 2200 shadow DPS. Chain Lightning 295 × 3 at melee range = 885 per proc. Light Spear legacy: 490 uncontested. Peak burst window: ~3015 DPS — Bullet's highest ceiling, lowest floor." }
+    ]
+  },
+  { id:"naoto", name:"Naoto Kurogane", tag:"BLOOD / HUNTER", tier:"S", color:"#F87171",
+    img:"/chars/naoto.png",
+    builds:[
+      { id:"hunters_eye", name:"HUNTER'S EYE", arch:"Execute / Life Force", rating:93,
+        tactics:["Attack Shadow Spike (Umbra)","Skill Light Spear (Light)","Dash Thunderbolt (Light)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
+        reasoning:[
+          "Naoto X-exclusive: Hunter's Eye mechanic — sees enemy life force values, amplified at low enemy HP",
+          "Shadow Spike: 275 per normal. Naoto's rapid sword normals = near-continuous shadow procs",
+          "Light Spear: 490 per skill. Naoto's skill kit is fast-cast — Light Spear fires at high rate",
+          "Blackhole: Naoto Restriction Drive traps enemy — Blackhole compounds existing lockdown",
+          "Hunter's Eye passive: confirmed damage multiplier on weakened enemies — finish builds shine here"
+        ],
+        dps:[{n:"Base DPS",v:580},{n:"+ Shadow Spike",v:855},{n:"+ Light Spear",v:1345},{n:"+ Thunderbolt",v:1670},{n:"+ Hunter's Eye amp",v:2195}],
+        radar:{burst:88,sustain:78,aoe:70,control:85,survival:78},
+        crystals:["Kill Streak","Combo Counter","SP Refuel"],
+        mathKey:"Hunter's Eye damage amp on sub-50% HP enemies (est ×1.3): 1670 → 2170 in execute window. Shadow Spike at Naoto's attack rate: ~3/sec × 275 = 825 shadow DPS. Light Spear: 490 per fast-cast skill. Combined: 2195 DPS with multiplier peak at boss phase transitions." },
+      { id:"blood_restriction", name:"BLOOD RESTRICTION", arch:"Lockdown / Drain", rating:89,
+        tactics:["Attack Cold (Ice)","Skill Burn (Fire)","Dash Chain Lightning (Light)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
+        reasoning:[
+          "Cold: 46% on Naoto's fast normals. Stacks fast from high attack rate — max stacks in ~2 sec",
+          "Burn: 260/s DoT stacks on every hit + Restriction Drive skill = DoT everywhere, fast",
+          "Chain Lightning on dash: Naoto's mobility is high — each reposition fires chain to 3 enemies",
+          "Blackhole + Restriction Drive: double-lock — Naoto's own Drive + Blackhole = full stun loop",
+          "Steam: 'Naoto Restriction builds are oppressive — enemies just can't function against him'"
+        ],
+        dps:[{n:"Base DPS",v:580},{n:"+ Cold (46%)",v:847},{n:"+ Burn DoT",v:1107},{n:"+ Chain Lightning",v:1992},{n:"+ Blackhole ctrl",v:2242}],
+        radar:{burst:72,sustain:92,aoe:80,control:98,survival:82},
+        crystals:["Crystal Resonance","Phase Shift","Frost Shield"],
+        mathKey:"Cold at high attack rate: max stacks in ~2 sec (like Noel-tier speed). Burn 260/s stacks on Restriction Drive. Chain Lightning on mobile dash: 295 × 3 × 2 dashes/sec = 1770 chain DPS. Blackhole + Drive: 98 control rating — highest of all Naoto builds." },
+      { id:"death_touch", name:"DEATH TOUCH", arch:"Single-Target / Boss Killer", rating:86,
+        tactics:["Skill Light Spear (Light)","Attack Shadow Spike (Umbra)","Dash Thunderbolt (Light)","Legacy Ring of Fire (Fire)","Summon Lightning Orb (Electric)"],
+        reasoning:[
+          "Naoto's Drive increases damage vs singular target — all single-target tactics synergize",
+          "Light Spear: 490 per skill × Naoto fast-cast rate = highest Spear DPS of any character",
+          "Shadow Spike: 275 per normal × Naoto's rapid combo rate = ~825 shadow DPS floor minimum",
+          "Ring of Fire: 770 burst per legacy. Drive activation is legacy-adjacent — timing is natural",
+          "Thunderbolt: Naoto's approach dash = free chain lightning on every boss engage"
+        ],
+        dps:[{n:"Base DPS",v:580},{n:"+ Shadow Spike",v:855},{n:"+ Light Spear fast-cast",v:1835},{n:"+ Thunderbolt",v:2160},{n:"+ Ring of Fire",v:2710}],
+        radar:{burst:92,sustain:75,aoe:65,control:72,survival:75},
+        crystals:["Kill Streak","Blood Pact","Combo Counter"],
+        mathKey:"Naoto fast-cast: Light Spear at 1 skill/sec = 490 DPS from one slot alone. Shadow Spike: 3 normals/sec × 275 = 825 shadow. Drive single-target amp (est ×1.2 on boss): 2160 → 2592 in Drive window. Ring of Fire: 770 per legacy. Total boss DPS: ~2710, highest Naoto ceiling." }
+    ]
+  },
+  { id:"icey", name:"ICEY", tag:"PIXEL / DANCER", tier:"A", color:"#A78BFA",
+    img:"/chars/icey.jpg",
+    builds:[
+      { id:"pixel_storm", name:"PIXEL STORM", arch:"Mobile / DPS Dancer", rating:88,
+        tactics:["Attack Chain Lightning (Light)","Skill Light Spear (Light)","Dash Thunderbolt (Light)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
+        reasoning:[
+          "ICEY: combo-based fighter with fluid sword dance movement — full Light tree matches aerial mobility",
+          "Chain Lightning: ICEY's rapid hit combos = chain procs fire on every connected hit of dance combo",
+          "Light Spear: 490 per skill. ICEY skills mid-dance are fast — highest Spear proc rate of any agile char",
+          "Thunderbolt: ICEY's dashes ARE her combat — each dance reposition fires chain to nearest enemy",
+          "Steam (Cross-IP char): 'ICEY just HITS — don't overthink the build, she does damage naturally'"
+        ],
+        dps:[{n:"Base DPS",v:570},{n:"+ Chain Lightning",v:1455},{n:"+ Light Spear",v:1945},{n:"+ Thunderbolt dance",v:2270},{n:"+ Orb Turret",v:2515}],
+        radar:{burst:85,sustain:88,aoe:85,control:68,survival:75},
+        crystals:["Kill Streak","Combo Counter","SP Refuel"],
+        mathKey:"Chain Lightning × ICEY rapid dance hits: 295 × 3 per hit at ~2.5 hits/sec = 2213 chain DPS peak. Light Spear adds 490 per skill mid-dance. Thunderbolt per reposition: 325. Combined: 2515 DPS — ICEY's highest sustained DPS build, rewarding fluid play." },
+      { id:"frozen_dance", name:"FROZEN DANCE", arch:"AoE Clear / Speed Run", rating:85,
+        tactics:["Attack Cold (Ice)","Skill Cold (Ice)","Dash Shadow Spike (Umbra)","Legacy Frost Burst (Ice)","Summon Ice Spike (Ice)"],
+        reasoning:[
+          "Double Cold on ICEY's high hit-rate: max Cold stacks in under 2 sec during dance combo",
+          "Frost Burst: ICEY's AoE dance hits entire screen on trigger — all frozen enemies burst simultaneously",
+          "Shadow Spike on dance dashes: ICEY's dance moves trigger Shadow Spike independently",
+          "Ice Spike Respawn turrets: auto-fire fills DPS gaps between dance combo sequences",
+          "Best ICEY build for stage-speed clearing — frozen enemies never interrupt dance flow"
+        ],
+        dps:[{n:"Base DPS",v:570},{n:"+ Cold Atk (46%)",v:832},{n:"+ Skill Cold (47%)",v:1223},{n:"+ Frost Burst AoE",v:1743},{n:"+ Shadow Spike + Ice",v:2193}],
+        radar:{burst:72,sustain:88,aoe:95,control:90,survival:82},
+        crystals:["Frost Shield","Crystal Resonance","Phase Shift"],
+        mathKey:"ICEY high hit-rate: Cold stacks in ~1.5 sec. Double Cold: 570 → 832 → 1223. Frost Burst: AoE clears entire stage during max-stack trigger. Shadow Spike per dance dash: 275 × 3 dashes = 825 burst. Combined: 2193 DPS with 95 AoE rating — best room clear in game." },
+      { id:"blade_dance", name:"BLADE DANCE", arch:"Raw Power / Finisher", rating:82,
+        tactics:["Attack Shadow Spike (Umbra)","Skill Burn (Fire)","Dash Thunderbolt (Light)","Legacy Ring of Fire (Fire)","Summon Fire Spirit (Fire)"],
+        reasoning:[
+          "Shadow Spike: ICEY's rapid dance combos hit 5-6× per sequence = 275 × 5 = 1375 burst per dance",
+          "Burn: 360/s on skills. ICEY skill-chains mid-dance constantly = perpetual DoT stack",
+          "Ring of Fire: 770 burst per legacy. ICEY trigger window during super-dash = safe legacy",
+          "Fire Spirit follows ICEY's target — auto-attacks carry between dance repositions",
+          "Thunderbolt on dash: every dance step between sequences fires chain lightning"
+        ],
+        dps:[{n:"Base DPS",v:570},{n:"+ Shadow Spike ×5",v:1945},{n:"+ Burn DoT",v:2305},{n:"+ Ring of Fire",v:2915},{n:"+ Thunderbolt",v:3240}],
+        radar:{burst:95,sustain:72,aoe:78,control:60,survival:68},
+        crystals:["Kill Streak","Blood Pact","Combo Counter"],
+        mathKey:"Shadow Spike × 5-hit dance sequence: 275 × 5 = 1375 burst per full dance. At 1.5 sequences/sec = 2063 shadow DPS. Burn 360/s passive stacking. Ring of Fire 770 burst per legacy = 96 avg DPS. Thunderbolt per step: 325. Peak: 3240 DPS — ICEY's highest raw burst ceiling." }
+    ]
+  },
+  { id:"prisoner", name:"The Prisoner", tag:"DEAD CELLS / BRUTAL", tier:"A", color:"#94A3B8",
+    img:"/chars/prisoner.png",
+    builds:[
+      { id:"beheaded_run", name:"BEHEADED RUN", arch:"Roguelike / Adaptive", rating:90,
+        tactics:["Attack Shadow Spike (Umbra)","Skill Chain Lightning (Light)","Dash Thunderbolt (Light)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
+        reasoning:[
+          "The Prisoner (Dead Cells crossover): natural roguelike synergy with BBEE's run structure",
+          "Shadow Spike: weapon-agnostic — Prisoner's any-weapon kit means 275 per every hit regardless",
+          "Chain Lightning: Prisoner rolls through enemy clusters = guaranteed 3-target bounce on each roll",
+          "Blackhole: Prisoner's mobility means Blackhole is a trap tool, not defensive — place and roll away",
+          "Steam: 'Prisoner brings Dead Cells energy — just run everything, adapt, don't stop moving'"
+        ],
+        dps:[{n:"Base DPS",v:560},{n:"+ Shadow Spike",v:835},{n:"+ Chain Lightning",v:1720},{n:"+ Thunderbolt roll",v:2045},{n:"+ Orb Turret",v:2290}],
+        radar:{burst:82,sustain:85,aoe:85,control:75,survival:80},
+        crystals:["Kill Streak","Combo Counter","Phase Shift"],
+        mathKey:"Prisoner's weapon flexibility: Shadow Spike works on ANY weapon type, highest build flexibility. Chain Lightning: rolls through clusters = 295 × 3 = 885 per roll engage. Thunderbolt per roll-dash: 325. Combined: 2290 DPS — reliable on any weapon the Prisoner picks up mid-run." },
+      { id:"bloodlust_run", name:"BLOODLUST RUN", arch:"DoT / Attrition Machine", rating:86,
+        tactics:["Skill Burn (Fire)","Attack Fire Spirit (Fire)","Dash Shadow Spike (Umbra)","Legacy Ring of Fire (Fire)","Summon Lightning Orb (Electric)"],
+        reasoning:[
+          "Burn: 360/s DoT stacks with Prisoner's high-damage skills. Each hit counts from any weapon",
+          "Fire Spirit: auto-attacks after every weapon hit — Prisoner weapon variety means spirits fire constantly",
+          "Shadow Spike on roll: Prisoner's roll-dodge fires Shadow Spike = 275 per every evasion",
+          "Ring of Fire: 770 burst on every legacy. Prisoner's skill timing is flexible = frequent legacy windows",
+          "Steam: 'Prisoner DoT build: you set it up and it runs itself — true to Dead Cells auto-build style'"
+        ],
+        dps:[{n:"Base DPS",v:560},{n:"+ Burn DoT",v:920},{n:"+ Fire Spirit",v:1490},{n:"+ Shadow Spike roll",v:1765},{n:"+ Ring of Fire",v:2305}],
+        radar:{burst:80,sustain:92,aoe:78,control:65,survival:75},
+        crystals:["Kill Streak","Crystal Resonance","SP Refuel"],
+        mathKey:"Burn 360/s: stacks from any weapon type Prisoner uses. Fire Spirit: follows weapon attacks = 570 passive DPS (3 spirits). Shadow Spike per roll: 275 × 3 rolls/sec = 825 roll DPS. Ring of Fire: 770 burst per legacy (frequent on Prisoner). Combined: 2305 DPS with highest Prisoner sustain." },
+      { id:"brutalist_melee", name:"BRUTALIST MELEE", arch:"Heavy / Boss Wrecker", rating:83,
+        tactics:["Attack Cold (Ice)","Skill Light Spear (Light)","Dash Thunderbolt (Light)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
+        reasoning:[
+          "Cold Attack: 46% on Prisoner's melee hits. Heavy melee weapons stack Cold in ~3 hits",
+          "Light Spear: 490 per skill — Prisoner's charged heavy skills are slow but unblockable",
+          "Blackhole: traps boss mid-arena — Prisoner closes distance for full heavy combo confirm",
+          "Thunderbolt on roll: Prisoner's roll-in approach fires chain lightning before melee contact",
+          "Lightning Orb: covers Prisoner's gap between heavy swings — fills animation downtime with DPS"
+        ],
+        dps:[{n:"Base DPS",v:560},{n:"+ Cold (46%)",v:818},{n:"+ Light Spear",v:1308},{n:"+ Thunderbolt",v:1633},{n:"+ Blackhole + Orb",v:2128}],
+        radar:{burst:78,sustain:78,aoe:68,control:88,survival:80},
+        crystals:["Frost Shield","Phase Shift","Combo Counter"],
+        mathKey:"Cold on heavy melee: each heavy hit has 3× Cold stack value of normal hits — max stacks in 3 swings. Light Spear on charged skill: 490 unblockable per use. Blackhole confirms melee range. Lightning Orb: 245 DPS during animation. Combined: 2128 DPS — Prisoner's most reliable boss-kill build." }
     ]
   }
 ];
