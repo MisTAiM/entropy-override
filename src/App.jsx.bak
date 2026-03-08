@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { CHAR_GUIDES } from "./levelingData";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
   RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis,
@@ -736,140 +735,6 @@ const CHARACTERS = [
 
 // SVG Logo
 function Logo() {
-
-  const renderGuide = () => {
-    const guide = CHAR_GUIDES[char.id];
-    if (!guide) return <div style={{color:"#555",padding:20}}>Guide coming soon for this character.</div>;
-    const buildKeys = Object.keys(guide.builds);
-    const buildKey = buildKeys[guideBuild] || buildKeys[0];
-    const gb = guide.builds[buildKey];
-    const bdata = char.builds[guideBuild] || char.builds[0];
-    const DIFF_COLORS = {Beginner:"#22C55E",Intermediate:"#EAB308",Advanced:"#EF4444"};
-    const dc = DIFF_COLORS[guide.difficulty] || "#888";
-    return (
-      <div>
-        {/* Character overview */}
-        <div style={{...S.card, borderColor: char.color+"44", marginBottom:18}}>
-          <div style={{display:"flex",alignItems:"flex-start",gap:20}}>
-            <div style={{width:80,height:100,overflow:"hidden",flexShrink:0,clipPath:"polygon(0 0,100% 0,85% 100%,0 100%)"}}>
-              <img src={char.img} alt={char.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"top center"}} onError={e=>{e.target.style.display="none"}}/>
-            </div>
-            <div style={{flex:1}}>
-              <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:6}}>
-                <div style={{fontSize:24,fontWeight:900,color:char.color,letterSpacing:2}}>{char.name.toUpperCase()}</div>
-                <div style={{background:`${dc}1A`,color:dc,border:`1px solid ${dc}`,padding:"2px 10px",fontSize:11,fontWeight:900,letterSpacing:1}}>{guide.difficulty.toUpperCase()}</div>
-                <div style={{background:`${TIER_COLORS[char.tier]}1A`,color:TIER_COLORS[char.tier],border:`1px solid ${TIER_COLORS[char.tier]}`,padding:"2px 10px",fontSize:11,fontWeight:900,letterSpacing:1}}>TIER {char.tier}</div>
-              </div>
-              <div style={{fontSize:13,color:"#B0B0B0",lineHeight:1.7,marginBottom:10}}>{guide.overview}</div>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
-                <div>
-                  <div style={{fontSize:10,letterSpacing:2,color:"#22C55E",fontWeight:700,marginBottom:4}}>STRENGTHS</div>
-                  {guide.strengths.map((s,i)=>(
-                    <div key={i} style={{fontSize:12,color:"#888",marginBottom:3,paddingLeft:10,borderLeft:"2px solid #22C55E33"}}>+ {s}</div>
-                  ))}
-                </div>
-                <div>
-                  <div style={{fontSize:10,letterSpacing:2,color:"#EF4444",fontWeight:700,marginBottom:4}}>WEAKNESSES</div>
-                  {guide.weaknesses.map((w,i)=>(
-                    <div key={i} style={{fontSize:12,color:"#888",marginBottom:3,paddingLeft:10,borderLeft:"2px solid #EF444433"}}>- {w}</div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Build select tabs */}
-        <div style={{display:"flex",marginBottom:18}}>
-          {char.builds.map((b,i)=>(
-            <button key={b.id} style={S.buildTabBtn(guideBuild===i,char.color)} onClick={()=>setGuideBuild(i)}>
-              {b.name}
-            </button>
-          ))}
-        </div>
-
-        {gb && (
-          <div>
-            {/* Evotype */}
-            <div style={{...S.card, borderColor:"#C9A22744", marginBottom:14}}>
-              <div style={S.label}>RECOMMENDED EVOTYPE</div>
-              <div style={{display:"flex",alignItems:"flex-start",gap:12}}>
-                <div style={{background:"#C9A22722",border:"1px solid #C9A227",padding:"4px 16px",fontSize:14,fontWeight:900,color:"#C9A227",letterSpacing:1,whiteSpace:"nowrap",flexShrink:0}}>{gb.evotype}</div>
-                <div style={{fontSize:13,color:"#888",lineHeight:1.6}}>{gb.evotypeNote}</div>
-              </div>
-            </div>
-
-            {/* Legacy picks */}
-            <div style={{...S.card, marginBottom:14}}>
-              <div style={S.label}>LEGACY SKILL PICKS</div>
-              {gb.legacy.map((l,i)=>(
-                <div key={i} style={{display:"flex",gap:10,padding:"8px 10px",background:"#111",borderLeft:"3px solid #C9A227",marginBottom:6,alignItems:"flex-start"}}>
-                  <div style={{background:"#C9A22733",color:"#C9A227",padding:"2px 10px",fontSize:11,fontWeight:900,letterSpacing:1,flexShrink:0}}>SLOT {i+1}</div>
-                  <div>
-                    <div style={{fontSize:13,color:"#E8E8E8",fontWeight:700}}>{l.name}</div>
-                    <div style={{fontSize:11,color:"#555",marginTop:2,lineHeight:1.5}}>{l.reason}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Potentials + Doubles side by side */}
-            <div style={S.g2}>
-              <div style={S.card}>
-                <div style={S.label}>POTENTIAL PRIORITY (TOP 3)</div>
-                {gb.potentials.map((p,i)=>(
-                  <div key={i} style={{padding:"8px 10px",background:"#111",borderLeft:"3px solid #7B8FE4",marginBottom:6}}>
-                    <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:2}}>
-                      <div style={{background:"#7B8FE433",color:"#7B8FE4",padding:"1px 8px",fontSize:10,fontWeight:900,letterSpacing:1}}>#{i+1}</div>
-                      <div style={{fontSize:13,color:"#E8E8E8",fontWeight:700}}>{p.p}</div>
-                    </div>
-                    <div style={{fontSize:11,color:"#555",paddingLeft:8,lineHeight:1.5}}>{p.reason}</div>
-                  </div>
-                ))}
-              </div>
-              <div style={S.card}>
-                <div style={S.label}>DOUBLE TACTIC TARGETS</div>
-                {gb.doubles.map((d,i)=>(
-                  <div key={i} style={{padding:"8px 10px",background:"#111",borderLeft:"3px solid #A855F7",marginBottom:6}}>
-                    <div style={{fontSize:13,color:"#E8E8E8",fontWeight:700,marginBottom:2}}>{d.name}</div>
-                    <div style={{fontSize:10,color:"#A855F7",letterSpacing:1,marginBottom:4}}>REQ: {d.req}</div>
-                    <div style={{fontSize:11,color:"#555",lineHeight:1.5}}>{d.effect}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Leveling phases */}
-            <div style={{...S.card, marginTop:14}}>
-              <div style={S.label}>LEVELING PATH — {bdata.name}</div>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
-                {gb.phases.map((ph,i)=>{
-                  const phColors = ["#22C55E","#EAB308","#F97316","#B91C1C"];
-                  const pc = phColors[i] || "#666";
-                  return (
-                    <div key={i} style={{background:"#0A0A0A",border:`1px solid ${pc}33`,padding:14}}>
-                      <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
-                        <div style={{background:`${pc}22`,color:pc,padding:"2px 10px",fontSize:11,fontWeight:900,letterSpacing:1}}>ENTROPY {ph.range}</div>
-                        <div style={{fontSize:11,color:pc,fontWeight:700,letterSpacing:1}}>{ph.label}</div>
-                      </div>
-                      <div style={{fontSize:12,color:"#C9A227",fontWeight:700,marginBottom:8,fontFamily:"'Courier Prime',monospace"}}>▶ {ph.focus}</div>
-                      {ph.steps.map((step,j)=>(
-                        <div key={j} style={{display:"flex",gap:8,marginBottom:5,alignItems:"flex-start"}}>
-                          <div style={{color:pc,fontSize:11,fontWeight:700,flexShrink:0,marginTop:1}}>{j+1}.</div>
-                          <div style={{fontSize:12,color:"#888",lineHeight:1.5}}>{step}</div>
-                        </div>
-                      ))}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  };
-
   return (
     <svg viewBox="0 0 560 88" style={{width:"100%",maxWidth:560,height:"auto"}} xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -971,7 +836,6 @@ export default function App() {
   const [activeBuild, setActiveBuild] = useState(0);
   const [tab, setTab] = useState("builds");
   const [selectedTactic, setSelectedTactic] = useState(null);
-  const [guideBuild, setGuideBuild] = useState(0);
 
   const char = CHARACTERS.find(c=>c.id===activeChar);
   const build = char.builds[activeBuild];
@@ -1175,7 +1039,7 @@ export default function App() {
       </div>
 
       <div style={S.nav}>
-        {[["builds","BUILD ANALYZER"],["tactics","TACTICS DATABASE"],["guide","CHARACTER GUIDE"]].map(([id,lbl])=>(
+        {[["builds","BUILD ANALYZER"],["tactics","TACTICS DATABASE"]].map(([id,lbl])=>(
           <button key={id} style={S.navBtn(tab===id)} onClick={()=>setTab(id)}>{lbl}</button>
         ))}
       </div>
@@ -1213,7 +1077,6 @@ export default function App() {
         <div style={S.content}>
           {tab==="builds" && renderBuilds()}
           {tab==="tactics" && renderTactics()}
-          {tab==="guide" && renderGuide()}
         </div>
       </div>
     </div>
