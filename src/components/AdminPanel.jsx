@@ -155,20 +155,21 @@ function BrandTab({cfg,set}) {
 
 function ContentTab({cfg,set}) {
   const sections = [
-    ["showDPS",         "DPS CHART",            "Bar chart in Build Analyzer"],
-    ["showRadar",       "RADAR CHART",           "Spider chart per build"],
-    ["showMath",        "MATH BOX",              "DPS formula box"],
-    ["showTips",        "MORPHEUS TIPS",         "3 tips per build"],
-    ["showSynergies",   "SYNERGY CARDS",         "Top 3 tactic synergies"],
-    ["showMechanics",   "MECHANICS GRID",        "4 key mechanics per char"],
-    ["showTalent",      "TALENT CARD",           "Evotype talent display"],
-    ["showLegacy",      "LEGACY SKILL",          "Legacy skill info card"],
-    ["showTierBadge",   "TIER BADGES (S/A/B)",   "Tier badges in sidebar"],
-    ["showElementBadge","ELEMENT BADGES",         "Element type badges"],
-    ["showCharArtwork", "SIDEBAR ARTWORK",        "Portrait at sidebar bottom"],
-    ["showStatsBar",    "HOMEPAGE STATS BAR",     "Stats under hero"],
-    ["showFeatureCards","FEATURE CARDS",          "3 feature cards on home"],
-    ["showRosterGrid",  "ROSTER GRID (16 chars)", "Full grid on homepage"],
+    ["showDPS",         "DPS CHART",               "Bar chart — Build Analyzer"],
+    ["showRadar",       "RADAR / PROFILE CHART",   "Spider chart per build"],
+    ["showMath",        "MATH SUMMARY BOX",         "DPS formula in build header"],
+    ["showTalent",      "EVOTYPE TALENT CARD",      "Talent + Legacy skill card"],
+    ["showLegacy",      "LEGACY SKILL",             "Legacy line inside talent card"],
+    ["showSynergies",   "EVOTYPE SYNERGY CARDS",    "Top 3 synergy cards per char"],
+    ["showMechanics",   "KEY MECHANICS GRID",       "4 mechanics per character"],
+    ["showTips",        "MORPHEUS TIPS",            "3 tips per build"],
+    ["showTierBadge",   "TIER BADGES (SIDEBAR)",    "S/A/B badge in sidebar list"],
+    ["showCharArtwork", "CHAR ARTWORK (SIDEBAR)",   "Portrait at sidebar bottom"],
+    ["showStatsBar",    "HOMEPAGE STATS BAR",       "163/16/48/38 stats strip"],
+    ["showFeatureCards","HOMEPAGE FEATURE CARDS",   "7 tool cards on home page"],
+    ["showRosterGrid",  "HOMEPAGE ROSTER GRID",     "16-char portrait grid on home"],
+    ["showNavLabels",   "NAV LABELS",               "Hide text shows icon only"],
+    ["showElementBadge","ELEMENT BADGES (TACTICS)", "Element tags on tactics list"],
   ];
   return (
     <div>
@@ -340,7 +341,7 @@ export default function AdminPanel({show,onClose}) {
   const set=partial=>{setCfg(prev=>({...prev,...partial}));setDirty(true);};
   const login=()=>{sessionStorage.setItem("adminAuth","1");setAuthed(true);};
   const logout=()=>{sessionStorage.removeItem("adminAuth");setAuthed(false);};
-  const save=()=>{saveSettings(cfg);setDirty(false);toast("SAVED — RELOAD TO SEE ALL CHANGES");setCfg(getSettings());};
+  const save=()=>{saveSettings(cfg);setDirty(false);toast("✓ SAVED — CHANGES APPLIED");setCfg(getSettings());};
   const discard=()=>{setCfg(getSettings());setDirty(false);onClose();};
 
   if(!show) return null;

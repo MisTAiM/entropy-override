@@ -1457,7 +1457,7 @@ function HomePage({setTab, cfg={}, mob=false}) {
       </div> : null}
 
       {/* ── FEATURE CARDS ── */}
-      <div className="home-feat" style={{padding:"40px 40px 0"}}>
+      {cfg.showFeatureCards !== false && <div className="home-feat" style={{padding:"40px 40px 0"}}>
         <div style={{fontSize:11,letterSpacing:4,color:"#3A3A3A",fontWeight:900,marginBottom:20,fontFamily:"'Barlow Condensed',sans-serif"}}>TOOLS</div>
         <div style={{display:"grid",gridTemplateColumns:mob?"1fr 1fr":"repeat(4,1fr)",gap:mob?8:14}}>
           {features.map(f=>(
@@ -1485,10 +1485,10 @@ function HomePage({setTab, cfg={}, mob=false}) {
             </div>
           ))}
         </div>
-      </div>
+      </div>}
 
       {/* ── CHARACTER ROSTER ── */}
-      <div className="home-roster" style={{padding:"40px 40px 48px"}}>
+      {cfg.showRosterGrid !== false && <div className="home-roster" style={{padding:"40px 40px 48px"}}>
         <div style={{display:"flex",alignItems:"center",gap:20,marginBottom:24}}>
           <div style={{fontSize:11,letterSpacing:4,color:"#3A3A3A",fontWeight:900,fontFamily:"'Barlow Condensed',sans-serif"}}>PROTOTYPE ROSTER</div>
           <div style={{flex:1,height:"1px",background:"#1A1A1A"}}/>
@@ -1549,7 +1549,7 @@ function HomePage({setTab, cfg={}, mob=false}) {
             fontWeight:900,fontSize:13,letterSpacing:3,cursor:"pointer",
           }}>OPEN BUILD ANALYZER</button>
         </div>
-      </div>
+      </div>}
     </div>
   );
 }
@@ -1558,7 +1558,15 @@ function HomePage({setTab, cfg={}, mob=false}) {
 function Banner() {
   const [showAdmin, setShowAdmin] = useState(false);
   const [clicks,    setClicks]   = useState(0);
+  const [cfg,       setBannerCfg] = useState(() => getSettings());
   const clickTimer = useState(null);
+
+  // Stay in sync with AdminPanel saves
+  useEffect(() => {
+    const h = (e) => setBannerCfg(e.detail || getSettings());
+    window.addEventListener("eo-settings", h);
+    return () => window.removeEventListener("eo-settings", h);
+  }, []);
 
   const handleBannerClick = () => {
     const next = clicks + 1;
@@ -1568,179 +1576,69 @@ function Banner() {
     if (next >= 5) { setShowAdmin(true); setClicks(0); }
   };
 
-  const handleSave = (vals) => {
-    setShowAdmin(false);
-  };
+  const accent = cfg.accentColor || "#B91C1C";
+  const logoTitle = cfg.logoTitle || "ENTROPY";
+  const logoSub   = cfg.logoSub   || "OVERRIDE // TACTICS CODEX";
 
   return (
     <>
       <style>{`
-        /* ── Brand bar ── */
         .eo-brand-bar {
-          position: relative;
-          display: flex;
-          align-items: stretch;
-          height: 64px;
-          background: #050505;
-          overflow: hidden;
-          cursor: default;
-          user-select: none;
+          position: relative; display: flex; align-items: stretch;
+          background: #050505; overflow: hidden; cursor: default; user-select: none;
         }
-        /* Diagonal stripe texture */
         .eo-brand-bar::before {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background: repeating-linear-gradient(
-            -55deg,
-            transparent 0px,
-            transparent 18px,
-            rgba(255,255,255,0.012) 18px,
-            rgba(255,255,255,0.012) 19px
-          );
+          content: ""; position: absolute; inset: 0;
+          background: repeating-linear-gradient(-55deg,transparent 0px,transparent 18px,rgba(255,255,255,0.012) 18px,rgba(255,255,255,0.012) 19px);
           pointer-events: none;
         }
-        /* Bottom double-rule */
-        .eo-brand-bar::after {
-          content: "";
-          position: absolute;
-          bottom: 0; left: 0; right: 0;
-          height: 3px;
-          background: #B91C1C;
-          box-shadow: 0 3px 0 0 rgba(201,162,39,0.35);
-        }
-
-        /* Left red accent pillar */
-        .eo-brand-pillar {
-          width: 4px;
-          background: #B91C1C;
-          flex-shrink: 0;
-        }
-
-        /* Logotype block */
-        .eo-logotype {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          padding: 0 20px 0 14px;
-          border-right: 1px solid #1A1A1A;
-          min-width: 210px;
-        }
-        .eo-logotype-top {
-          font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
-          font-weight: 900;
-          font-size: 22px;
-          letter-spacing: 5px;
-          color: #F0EDE5;
-          line-height: 1;
-          text-transform: uppercase;
-        }
-        .eo-logotype-sub {
-          font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
-          font-weight: 700;
-          font-size: 10px;
-          letter-spacing: 4px;
-          color: #B91C1C;
-          margin-top: 3px;
-          text-transform: uppercase;
-        }
-
-        /* Center rule fill */
-        .eo-brand-fill {
-          flex: 1;
-          display: flex;
-          align-items: center;
-          padding: 0 24px;
-          gap: 16px;
-        }
-        .eo-brand-rule {
-          flex: 1;
-          height: 1px;
-          background: linear-gradient(to right, #1A1A1A 0%, transparent 100%);
-        }
-        .eo-brand-tag {
-          font-family: 'Courier Prime', monospace;
-          font-size: 9px;
-          letter-spacing: 3px;
-          color: #282828;
-          white-space: nowrap;
-        }
-
-        /* Right meta block */
-        .eo-brand-meta {
-          display: flex;
-          align-items: center;
-          padding: 0 20px;
-          border-left: 1px solid #1A1A1A;
-          gap: 20px;
-        }
-        .eo-meta-item {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
-        .eo-meta-val {
-          font-family: 'Barlow Condensed', sans-serif;
-          font-weight: 900;
-          font-size: 18px;
-          color: #C9A227;
-          line-height: 1;
-        }
-        .eo-meta-key {
-          font-family: 'Barlow Condensed', sans-serif;
-          font-weight: 700;
-          font-size: 8px;
-          letter-spacing: 2px;
-          color: #333;
-          margin-top: 2px;
-        }
-        .eo-meta-div {
-          width: 1px;
-          height: 24px;
-          background: #1A1A1A;
-        }
-        .eo-status-dot {
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          background: #22C55E;
-          animation: eo-blink 2s ease-in-out infinite;
-        }
-        @keyframes eo-blink {
-          0%,100% { opacity: 1; }
-          50%      { opacity: 0.2; }
-        }
-        .eo-status-label {
-          font-family: 'Courier Prime', monospace;
-          font-size: 9px;
-          letter-spacing: 2px;
-          color: #333;
-        }
+        .eo-brand-fill { flex:1; display:flex; align-items:center; padding:0 24px; gap:16px; }
+        .eo-brand-rule { flex:1; height:1px; background:linear-gradient(to right,#1A1A1A 0%,transparent 100%); }
+        .eo-brand-tag  { font-family:'Courier Prime',monospace; font-size:9px; letter-spacing:3px; color:#282828; white-space:nowrap; }
+        .eo-brand-meta { display:flex; align-items:center; padding:0 20px; border-left:1px solid #1A1A1A; gap:20px; }
+        .eo-status-dot { width:6px; height:6px; border-radius:50%; background:#22C55E; animation:eo-blink 2s ease-in-out infinite; }
+        .eo-status-label { font-family:'Courier Prime',monospace; font-size:9px; letter-spacing:2px; color:#333; }
+        @keyframes eo-blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
       `}</style>
 
-      <div className="eo-brand-bar" onClick={handleBannerClick} style={{height:window.innerWidth<768?"50px":"64px"}}>
-        <div className="eo-brand-pillar"/>
+      <div className="eo-brand-bar" onClick={handleBannerClick}
+        style={{
+          height: window.innerWidth < 768 ? "50px" : "64px",
+          borderBottom: cfg.showTopBorder !== false ? `3px solid ${accent}` : "none",
+          boxShadow: cfg.showTopBorder !== false ? `0 3px 0 0 rgba(201,162,39,0.35)` : "none",
+        }}>
 
-        <div className="eo-logotype">
-          <span className="eo-logotype-top">ENTROPY</span>
-          <span className="eo-logotype-sub">OVERRIDE // TACTICS CODEX</span>
+        {cfg.showLeftPillar !== false &&
+          <div style={{width:4, background:accent, flexShrink:0}}/>}
+
+        <div style={{display:"flex",flexDirection:"column",justifyContent:"center",padding:"0 20px 0 14px",borderRight:"1px solid #1A1A1A",minWidth:window.innerWidth<768?140:210}}>
+          <span style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontWeight:900,fontSize:window.innerWidth<768?16:22,letterSpacing:window.innerWidth<768?3:5,color:"#F0EDE5",lineHeight:1,textTransform:"uppercase"}}>
+            {logoTitle}
+          </span>
+          <span style={{fontFamily:"'Barlow Condensed','Arial Narrow',sans-serif",fontWeight:700,fontSize:10,letterSpacing:4,color:accent,marginTop:3,textTransform:"uppercase"}}>
+            {logoSub}
+          </span>
         </div>
 
-        <div className="eo-brand-fill">
-          <div className="eo-brand-rule"/>
-          <span className="eo-brand-tag">BLAZBLUE ENTROPY EFFECT X</span>
-          <div className="eo-brand-rule" style={{background:"linear-gradient(to left, #1A1A1A 0%, transparent 100%)"}}/>
-        </div>
+        {cfg.showBrandRule !== false && (
+          <div className="eo-brand-fill">
+            <div className="eo-brand-rule"/>
+            <span className="eo-brand-tag">BLAZBLUE ENTROPY EFFECT X</span>
+            <div className="eo-brand-rule" style={{background:"linear-gradient(to left,#1A1A1A 0%,transparent 100%)"}}/>
+          </div>
+        )}
 
         <div className="eo-brand-meta">
-          <div style={{display:"flex",alignItems:"center",gap:6}}>
-            <div className="eo-status-dot"/>
-            <span className="eo-status-label">ACTIVE</span>
-          </div>
+          {cfg.showStatusDot !== false && (
+            <div style={{display:"flex",alignItems:"center",gap:6}}>
+              <div className="eo-status-dot"/>
+              <span className="eo-status-label">ACTIVE</span>
+            </div>
+          )}
         </div>
       </div>
 
-      <AdminPanel show={showAdmin} onClose={handleSave}/>
+      <AdminPanel show={showAdmin} onClose={() => setShowAdmin(false)}/>
     </>
   );
 }
@@ -1823,8 +1721,8 @@ export default function App() {
   }, []);
 
   const visibleChars = CHARACTERS.filter(c => !(cfg.hiddenChars||[]).includes(c.id));
-  const [activeChar, setActiveChar] = useState(CHARACTERS[0].id);
-  const [activeBuild, setActiveBuild] = useState(0);
+  const [activeChar, setActiveChar] = useState(() => getSettings().defaultChar || CHARACTERS[0].id);
+  const [activeBuild, setActiveBuild] = useState(() => getSettings().defaultBuild || 0);
   const [tab, setTab] = useState(() => getSettings().defaultTab || "home");
   const [selectedTactic, setSelectedTactic] = useState(null);
   const [guideBuild, setGuideBuild] = useState(0);
@@ -1833,7 +1731,7 @@ export default function App() {
   const build = char.builds[activeBuild];
 
   const S = {
-    wrap:{background:cfg.bgColor||"#080808",height:"100vh",display:"flex",flexDirection:"column",overflow:"hidden",color:cfg.textColor||"#F0EDE5",fontFamily:"'Barlow Condensed','Arial Narrow',Arial,sans-serif"},
+    wrap:{background:cfg.bgColor||"#080808",height:"100vh",display:"flex",flexDirection:"column",overflow:"hidden",color:cfg.textColor||"#F0EDE5",fontFamily:"'Barlow Condensed','Arial Narrow',Arial,sans-serif",fontSize:`${cfg.fontScale||100}%`},
     header:{borderBottom:"2px solid #B91C1C",padding:"18px 28px 14px",background:"#0A0A0A",display:"flex",alignItems:"center",justifyContent:"space-between"},
     nav:{display:"flex",gap:0,background:"#060606",borderBottom:"2px solid #1A1A1A",padding:"0 20px",alignItems:"stretch",height:`${cfg.navHeight||44}px`},
     navBtn:(a)=>({
@@ -1888,10 +1786,10 @@ export default function App() {
               <div style={S.ratingBadge(build.rating)}>{build.rating}</div>
             </div>
             <div style={{fontSize:mob?11:14,letterSpacing:mob?1:2,color:"#666",marginBottom:mob?8:14}}>{build.arch}</div>
-            <div style={S.mathBox}>
+            {cfg.showMath !== false && <div style={S.mathBox}>
               <div style={{color:"#5A5A5A",fontSize:12,letterSpacing:2,marginBottom:5}}>MATH SUMMARY</div>
               {build.mathKey}
-            </div>
+            </div>}
           </div>
           {!mob && <div style={{width:190,flexShrink:0}}>
             <div style={S.label}>BUILD PROFILE</div>
@@ -1934,23 +1832,25 @@ export default function App() {
       </div>
 
       {/* ── NEW SECTIONS ── */}
-      <div style={S.g2}>
+      {(cfg.showTalent !== false || cfg.showSynergies !== false) && <div style={S.g2}>
         {/* TALENT + LEGACY SKILL */}
-        <div style={{...S.card, borderColor: char.color+"33"}}>
+        {cfg.showTalent !== false && <div style={{...S.card, borderColor: char.color+"33"}}>
           <div style={S.label}>EVOTYPE TALENT</div>
           <div style={{display:"flex", alignItems:"flex-start", gap:12, marginBottom:18}}>
             <div style={{background:char.color+"22", border:`2px solid ${char.color}`, padding:mob?"4px 8px":"6px 14px", fontSize:mob?9:11, fontWeight:900, letterSpacing:mob?1:2, color:char.color, flexShrink:0, alignSelf:"flex-start"}}>TALENT</div>
             <div style={{fontSize:mob?11:13, color:"#D0D0D0", lineHeight:1.65, wordBreak:"break-word"}}>{char.talent}</div>
           </div>
-          <div style={S.label}>LEGACY SKILL</div>
-          <div style={{display:"flex", alignItems:"flex-start", gap:12}}>
-            <div style={{background:"#C9A22722", border:"2px solid #C9A227", padding:mob?"4px 8px":"6px 14px", fontSize:mob?9:11, fontWeight:900, letterSpacing:mob?1:2, color:"#C9A227", flexShrink:0, alignSelf:"flex-start"}}>LEGACY</div>
-            <div style={{fontSize:mob?11:13, color:"#D0D0D0", lineHeight:1.65, wordBreak:"break-word"}}>{char.legacySkill}</div>
-          </div>
-        </div>
+          {cfg.showLegacy !== false && <>
+            <div style={S.label}>LEGACY SKILL</div>
+            <div style={{display:"flex", alignItems:"flex-start", gap:12}}>
+              <div style={{background:"#C9A22722", border:"2px solid #C9A227", padding:mob?"4px 8px":"6px 14px", fontSize:mob?9:11, fontWeight:900, letterSpacing:mob?1:2, color:"#C9A227", flexShrink:0, alignSelf:"flex-start"}}>LEGACY</div>
+              <div style={{fontSize:mob?11:13, color:"#D0D0D0", lineHeight:1.65, wordBreak:"break-word"}}>{char.legacySkill}</div>
+            </div>
+          </>}
+        </div>}
 
         {/* BEST SYNERGY EVOTYPES */}
-        <div style={S.card}>
+        {cfg.showSynergies !== false && <div style={S.card}>
           <div style={S.label}>BEST EVOTYPE SYNERGIES</div>
           {char.synergies.map((s,i)=>{
             const name = s.split(" (")[0].replace(/[()]/g,"").trim();
@@ -1965,11 +1865,11 @@ export default function App() {
               </div>
             );
           })}
-        </div>
-      </div>
+        </div>}
+      </div>}
 
       {/* KEY MECHANICS */}
-      <div style={S.card}>
+      {cfg.showMechanics !== false && <div style={S.card}>
         <div style={S.label}>KEY MECHANICS</div>
         <div style={{display:"grid", gridTemplateColumns:mob?"1fr":"1fr 1fr", gap:8}}>
           {char.mechanics.map((m,i)=>(
@@ -1979,10 +1879,10 @@ export default function App() {
             </div>
           ))}
         </div>
-      </div>
+      </div>}
 
       {/* PRO TIPS */}
-      <div style={S.card}>
+      {cfg.showTips !== false && <div style={S.card}>
         <div style={S.label}>MORPHEUS\'S TIPS</div>
         {char.tips.map((t,i)=>(
           <div key={i} style={{display:"flex", gap:12, padding:"9px 13px", marginBottom:6, background:"#0B0B0B", borderLeft:"3px solid #C9A227"}}>
@@ -1990,7 +1890,7 @@ export default function App() {
             <div style={{fontSize:mob?10:12, color:"#C0B070", lineHeight:1.65, wordBreak:"break-word"}}>{t}</div>
           </div>
         ))}
-      </div>
+      </div>}
     </div>
   );
 
@@ -2125,9 +2025,9 @@ export default function App() {
 
       <div style={S.nav}>
         {(mob
-          ? [["home","HOME"],["builds","BUILDS"],["tactics","TACTICS"],["guide","GUIDE"],["crystals","CRYSTALS"],["calc","CALC"],["evotype","EVOTYPE"],["tier","TIERS"]]
-          : [["home","HOME"],["builds","BUILD ANALYZER"],["tactics","TACTICS DATABASE"],["guide","CHARACTER GUIDE"],["crystals","MIND CRYSTALS"],["calc","CALCULATOR"],["evotype","EVOTYPE PLANNER"],["tier","TIER LIST"]]
-        ).map(([id,lbl])=>(
+          ? [["home","HOME","⌂"],["builds","BUILDS","▣"],["tactics","TACTICS","◎"],["guide","GUIDE","✦"],["crystals","CRYSTALS","◆"],["calc","CALC","⊕"],["evotype","EVOTYPE","⊞"],["tier","TIERS","≡"]]
+          : [["home","HOME","⌂"],["builds","BUILD ANALYZER","▣"],["tactics","TACTICS DATABASE","◎"],["guide","CHARACTER GUIDE","✦"],["crystals","MIND CRYSTALS","◆"],["calc","CALCULATOR","⊕"],["evotype","EVOTYPE PLANNER","⊞"],["tier","TIER LIST","≡"]]
+        ).map(([id,lbl,icon])=>(
           <button key={id} className={`eo-nav-btn${tab===id?" active":""}`} style={{
             ...S.navBtn(tab===id),
             padding: mob ? "0 8px" : "0 26px",
@@ -2135,7 +2035,7 @@ export default function App() {
             letterSpacing: mob ? 2 : 4,
             flex: mob ? 1 : "none",
             textAlign:"center",
-          }} onClick={()=>setTab(id)}>{lbl}</button>
+          }} onClick={()=>setTab(id)}>{cfg.showNavLabels === false ? icon : lbl}</button>
         ))}
       </div>
 
@@ -2148,7 +2048,7 @@ export default function App() {
       ) : tab === "evotype" ? (
         <EvotypePlanner cfg={cfg} mob={mob}/>
       ) : tab === "tier" ? (
-        <TierList mob={mob}/>
+        <TierList cfg={cfg} mob={mob}/>
       ) : tab === "tactics" ? (
         <div style={{flex:1, display:"flex", overflow:"hidden", flexDirection: mob ? "column" : "row"}}>
           {renderTactics()}
@@ -2190,20 +2090,20 @@ export default function App() {
               <div style={{flex:1,minWidth:0}}>
                 <div style={{fontSize:14,fontWeight:900,color:activeChar===c.id?c.color:"#C0C0C0",letterSpacing:0.5,lineHeight:1.2}}>{c.name}</div>
                 <div style={{fontSize:11,color:"#484848",letterSpacing:1,marginTop:1}}>{c.tag}</div>
-                <div style={{display:"flex",gap:6,marginTop:4}}>
+                {cfg.showTierBadge !== false && <div style={{display:"flex",gap:6,marginTop:4}}>
                   <span style={{background:`${TIER_COLORS[c.tier]}1A`,color:TIER_COLORS[c.tier],border:`1px solid ${TIER_COLORS[c.tier]}`,padding:"0 6px",fontSize:10,fontWeight:900}}>TIER {c.tier}</span>
-                </div>
+                </div>}
               </div>
             </div>
           ))}
           {/* Bottom character artwork */}
-          <div style={{borderTop:"1px solid #111",marginTop:8}}>
+          {cfg.showCharArtwork !== false && <div style={{borderTop:"1px solid #111",marginTop:8}}>
             <div style={{position:"relative",overflow:"hidden",height:180}}>
               <img src={char.img} alt={char.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"top center",filter:"contrast(1.05) saturate(0.88)",opacity:0.8}} onError={e=>{e.target.style.display="none"}}/>
               <div style={{position:"absolute",bottom:0,left:0,right:0,height:72,background:"linear-gradient(transparent,#080808 88%)"}}/>
               <div style={{position:"absolute",bottom:8,left:14,fontWeight:900,fontSize:14,color:char.color,letterSpacing:2}}>{char.name.toUpperCase()}</div>
             </div>
-          </div>
+          </div>}
         </div>
 
         {/* CONTENT */}

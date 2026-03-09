@@ -10,7 +10,7 @@ export const DEFAULTS = {
   showSynergies:true, showMechanics:true, showTalent:true,
   showLegacy:true, showTierBadge:true, showElementBadge:true,
   showCharArtwork:true, showStatsBar:true, showFeatureCards:true,
-  showRosterGrid:true,
+  showRosterGrid:true, showNavLabels:true,
   hiddenChars:[],
   defaultChar:"hibiki", defaultBuild:0,
   maintenanceMode:false,
