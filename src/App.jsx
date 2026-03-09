@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MindCrystals from "./components/MindCrystals.jsx";
 import BuildCalculator from "./components/BuildCalculator.jsx";
+import EvotypePlanner from "./components/EvotypePlanner.jsx";
 
 function useIsMobile() {
   const [mob, setMob] = useState(() => window.innerWidth < 768);
@@ -2125,8 +2126,8 @@ export default function App() {
 
       <div style={S.nav}>
         {(mob
-          ? [["home","HOME"],["builds","BUILDS"],["tactics","TACTICS"],["guide","GUIDE"],["crystals","CRYSTALS"],["calc","CALC"]]
-          : [["home","HOME"],["builds","BUILD ANALYZER"],["tactics","TACTICS DATABASE"],["guide","CHARACTER GUIDE"],["crystals","MIND CRYSTALS"],["calc","CALCULATOR"]]
+          ? [["home","HOME"],["builds","BUILDS"],["tactics","TACTICS"],["guide","GUIDE"],["crystals","CRYSTALS"],["calc","CALC"],["evotype","EVOTYPE"]]
+          : [["home","HOME"],["builds","BUILD ANALYZER"],["tactics","TACTICS DATABASE"],["guide","CHARACTER GUIDE"],["crystals","MIND CRYSTALS"],["calc","CALCULATOR"],["evotype","EVOTYPE PLANNER"]]
         ).map(([id,lbl])=>(
           <button key={id} className={`eo-nav-btn${tab===id?" active":""}`} style={{
             ...S.navBtn(tab===id),
@@ -2145,6 +2146,8 @@ export default function App() {
         <MindCrystals cfg={cfg} mob={mob}/>
       ) : tab === "calc" ? (
         <BuildCalculator cfg={cfg} mob={mob} characters={visibleChars}/>
+      ) : tab === "evotype" ? (
+        <EvotypePlanner cfg={cfg} mob={mob}/>
       ) : tab === "tactics" ? (
         <div style={{flex:1, display:"flex", overflow:"hidden", flexDirection: mob ? "column" : "row"}}>
           {renderTactics()}
