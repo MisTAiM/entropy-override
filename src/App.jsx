@@ -1,4 +1,14 @@
 import React, { useState, useEffect } from "react";
+
+function useIsMobile() {
+  const [mob, setMob] = useState(() => window.innerWidth < 768);
+  useEffect(() => {
+    const h = () => setMob(window.innerWidth < 768);
+    window.addEventListener("resize", h);
+    return () => window.removeEventListener("resize", h);
+  }, []);
+  return mob;
+}
 import { getSettings } from "./hooks/useSettings";
 import CharacterGuide from "./components/CharacterGuide";
 import AdminPanel from "./components/AdminPanel";
@@ -1025,7 +1035,7 @@ const CHARACTERS = [
   }
 ];
 
-function HomePage({setTab, cfg={}}) {
+function HomePage({setTab, cfg={}, mob=false}) {
   const [hovered, setHovered] = useState(null);
   const tiers = {S:"#E53935", A:"#FF8F00", B:"#1976D2"};
 
@@ -1132,7 +1142,7 @@ function HomePage({setTab, cfg={}}) {
       `}</style>
 
       {/* ── HERO ── */}
-      <div className="home-hero" style={{position:"relative",overflow:"hidden",height:360,background:"#030303",display:"flex"}}>
+      <div className="home-hero" style={{position:"relative",overflow:"hidden",height:mob?200:360,background:"#030303",display:"flex"}}>
 
         {/* Character portrait strip — left 55%, stacked 4 tall */}
         <div style={{position:"absolute",inset:0,display:"flex",gap:0}}>
@@ -1179,9 +1189,9 @@ function HomePage({setTab, cfg={}}) {
         {/* ── TEXT BLOCK — right side ── */}
         <div style={{
           position:"absolute",right:0,top:0,bottom:0,
-          width:"46%",
+          width:mob?"65%":"46%",
           display:"flex",flexDirection:"column",justifyContent:"center",
-          padding:"0 52px 24px 32px",
+          padding:mob?"0 16px 16px 16px":"0 52px 24px 32px",
         }}>
           {/* Eyebrow */}
           <div style={{
@@ -1203,9 +1213,9 @@ function HomePage({setTab, cfg={}}) {
             letterSpacing:"1px",
             marginBottom:20,
           }}>
-            <div style={{fontSize:"clamp(52px,5.5vw,80px)",color:"#F7F3EE",display:"block"}}>TACTICS</div>
+            <div style={{fontSize:mob?"clamp(28px,7vw,42px)":"clamp(52px,5.5vw,80px)",color:"#F7F3EE",display:"block"}}>TACTICS</div>
             <div style={{
-              fontSize:"clamp(52px,5.5vw,80px)",
+              fontSize:mob?"clamp(28px,7vw,42px)":"clamp(52px,5.5vw,80px)",
               color:"#B91C1C",
               display:"block",
               WebkitTextStroke:"1px rgba(255,80,40,0.4)",
@@ -1243,7 +1253,7 @@ function HomePage({setTab, cfg={}}) {
       {/* ── FEATURE CARDS ── */}
       <div className="home-feat" style={{padding:"40px 40px 0"}}>
         <div style={{fontSize:11,letterSpacing:4,color:"#3A3A3A",fontWeight:900,marginBottom:20,fontFamily:"'Barlow Condensed',sans-serif"}}>TOOLS</div>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:16}}>
+        <div style={{display:"grid",gridTemplateColumns:mob?"1fr":"repeat(3,1fr)",gap:16}}>
           {features.map(f=>(
             <div key={f.id} className="feat-card" onClick={()=>setTab(f.id)}
               style={{
@@ -1278,7 +1288,7 @@ function HomePage({setTab, cfg={}}) {
           <div style={{flex:1,height:"1px",background:"#1A1A1A"}}/>
           <div style={{fontSize:10,letterSpacing:2,color:"#2A2A2A",fontFamily:"'Courier Prime',monospace"}}>16 PLAYABLE</div>
         </div>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(8,1fr)",gap:8}}>
+        <div style={{display:"grid",gridTemplateColumns:mob?"repeat(4,1fr)":"repeat(8,1fr)",gap:8}}>
           {CHARACTERS.map((c,i)=>(
             <div key={c.id} className="char-card" onClick={()=>setTab("builds")}
               style={{"--char-color":c.color, animationDelay:`${i*0.04}s`}}
@@ -1502,7 +1512,7 @@ function Banner() {
         }
       `}</style>
 
-      <div className="eo-brand-bar" onClick={handleBannerClick}>
+      <div className="eo-brand-bar" onClick={handleBannerClick} style={{height:window.innerWidth<768?"50px":"64px"}}>
         <div className="eo-brand-pillar"/>
 
         <div className="eo-logotype">
@@ -1598,6 +1608,8 @@ function RarityChart({tactic}) {
 
 export default function App() {
   const [cfg, setCfg] = useState(() => getSettings());
+  const mob = useIsMobile();
+  const [mobMenuOpen, setMobMenuOpen] = useState(false);
   useEffect(() => {
     const handler = (e) => setCfg(e.detail || getSettings());
     window.addEventListener("eo-settings", handler);
@@ -1646,8 +1658,8 @@ export default function App() {
     h1:(col="#F0EDE5")=>({fontSize:22,fontWeight:900,letterSpacing:3,color:col,marginBottom:3}),
     mono:{fontFamily:"'Courier Prime','Courier New',monospace"},
     mathBox:{background:"#0B0B0B",border:"1px solid #B91C1C",borderLeft:"4px solid #B91C1C",padding:"14px 18px",fontFamily:"'Courier Prime','Courier New',monospace",fontSize:14,color:"#C9A227",lineHeight:2,marginBottom:14},
-    g2:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16},
-    buildTabBtn:(a,col)=>({background:a?`${col}1A`:"#111",border:`2px solid ${a?col:"#1E1E1E"}`,color:a?col:"#505050",padding:"10px 22px",fontSize:14,letterSpacing:2,fontWeight:700,cursor:"pointer",fontFamily:"'Barlow Condensed','Arial Narrow',Arial,sans-serif",clipPath:"polygon(0 0,100% 0,94% 100%,0 100%)",transition:"all 0.15s",marginRight:6}),
+    g2:{display:"grid",gridTemplateColumns:mob?"1fr":"1fr 1fr",gap:mob?10:16},
+    buildTabBtn:(a,col)=>({background:a?`${col}1A`:"#111",border:`2px solid ${a?col:"#1E1E1E"}`,color:a?col:"#505050",padding:"10px 22px",fontSize:14,letterSpacing:2,fontWeight:700,cursor:"pointer",fontFamily:"'Barlow Condensed','Arial Narrow',Arial,sans-serif",clipPath:mob?undefined:"polygon(0 0,100% 0,94% 100%,0 100%)",transition:"all 0.15s",marginRight:mob?4:6,padding:mob?"8px 12px":"10px 22px",fontSize:mob?11:14}),
     tacticElem:(col)=>({background:`${col}1A`,color:col,padding:"3px 10px",fontSize:12,fontWeight:900,letterSpacing:1,fontFamily:"'Barlow Condensed',sans-serif",flexShrink:0}),
     ratingBadge:(v)=>({display:"inline-block",background:v>=90?"#0F2710":v>=80?"#211D00":"#1F0A0A",border:`2px solid ${v>=90?"#22C55E":v>=80?"#EAB308":"#EF4444"}`,color:v>=90?"#22C55E":v>=80?"#EAB308":"#EF4444",padding:"3px 14px",fontSize:18,fontWeight:900,letterSpacing:2,fontFamily:"'Barlow Condensed',sans-serif"}),
   };
@@ -1675,10 +1687,10 @@ export default function App() {
               {build.mathKey}
             </div>
           </div>
-          <div style={{width:190,flexShrink:0}}>
+          {!mob && <div style={{width:190,flexShrink:0}}>
             <div style={S.label}>BUILD PROFILE</div>
             {cfg.showRadar!==false && <BuildRadar radar={build.radar} color={char.color}/>}
-          </div>
+          </div>}
         </div>
       </div>
 
@@ -1784,8 +1796,8 @@ export default function App() {
   );
 
   const renderTactics = () => (
-    <div style={{display:"grid",gridTemplateColumns:"280px 1fr",gap:0,width:"100%",overflow:"hidden"}}>
-      <div style={{overflowY:"auto",borderRight:"1px solid #161616",paddingRight:16,paddingLeft:4,paddingTop:4}}>
+    <div style={{display:"flex",flexDirection:mob?"column":"row",width:"100%",overflow:"hidden",flex:1}}>
+      <div style={{overflowY:"auto",borderRight:mob?"none":"1px solid #161616",borderBottom:mob?"1px solid #141414":"none",width:mob?"100%":280,maxHeight:mob?"38vh":"none",flexShrink:0,paddingRight:16,paddingLeft:4,paddingTop:4}}>
         <div style={{...S.label,paddingLeft:8}}>SELECT TACTIC</div>
         {TACTICS_REFERENCE.map(t=>{
           const ec=ELEM_COLORS[t.element]||"#888";
@@ -1890,21 +1902,66 @@ export default function App() {
         ::-webkit-scrollbar-track{background:#080808;}
         ::-webkit-scrollbar-thumb{background:#B91C1C;}
         button:hover{opacity:0.85;}
+
+        /* ── MOBILE ── */
+        @media (max-width: 767px) {
+          .eo-brand-logotype-top { font-size: 16px !important; letter-spacing: 3px !important; }
+          .eo-brand-fill { display: none !important; }
+          .eo-meta-div  { display: none !important; }
+          .eo-brand-bar { height: 50px !important; }
+          .eo-mob-char-strip { display: flex !important; }
+          .home-hero { height: 220px !important; }
+          .home-feat  > div { grid-template-columns: 1fr !important; }
+          .home-roster-grid { grid-template-columns: repeat(4, 1fr) !important; }
+        }
       `}</style>
 
       <Banner />
 
       <div style={S.nav}>
-        {[["home","HOME"],["builds","BUILD ANALYZER"],["tactics","TACTICS DATABASE"],["guide","CHARACTER GUIDE"]].map(([id,lbl])=>(
-          <button key={id} className={`eo-nav-btn${tab===id?" active":""}`} style={S.navBtn(tab===id)} onClick={()=>setTab(id)}>{lbl}</button>
+        {(mob
+          ? [["home","HOME"],["builds","BUILDS"],["tactics","TACTICS"],["guide","GUIDE"]]
+          : [["home","HOME"],["builds","BUILD ANALYZER"],["tactics","TACTICS DATABASE"],["guide","CHARACTER GUIDE"]]
+        ).map(([id,lbl])=>(
+          <button key={id} className={`eo-nav-btn${tab===id?" active":""}`} style={{
+            ...S.navBtn(tab===id),
+            padding: mob ? "0 14px" : "0 26px",
+            fontSize: mob ? 11 : 12,
+            letterSpacing: mob ? 2 : 4,
+            flex: mob ? 1 : "none",
+            textAlign:"center",
+          }} onClick={()=>setTab(id)}>{lbl}</button>
         ))}
       </div>
 
       {tab === "home" ? (
-        <HomePage setTab={setTab} cfg={cfg}/>
+        <HomePage setTab={setTab} cfg={cfg} mob={mob}/>
       ) : tab === "tactics" ? (
-        <div style={{flex:1, display:"flex", overflow:"hidden"}}>
+        <div style={{flex:1, display:"flex", overflow:"hidden", flexDirection: mob ? "column" : "row"}}>
           {renderTactics()}
+        </div>
+      ) : mob ? (
+        /* ── MOBILE: stacked char strip + content ── */
+        <div style={{flex:1,display:"flex",flexDirection:"column",overflow:"hidden"}}>
+          {/* Horizontal char strip */}
+          <div style={{display:"flex",overflowX:"auto",borderBottom:"1px solid #141414",background:"#040404",flexShrink:0,WebkitOverflowScrolling:"touch"}}>
+            {visibleChars.map(c=>(
+              <div key={c.id} onClick={()=>{setActiveChar(c.id);setActiveBuild(0);}}
+                style={{flexShrink:0,display:"flex",flexDirection:"column",alignItems:"center",padding:"8px 10px",cursor:"pointer",borderBottom:activeChar===c.id?`2px solid ${c.color}`:"2px solid transparent",background:activeChar===c.id?`${c.color}14`:"transparent",transition:"all 0.12s",minWidth:64}}>
+                <div style={{width:32,height:42,overflow:"hidden",clipPath:"polygon(0 0,100% 0,85% 100%,0 100%)",flexShrink:0}}>
+                  <img src={c.img} alt={c.name} style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"top center",filter:activeChar===c.id?"none":"brightness(0.45)"}} onError={e=>{e.target.style.display="none"}}/>
+                </div>
+                <div style={{fontSize:8,fontWeight:900,letterSpacing:0.5,color:activeChar===c.id?c.color:"#3A3A3A",marginTop:4,fontFamily:"'Barlow Condensed',sans-serif",textAlign:"center",lineHeight:1.1,maxWidth:56,overflow:"hidden",whiteSpace:"nowrap",textOverflow:"ellipsis"}}>
+                  {c.name.split(" ")[0].toUpperCase()}
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* Mobile content — full width */}
+          <div style={{...S.content,padding:"14px 14px"}}>
+            {tab==="builds" && renderBuilds()}
+            {tab==="guide" && <CharacterGuide char={char}/>}
+          </div>
         </div>
       ) : (
       <div style={S.main}>
@@ -1939,7 +1996,7 @@ export default function App() {
         {/* CONTENT */}
         <div style={S.content}>
           {tab==="builds" && renderBuilds()}
-          {tab==="guide" && <CharacterGuide char={char} />}
+          {tab==="guide" && <CharacterGuide char={char}/>}
         </div>
       </div>
       )}
