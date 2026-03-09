@@ -1,484 +1,352 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef } from "react";
 
-// ─── DEFAULT TIER RANKINGS ─────────────────────────────────────────────────────
-// Characters: based on build ceiling, consistency, and Omega entropy viability
-const DEFAULT_CHARS = {
-  S:  ["hibiki","jin","hakumen","ragna","naoto"],
-  "A+":[  "taokaka","noel","es","bullet","kokonoe"],
-  A:  ["lambda","rachel","hazama","mai"],
-  "B+":["icey","prisoner"],
-  B:  [],
-  C:  [],
+// ─── DATA ─────────────────────────────────────────────────────────────────────
+
+const DEFAULT_CHARS = [
+  { id:"hibiki",   name:"Hibiki",   img:"/chars/hibiki.png",   color:"#7B8FE4", note:"Clone proc tripling + back-attack = S-tier ceiling. All 3 clones inherit every tactic proc simultaneously. Highest Exhilaration rate in roster." },
+  { id:"ragna",    name:"Ragna",    img:"/chars/ragna.png",    color:"#D93025", note:"Blood Kain sub-50% is the strongest single threshold multiplier. Blood Scythe group heal sustains indefinitely — self-funding HP loop." },
+  { id:"jin",      name:"Jin",      img:"/chars/jin.png",      color:"#4EA8D8", note:"Double Cold stack = permanent slow field. Best partner enabler. Every archetype benefits from Cold control — Magatama, Drive, Clone all love frozen targets." },
+  { id:"kokonoe",  name:"Kokonoe",  img:"/chars/kokonoe.png",  color:"#E8714A", note:"Aerial safety is uniquely unkillable positioning. Missile Rain 10 proj = 2800 per cast at close range. Never on the ground = never in danger." },
+  { id:"es",       name:"Es",       img:"/chars/es.png",       color:"#E878A0", note:"Mine bounce from aerial: 3+ detonations per string. Crest field generates autonomous Exhilaration stacks without active input." },
+  { id:"noel",     name:"Noel",     img:"/chars/noel.png",     color:"#60A5FA", note:"Drive 9 hits/sec = fastest solo Exhilaration stacker. Universal partner — compatible with every fusion in the game." },
+  { id:"rachel",   name:"Rachel",   img:"/chars/rachel.png",   color:"#D8B4FE", note:"Bat Chain Lightning is fully autonomous DPS. Best summon-type passive in the game — Summon Booster turns her into a hands-free S-tier." },
+  { id:"taokaka",  name:"Taokaka",  img:"/chars/taokaka.png",  color:"#FCD34D", note:"Infinite dodge + 11 hits/sec = Exhilaration cap in 20s. Fastest kill chain speed in the roster. Speed Demon makes each room faster than the last." },
+  { id:"lambda",   name:"Lambda",   img:"/chars/lambda.png",   color:"#6EE7B7", note:"4 autonomous swords copy tactic procs independently. Respawn Double = permanent field with zero upkeep. Summon Booster turns 4 swords into a second character." },
+  { id:"mai",      name:"Mai",      img:"/chars/mai.png",      color:"#FB923C", note:"8 needles per cast = finest HP management tool in the game. 32 sword proc events when fused with Lambda. Most precise threshold management." },
+  { id:"hazama",   name:"Hazama",   img:"/chars/hazama.png",   color:"#86EFAC", note:"Chain whip hits 3-5 targets simultaneously. Strongest passive damage dealer — DoT attrition engine. 1300+/s passive with zero player input on grouped enemies." },
+  { id:"hakumen",  name:"Hakumen",  img:"/chars/hakumen.png",  color:"#F1F5F9", note:"Magatama × 2 + Legacy Amplifier = highest single-hit burst in roster. Counter timing is learnable — once mastered, the highest damage ceiling of any char." },
+  { id:"bullet",   name:"Bullet",   img:"/chars/bullet.png",   color:"#F97316", note:"Steel Shell adds 3 effective HP bars. Drive + Defensive Combo = safest CQC archetype. Survives entropy 70+ with correct crystal picks." },
+  { id:"naoto",    name:"Naoto",    img:"/chars/naoto.png",    color:"#F87171", note:"Hunter's Eye execute at 30% — Blood Pact × Fatal Blow × Focus crit = highest burst multiplier stack. 7.4× peak execute spike." },
+  { id:"icey",     name:"ICEY",     img:"/chars/icey.png",     color:"#A78BFA", note:"Dance invincibility = 0 damage during attack animation. Full offensive + full defensive simultaneously. No other char achieves both." },
+  { id:"prisoner", name:"Prisoner", img:"/chars/prisoner.png", color:"#94A3B8", note:"Weapon variety means no bad runs — any weapon triggers all tactic procs equally. Roll invincibility covers all gaps. Best run-consistency of any char." },
+];
+
+const DEFAULT_TACTICS = [
+  { id:"t-shadow",    name:"Shadow Spike",    slot:"Attack",  elem:"umbra",    val:"275/hit",    note:"S-tier on clone chars — Hibiki triple procs. Universal on any build. Never a bad pick. Always chooses itself." },
+  { id:"t-atkcold",   name:"Attack Cold",     slot:"Attack",  elem:"ice",      val:"+46% ATK",   note:"Permanent +46% attack is the strongest flat multiplier in Attack slot. Enables Frost Burst. Best Attack tactic in the game." },
+  { id:"t-burn",      name:"Attack Burn",     slot:"Attack",  elem:"fire",     val:"260 DoT/s",  note:"260/s stacking DoT per hit on multiple targets. Hazama chain whip applies to 3-5 simultaneously = 1300 passive/s." },
+  { id:"t-chainlit",  name:"Chain Lightning", slot:"Attack",  elem:"electric", val:"295×3",      note:"295 × 3 enemies per proc. Rachel bats proc this autonomously — hands-free AoE coverage on any enemy group." },
+  { id:"t-skcold",    name:"Skill Cold",      slot:"Skill",   elem:"ice",      val:"+47% Skill",  note:"47% on all skills at Legendary. Jin double-stack with Attack Cold = strongest tactic pairing in the game." },
+  { id:"t-skburn",    name:"Skill Burn",      slot:"Skill",   elem:"fire",     val:"360 DoT/s",  note:"Higher DoT rate than Attack Burn. Mai needle volleys stack this fast. Good on skill-heavy rotations." },
+  { id:"t-lightsp",   name:"Light Spear",     slot:"Skill",   elem:"light",    val:"490/hit",    note:"490 flat on skill use. Legacy Amplifier makes it 735. Hakumen Magatama multiplies further. Universal boss damage." },
+  { id:"t-fireproj",  name:"Fire Projectile", slot:"Skill",   elem:"fire",     val:"280×10",     note:"2800 at point blank. Kokonoe aerial fires all 10 into one target. Best burst Skill tactic in the game." },
+  { id:"t-mine",      name:"Place Mine",      slot:"Skill",   elem:"fire",     val:"570/mine",   note:"Es exclusive — aerial bounce triggers 3+ mines per string = 1710 burst. Nearly worthless on other characters." },
+  { id:"t-spirit",    name:"Fire Spirit",     slot:"Skill",   elem:"fire",     val:"190/hit",    note:"Autonomous spirit. Decent passive filler — lower priority than Field Turret and Fire Projectile in Skill slot." },
+  { id:"t-thunderb",  name:"Thunderbolt",     slot:"Dash",    elem:"light",    val:"325/dash",   note:"Movement becomes offense. Clone chars triple-proc on every dodge. Best Dash tactic — movement slot that's never wasted." },
+  { id:"t-dashshdw",  name:"Dash Shadow",     slot:"Dash",    elem:"umbra",    val:"200/dodge",  note:"200 on every dodge. Lower than Thunderbolt. Best on high-dodge chars when Thunderbolt is already in Attack slot." },
+  { id:"t-bladeslsh", name:"Blade Slash",     slot:"Dash",    elem:"blade",    val:"220/dash",   note:"Physical proc on dash. No element synergy. Filler when no element-specific dash available. Rarely optimal." },
+  { id:"t-lightsp2",  name:"Light Spear",     slot:"Legacy",  elem:"light",    val:"490/hit",    note:"490 on legacy use. Legacy Amplifier: 735. Hakumen Magatama × Legacy Amp = 1470 per hit. S-tier Legacy slot." },
+  { id:"t-blackhole", name:"Blackhole",       slot:"Legacy",  elem:"umbra",    val:"Full CC",    note:"Full-screen slow on legacy. Enables every other tactic to confirm safely. Zero direct damage — S-tier utility." },
+  { id:"t-ringfire",  name:"Ring of Fire",    slot:"Legacy",  elem:"fire",     val:"770 burst",  note:"770 AoE burst on legacy. Ring of Fire Double = full-screen clear. Best pure-damage Legacy tactic." },
+  { id:"t-icespike",  name:"Ice Spike",       slot:"Legacy",  elem:"ice",      val:"350 turret", note:"Respawn Double makes it a permanent auto-turret. Set and forget — best passive Legacy field option." },
+  { id:"t-orb",       name:"Lightning Orb",   slot:"Summon",  elem:"electric", val:"245 DPS",    note:"Persistent autonomous field turret. Character-neutral and stackable. Best Summon tactic — never a wrong pick." },
+  { id:"t-chainlit2", name:"Chain Lightning", slot:"Summon",  elem:"light",    val:"295×3",      note:"295 × 3 bounce per proc in Summon slot. Rachel bats proc this autonomously. Doubles chain lightning density." },
+  { id:"t-frostbst",  name:"Frost Burst",     slot:"Summon",  elem:"ice",      val:"520 AoE",    note:"520 AoE at max Cold stacks. Jin reaches max stacks in 2 hits. Best room-clear Summon tactic on Cold builds." },
+];
+
+const DEFAULT_CRYSTALS = [
+  { id:"c-exhil",    name:"Exhilaration",     cat:"UTILITY",  col:"#C9A227", note:"ALL damage scales with combo count — universal multiplier, caps at 250%. Goes in every serious build. No exceptions." },
+  { id:"c-defcombo", name:"Defensive Combo",  cat:"SURVIVAL", col:"#F59E0B", note:"-80% damage received during attack strings. You're attacking almost always = nearly permanent damage reduction. Best survival crystal." },
+  { id:"c-notdead",  name:"Not Dead Yet",     cat:"SURVIVAL", col:"#F59E0B", note:"Cheat death once + 70% HP restore. Most impactful single pick at entropy 70+. Run it every time — safety net for anything." },
+  { id:"c-resonance",name:"Resonance",        cat:"UTILITY",  col:"#C9A227", note:"+40% tactic damage at Legendary. Multiplicative with all tactic sources simultaneously. Mandatory on any summon or multi-tactic build." },
+  { id:"c-giant",    name:"Giant Slayer",     cat:"DAMAGE",   col:"#E53935", note:"+60% vs elites and bosses. Goes in every build that faces elites. No reason to leave this out — always worth the slot." },
+  { id:"c-summon",   name:"Summon Booster",   cat:"ADVANCED", col:"#A78BFA", note:"+45% summon tactic damage. Rachel bats + Lambda swords + Hibiki clones all classified summon-type. Stacks multiplicatively with Resonance." },
+  { id:"c-fatal",    name:"Fatal Blow",       cat:"UTILITY",  col:"#C9A227", note:"+75% crit damage at Legendary. Paired with Focus: 55% crit rate × 1.75 = consistent 1.41× expected multiplier. Both or neither." },
+  { id:"c-focus",    name:"Focus",            cat:"UTILITY",  col:"#C9A227", note:"+25% crit rate at Legendary. Pair with Fatal Blow. One without the other is half the value — always stack them together." },
+  { id:"c-legamp",   name:"Legacy Amplifier", cat:"ADVANCED", col:"#A78BFA", note:"+50% legacy damage. Hakumen Magatama × Legacy Amp × Light Spear = highest single-hit burst in game. Skip without a legacy focus." },
+  { id:"c-straight", name:"Straightforward",  cat:"DAMAGE",   col:"#E53935", note:"+45% attack damage. Pure flat multiplier — always solid, never exceptional. Best filler when you need ATK scaling." },
+  { id:"c-domain",   name:"Domination",       cat:"DAMAGE",   col:"#E53935", note:"+45% skill damage. Mirror of Straightforward for skill-heavy builds. Same tier, swap depending on primary damage source." },
+  { id:"c-icef",     name:"Ice Fortune",      cat:"ECONOMY",  col:"#60B8D4", note:"Guarantees Cold Attack drop from first shop. Removes all Cold RNG — run on any Jin or Cold-dependent build." },
+  { id:"c-chain",    name:"Chain Reaction",   cat:"ADVANCED", col:"#A78BFA", note:"+36% on 3 kills in 10s. Taokaka and Prisoner trigger this almost every room. Solid mid-tier — skip on slow killers." },
+  { id:"c-combosrg", name:"Combo Surge",      cat:"DAMAGE",   col:"#E53935", note:"+5% ATK per 10 combo up to 250%. Similar to Exhilaration but ATK-only. Stack with Exhil on fast attackers for double scaling." },
+  { id:"c-bloodpact",name:"Blood Pact",       cat:"ADVANCED", col:"#A78BFA", note:"+35% HP-cost ability damage. Naoto-exclusive value at full potential. Skip on all other characters." },
+  { id:"c-apex",     name:"Apex Predator",    cat:"ADVANCED", col:"#A78BFA", note:"+35% at full HP. Hakumen counter restores HP making this consistent in his kit. Situational everywhere else." },
+  { id:"c-vital",    name:"Vital Boost",      cat:"SURVIVAL", col:"#F59E0B", note:"+100% max HP. Doubles Blood Scythe heal effectiveness on Ragna. Situational elsewhere — skip unless running HP-cost builds." },
+  { id:"c-phantom",  name:"Phantom Step",     cat:"ADVANCED", col:"#A78BFA", note:"Iframes on dash. Hibiki back-attack repositioning loves it. Skip on stationary or turret builds." },
+  { id:"c-hunters",  name:"Hunter's Mark",    cat:"ADVANCED", col:"#A78BFA", note:"+30% from ALL sources on marked target — attacks, tactics, legacy, summons simultaneously. Underrated when combined with high-proc builds." },
+  { id:"c-firef",    name:"Fire Fortune",     cat:"ECONOMY",  col:"#E84E25", note:"Guarantees Burn tactic drop. Good on Hazama/Mai fire builds. Skip if not running a fire tactic as a primary anchor." },
+  { id:"c-umbraf",   name:"Umbra Fortune",    cat:"ECONOMY",  col:"#A855F7", note:"Guarantees Shadow Spike drop. Good on Hibiki/Lambda. Skip without a clear umbra tactic anchor in the build plan." },
+  { id:"c-lethal",   name:"Lethal Momentum",  cat:"DAMAGE",   col:"#E53935", note:"After skill: +45% ATK for 6s. High uptime on skill-heavy builds. Outclassed by Straightforward in most cases." },
+  { id:"c-predator", name:"Predator",         cat:"DAMAGE",   col:"#E53935", note:"+75% vs low HP enemies. Only real synergy is Naoto execute window. Wide miss on everyone else — skip unless Naoto." },
+  { id:"c-mana",     name:"Mana Surge",       cat:"ECONOMY",  col:"#60A5FA", note:"+80 max MP. Mai needle rotation only. Skip everywhere else — the MP increase rarely matters outside needle spam." },
+  { id:"c-indestr",  name:"Indestructible",   cat:"SURVIVAL", col:"#F59E0B", note:"-30% damage received always. Worse than Defensive Combo in active combat — run it only if you struggle to stay in combo strings." },
+  { id:"c-secondwind",name:"Second Wind",     cat:"SURVIVAL", col:"#F59E0B", note:"Full heal on room entry below full HP. Entropy 70+ safety net when Not Dead Yet is unavailable." },
+];
+
+const TIER_META = [
+  { id:"S",  label:"S",  color:"#E53935", desc:"Run-defining. Build your playstyle around this." },
+  { id:"A+", label:"A+", color:"#F97316", desc:"Excellent. Works in every run, strong with almost anything." },
+  { id:"A",  label:"A",  color:"#EAB308", desc:"Solid. Good pick in most situations." },
+  { id:"B+", label:"B+", color:"#22C55E", desc:"Situational. Strong in the right comp." },
+  { id:"B",  label:"B",  color:"#60A5FA", desc:"Niche. Has a specific use case — skip otherwise." },
+  { id:"C",  label:"C",  color:"#555",    desc:"Skip. Outclassed by better options." },
+];
+
+const ELEM_COLORS = {
+  ice:"#60B8D4", fire:"#E84E25", umbra:"#A855F7",
+  light:"#EAB308", electric:"#22C55E", blade:"#94A3B8",
 };
 
-// Tactics: ranked by universal applicability + peak multiplier at Legendary
-const DEFAULT_TACTICS = {
-  S:  ["atk-cold","sk-cold","sum-orb","leg-blackhole","sk-proj"],
-  "A+":["atk-shadow","leg-ring","atk-thunder","sk-spear","dash-thunder"],
-  A:  ["sum-chain","atk-burn","sk-burn","leg-icespike","sk-spirit"],
-  "B+":["dash-shadow","dash-blade","sk-mine","sum-frost"],
-  B:  [],
-  C:  [],
+const STORAGE_KEY = "eo-tierlist-v3";
+
+// ─── DEFAULTS ─────────────────────────────────────────────────────────────────
+const DEFAULT_PLACEMENTS = {
+  chars: {
+    S:    ["hibiki","jin","taokaka","noel"],
+    "A+": ["ragna","es","kokonoe","hakumen","lambda"],
+    A:    ["rachel","naoto","icey","hazama","mai"],
+    "B+": ["bullet","prisoner"],
+    B:    [], C: [], unranked: [],
+  },
+  tactics: {
+    S:    ["t-shadow","t-atkcold","t-skcold","t-orb","t-blackhole"],
+    "A+": ["t-lightsp","t-chainlit","t-thunderb","t-fireproj","t-lightsp2"],
+    A:    ["t-burn","t-ringfire","t-icespike","t-frostbst"],
+    "B+": ["t-skburn","t-mine","t-chainlit2","t-dashshdw"],
+    B:    ["t-spirit","t-bladeslsh"], C: [], unranked: [],
+  },
+  crystals: {
+    S:    ["c-exhil","c-defcombo","c-notdead","c-resonance","c-giant"],
+    "A+": ["c-summon","c-fatal","c-focus","c-legamp"],
+    A:    ["c-straight","c-domain","c-chain","c-combosrg","c-icef"],
+    "B+": ["c-vital","c-phantom","c-hunters","c-bloodpact","c-apex","c-firef","c-umbraf"],
+    B:    ["c-lethal","c-predator","c-indestr","c-secondwind","c-mana"],
+    C:    [], unranked: [],
+  },
 };
 
-// Crystals: ranked by consistent impact across all chars and entropy levels
-const DEFAULT_CRYSTALS = {
-  S:  ["exhilaration","not-dead-yet","giant-slayer","defensive-combo","resonance"],
-  "A+":["straightforward","domination","fatal-blow","focus","summon-booster","legacy-amplifier"],
-  A:  ["vital-boost","blood-pact","apex-predator","chain-reaction","phantom-step","ice-fortune"],
-  "B+":["lethal-momentum","predator","combo-surge","hunters-mark","fire-fortune","umbra-fortune"],
-  B:  ["mana-surge","mixture-enhancement","indestructible","damage-shield","combo-extender","overcharge"],
-  C:  ["point-surge","store-regen","second-wind","iron-will","adrenaline","recovery-field","light-fortune","electric-fortune"],
-};
-
-// ─── ITEM METADATA ─────────────────────────────────────────────────────────────
-const CHAR_META = {
-  hibiki:   { name:"Hibiki Kohaku",   tag:"SHADOW / CLONE",   color:"#7B8FE4", note:"Clone x3 tactic procs. Best autonomous DPS source in the game." },
-  ragna:    { name:"Ragna",           tag:"BLOOD / LIFESTEAL",color:"#D93025", note:"Blood Kain sub-50% = +30% all damage. Self-sustaining at skill." },
-  jin:      { name:"Jin Kisaragi",    tag:"ICE / CONTROL",    color:"#4EA8D8", note:"Double Cold stack + Freeze hold. Best setup character." },
-  kokonoe:  { name:"Kokonoe",         tag:"AERIAL / SCIENCE", color:"#E8714A", note:"Aerial immunity to ground threats. Missile Rain 10-proj burst." },
-  es:       { name:"Es",              tag:"CREST / TRAP",     color:"#E878A0", note:"Crest field + aerial bounce = 3+ mine detonations per hit." },
-  noel:     { name:"Noel Vermillion", tag:"DRIVE / RAPID",    color:"#60A5FA", note:"Drive: 9 hits/sec. Fastest practical Exhilaration stacker." },
-  rachel:   { name:"Rachel Alucard",  tag:"BAT / SUMMON",     color:"#D8B4FE", note:"Bats proc Chain Lightning autonomously. Zero floor DPS." },
-  taokaka:  { name:"Taokaka",         tag:"RUSH / SPEED",     color:"#FCD34D", note:"11 hits/sec rush. Fastest Exhilaration cap in the roster." },
-  lambda:   { name:"Lambda-11",       tag:"SWORD / TURRET",   color:"#6EE7B7", note:"4 autonomous sword turrets copy all tactic procs independently." },
-  mai:      { name:"Mai Natsume",     tag:"NEEDLE / RANGE",   color:"#FB923C", note:"8 needle procs per cast. Highest multi-proc rate of any skill." },
-  hazama:   { name:"Hazama",          tag:"CHAIN / DoT",      color:"#86EFAC", note:"Chain whip hits 3-5 targets simultaneously every swing." },
-  hakumen:  { name:"Hakumen",         tag:"COUNTER / VOID",   color:"#F1F5F9", note:"Magatama x2 multiplier. DEATH SENTENCE with Naoto is S+ ceiling." },
-  bullet:   { name:"Bullet",          tag:"CQC / DRIVE",      color:"#F97316", note:"Steel Shell: 3 extra HP bars per room. Safest aggressive char." },
-  naoto:    { name:"Naoto Kurogane",  tag:"EXECUTE / BLOOD",  color:"#F87171", note:"Hunter's Eye at 30% HP. Fatal Blow + Focus = consistent crit execute." },
-  icey:     { name:"ICEY",            tag:"DANCE / PIXEL",    color:"#A78BFA", note:"Dance Attack = full invincibility + omnidirectional offense." },
-  prisoner: { name:"The Prisoner",    tag:"WEAPON / ADAPT",   color:"#94A3B8", note:"Weapon variety enables any tactic build. Most run-consistent char." },
-};
-
-const TACTIC_META = {
-  "atk-cold":    { name:"Attack Cold",     slot:"ATK",  elem:"ice",      color:"#60B8D4", note:"+46% ATK damage. Slows all enemies hit. Universal S-pick." },
-  "atk-shadow":  { name:"Shadow Spike",    slot:"ATK",  elem:"umbra",    color:"#A855F7", note:"275/hit proc. Hibiki clones = 275×3=825/attack." },
-  "atk-burn":    { name:"Attack Burn",     slot:"ATK",  elem:"fire",     color:"#E53935", note:"260 DoT/s per hit. Multi-target stacks independently." },
-  "atk-thunder": { name:"Chain Lightning", slot:"ATK",  elem:"electric", color:"#22C55E", note:"295 × 3 enemies. Best AoE ATK tactic in game." },
-  "sk-cold":     { name:"Skill Cold",      slot:"SKILL",elem:"ice",      color:"#60B8D4", note:"+47% all skill damage. Pairs with ATK Cold for double stack." },
-  "sk-burn":     { name:"Skill Burn",      slot:"SKILL",elem:"fire",     color:"#E53935", note:"360 DoT/s. Higher rate than ATK Burn." },
-  "sk-spear":    { name:"Light Spear",     slot:"SKILL",elem:"light",    color:"#EAB308", note:"490 flat/skill. Universal boss damage slot." },
-  "sk-proj":     { name:"Fire Projectile", slot:"SKILL",elem:"fire",     color:"#E53935", note:"280×10 projectiles. 2800/cast at close range." },
-  "sk-mine":     { name:"Place Mine",      slot:"SKILL",elem:"fire",     color:"#E53935", note:"570/mine. Es aerial bounce = 3 mines per string." },
-  "sk-spirit":   { name:"Fire Spirit",     slot:"SKILL",elem:"fire",     color:"#E53935", note:"190/hit autonomous spirit follows target." },
-  "dash-thunder":{ name:"Thunderbolt",     slot:"DASH", elem:"light",    color:"#EAB308", note:"325 chain on dash. Pairs with Orb for DPS baseline." },
-  "dash-shadow": { name:"Dash Shadow",     slot:"DASH", elem:"umbra",    color:"#A855F7", note:"200 on every dodge. Best on high-dodge chars." },
-  "dash-blade":  { name:"Blade Slash",     slot:"DASH", elem:"blade",    color:"#94A3B8", note:"220 physical on dash. Reliable no-element filler." },
-  "leg-spear":   { name:"Light Spear",     slot:"LEG",  elem:"light",    color:"#EAB308", note:"490/hit legacy. Hakumen: +Magatama ×2 = 1470." },
-  "leg-blackhole":{ name:"Blackhole",      slot:"LEG",  elem:"umbra",    color:"#A855F7", note:"Full-screen CC. Zero damage but S-tier room control." },
-  "leg-ring":    { name:"Ring of Fire",    slot:"LEG",  elem:"fire",     color:"#E53935", note:"770 burst. Double upgrade = full-screen AoE." },
-  "leg-icespike":{ name:"Ice Spike",       slot:"LEG",  elem:"ice",      color:"#60B8D4", note:"350 turret. Respawn Double = permanent auto-turrets." },
-  "sum-orb":     { name:"Lightning Orb",   slot:"SUM",  elem:"electric", color:"#22C55E", note:"245 DPS persistent field. Character-neutral S-tier." },
-  "sum-chain":   { name:"Chain Lightning", slot:"SUM",  elem:"light",    color:"#EAB308", note:"295×3 bounce summon. Rachel bats proc this." },
-  "sum-frost":   { name:"Frost Burst",     slot:"SUM",  elem:"ice",      color:"#60B8D4", note:"520 AoE at max Cold stacks. Wide room clear." },
-};
-
-const CRYSTAL_META = {
-  "straightforward":   { name:"Straightforward",    cat:"DMG",  color:"#E53935", note:"+45% ATK DMG (Asc). Stacks multiplicatively with Domination." },
-  "domination":        { name:"Domination",          cat:"DMG",  color:"#E53935", note:"+45% Skill DMG (Asc). Kokonoe/Es best-in-slot always." },
-  "giant-slayer":      { name:"Giant Slayer",        cat:"DMG",  color:"#E53935", note:"+60% vs Elites (Asc). Every boss fight is +60%." },
-  "combo-surge":       { name:"Combo Surge",         cat:"DMG",  color:"#E53935", note:"+5%/10 combos cap 250%. Faster cap than Exhilaration." },
-  "lethal-momentum":   { name:"Lethal Momentum",     cat:"DMG",  color:"#E53935", note:"+45% ATK 6s after skill. High uptime on skill-heavy builds." },
-  "predator":          { name:"Predator",            cat:"DMG",  color:"#E53935", note:"+75% vs sub-30% HP. Execution window spike." },
-  "not-dead-yet":      { name:"Not Dead Yet",        cat:"SURV", color:"#F59E0B", note:"Cheat death once + 70% HP bonus. Run insurance." },
-  "indestructible":    { name:"Indestructible",      cat:"SURV", color:"#F59E0B", note:"-30% DMG recv. Safe but competes with DMG slots." },
-  "defensive-combo":   { name:"Defensive Combo",     cat:"SURV", color:"#F59E0B", note:"-80% DMG recv in combo. Attack IS the defense." },
-  "vital-boost":       { name:"Vital Boost",         cat:"SURV", color:"#F59E0B", note:"+100% Max HP (Asc). Doubles Blood Scythe heal ceiling." },
-  "compliment-of-death":{ name:"Compliment of Death",cat:"SURV", color:"#F59E0B", note:"Heal 15%/20 combo. Passive sustain during Exhilaration." },
-  "second-wind":       { name:"Second Wind",         cat:"SURV", color:"#F59E0B", note:"Full heal on room entry below 100%. Passive regen." },
-  "store-regen":       { name:"Commerce Healing",    cat:"SURV", color:"#F59E0B", note:"Heal on shop buy. Economically dependent." },
-  "mana-surge":        { name:"Mana Surge",          cat:"ECO",  color:"#60A5FA", note:"+80MP (Asc). Enables extra skill cast per rotation." },
-  "mixture-enhancement":{ name:"Mixture Enhancement",cat:"ECO",  color:"#60A5FA", note:"+3 potions + 35% effect. Safety net for high entropy." },
-  "point-surge":       { name:"Point Surge",         cat:"ECO",  color:"#60A5FA", note:"+45% Exchange Pts. Gambling economy, not DPS." },
-  "ice-fortune":       { name:"Ice Fortune",         cat:"ECO",  color:"#60B8D4", note:"Cold tactic guaranteed. Removes all ice RNG from run." },
-  "fire-fortune":      { name:"Fire Fortune",        cat:"ECO",  color:"#E84E25", note:"Fire tactic guaranteed. Critical for Burn/DoT builds." },
-  "umbra-fortune":     { name:"Umbra Fortune",       cat:"ECO",  color:"#A855F7", note:"Umbra tactic guaranteed. Shadow Spike lock-in." },
-  "light-fortune":     { name:"Light Fortune",       cat:"ECO",  color:"#EDB72C", note:"Light tactic guaranteed. Light Spear/Thunderbolt builds." },
-  "electric-fortune":  { name:"Electric Fortune",    cat:"ECO",  color:"#22C55E", note:"Electric guaranteed. Orb/Chain Lightning builds." },
-  "exhilaration":      { name:"Exhilaration",        cat:"UTIL", color:"#C9A227", note:"+5%/10 combo ALL DMG cap 250%. Best universal DPS scaler." },
-  "focus":             { name:"Focus",               cat:"UTIL", color:"#C9A227", note:"+25% crit rate (Asc). Pairs with Fatal Blow for execute." },
-  "fatal-blow":        { name:"Fatal Blow",          cat:"UTIL", color:"#C9A227", note:"+75% crit DMG (Asc). Naoto execute window x1.75." },
-  "resonance":         { name:"Resonance",           cat:"UTIL", color:"#C9A227", note:"+40% tactic DMG (Asc). Multiplies ALL tactic procs." },
-  "recovery-field":    { name:"Recovery Field",      cat:"DEF",  color:"#4ADE80", note:"HP on elite kill. Inconsistent — RNG elite rate." },
-  "damage-shield":     { name:"Damage Shield",       cat:"DEF",  color:"#4ADE80", note:"150 absorb/hit (Asc). Thin protection vs Omega enemies." },
-  "adrenaline":        { name:"Adrenaline",          cat:"DEF",  color:"#4ADE80", note:"+30% speed <50% HP. Mobility at low HP = high risk." },
-  "iron-will":         { name:"Iron Will",           cat:"DEF",  color:"#4ADE80", note:"Super armor <40% HP (Asc). Niche. Not reliable." },
-  "phantom-step":      { name:"Phantom Step",        cat:"ADV",  color:"#A78BFA", note:"Dash iframes. Repositioning chars = full invincibility." },
-  "combo-extender":    { name:"Combo Extender",      cat:"ADV",  color:"#A78BFA", note:"+60% combo timer. Exhilaration stacks decay slower." },
-  "legacy-amplifier":  { name:"Legacy Amplifier",    cat:"ADV",  color:"#A78BFA", note:"+50% Legacy DMG. Hakumen x2 Magatama x1.5 = x3." },
-  "summon-booster":    { name:"Summon Booster",      cat:"ADV",  color:"#A78BFA", note:"+45% summon DMG. Lambda/Rachel/Hibiki best-in-slot." },
-  "overcharge":        { name:"Overcharge",          cat:"ADV",  color:"#A78BFA", note:"+40% SP gain (Asc). Skill rotation chars only." },
-  "hunters-mark":      { name:"Hunter's Mark",       cat:"ADV",  color:"#A78BFA", note:"+30% DMG on marked target from ALL sources." },
-  "blood-pact":        { name:"Blood Pact",          cat:"ADV",  color:"#A78BFA", note:"+35% HP-cost ability DMG. Ragna+Naoto S-tier specific." },
-  "apex-predator":     { name:"Apex Predator",       cat:"ADV",  color:"#A78BFA", note:"+35% at full HP. Counter chars restore HP — consistent." },
-  "chain-reaction":    { name:"Chain Reaction",      cat:"ADV",  color:"#A78BFA", note:"+12%/kill×3 (Asc). Kill chain rooms = 36% sustained." },
-};
-
-const TIER_ROWS = ["S","A+","A","B+","B","C"];
-const TIER_COLORS = { S:"#E53935", "A+":"#F97316", A:"#EAB308", "B+":"#22C55E", B:"#60A5FA", C:"#A855F7" };
-const TIER_BG     = { S:"#1A0505", "A+":"#1A0B00", A:"#141000", "B+":"#071408", B:"#05101A", C:"#100514" };
-const STORAGE_KEYS = { chars:"eo-tier-chars-v1", tactics:"eo-tier-tactics-v1", crystals:"eo-tier-crystals-v1" };
-
-function loadTiers(key, defaults) {
+function loadState() {
   try {
-    const raw = localStorage.getItem(key);
-    if (raw) return JSON.parse(raw);
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed.chars && parsed.tactics && parsed.crystals) return parsed;
+    }
   } catch {}
-  return JSON.parse(JSON.stringify(defaults));
-}
-function saveTiers(key, data) {
-  try { localStorage.setItem(key, JSON.stringify(data)); } catch {}
+  return JSON.parse(JSON.stringify(DEFAULT_PLACEMENTS));
 }
 
-// ── Item chip ─────────────────────────────────────────────────────────────────
-function ItemChip({ id, type, isDragging, onDragStart, onDragEnd, selected, onClick }) {
-  const meta = type === "chars" ? CHAR_META[id] : type === "tactics" ? TACTIC_META[id] : CRYSTAL_META[id];
-  if (!meta) return null;
-  const color = meta.color;
+function saveState(s) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch {}
+}
+
+// ─── ITEM CARD ────────────────────────────────────────────────────────────────
+function ItemCard({ item, type, isDragging, onDragStart, onDragEnd, mob }) {
+  const [showTip, setShowTip] = useState(false);
+  const sz = mob ? 36 : 44;
+
+  const color = type === "chars" ? item.color
+    : type === "tactics" ? (ELEM_COLORS[item.elem] || "#888")
+    : item.col;
+
+  const inner = type === "chars" ? (
+    <div style={{ width:sz, height:Math.round(sz*1.3), overflow:"hidden", clipPath:"polygon(0 0,100% 0,88% 100%,0 100%)", background:"#111", border:`1px solid ${color}55`, flexShrink:0 }}>
+      <img src={item.img} alt={item.name} style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"top center", filter:"brightness(0.85) saturate(0.8)" }} onError={e=>{e.target.style.display="none"}}/>
+    </div>
+  ) : (
+    <div style={{ width:sz, height:sz, display:"flex", alignItems:"center", justifyContent:"center", background:`${color}14`, border:`1px solid ${color}44`, clipPath: type==="tactics"?"polygon(0 0,100% 0,94% 100%,0 100%)":undefined, padding:"0 3px", boxSizing:"border-box" }}>
+      <div style={{ fontSize:mob?7:8, fontWeight:900, color, textAlign:"center", lineHeight:1.2, fontFamily:"'Barlow Condensed',sans-serif", letterSpacing:0.3, wordBreak:"break-word" }}>
+        {type === "tactics" ? `[${item.slot}]\n${item.name}` : item.name}
+      </div>
+    </div>
+  );
 
   return (
     <div
       draggable
-      onDragStart={e => onDragStart(e, id)}
+      onDragStart={e => { e.dataTransfer.effectAllowed="move"; onDragStart(item.id); }}
       onDragEnd={onDragEnd}
-      onClick={() => onClick(id)}
-      title={meta.name + "\n" + meta.note}
-      style={{
-        display:"flex", flexDirection:"column", alignItems:"center", gap:3,
-        cursor:"grab", userSelect:"none",
-        opacity: isDragging ? 0.4 : 1,
-        transform: isDragging ? "scale(0.95)" : "scale(1)",
-        transition:"transform 0.1s, opacity 0.1s",
-        outline: selected ? `2px solid ${color}` : "none",
-        outlineOffset: 2,
-        borderRadius: 2,
-        padding:"3px",
-      }}
+      onClick={() => setShowTip(p => !p)}
+      style={{ position:"relative", display:"flex", flexDirection:"column", alignItems:"center", gap:2, cursor:"grab", userSelect:"none", opacity: isDragging ? 0.3 : 1, flexShrink:0 }}
     >
-      {type === "chars" ? (
-        <div style={{
-          width: 48, height: 62,
-          overflow:"hidden",
-          clipPath:"polygon(0 0,100% 0,88% 100%,0 100%)",
-          background:"#111",
-          flexShrink:0,
-          boxShadow:`0 0 8px ${color}44`,
-          border:`1px solid ${color}33`,
-        }}>
-          <img
-            src={`/chars/${id}.png`} alt={meta.name}
-            style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"top center" }}
-            onError={e => {
-              e.target.style.display = "none";
-              e.target.parentElement.style.background = color + "22";
-            }}
-          />
-        </div>
-      ) : (
-        <div style={{
-          width: 46, height: 46,
-          display:"flex", alignItems:"center", justifyContent:"center",
-          background:`${color}15`,
-          border:`1px solid ${color}44`,
-          clipPath:"polygon(12% 0,88% 0,100% 12%,100% 88%,88% 100%,12% 100%,0 88%,0 12%)",
-          flexShrink:0,
-          boxShadow:`0 0 6px ${color}33`,
-          position:"relative",
-        }}>
-          <span style={{ fontSize:10, fontWeight:900, color, letterSpacing:0.5, fontFamily:"'Barlow Condensed',sans-serif", textAlign:"center", lineHeight:1, padding:"0 2px" }}>
-            {type === "tactics"
-              ? (TACTIC_META[id]?.slot || "?")
-              : (CRYSTAL_META[id]?.cat || "?")}
-          </span>
+      {inner}
+      <div style={{ fontSize: mob?7:8, color, fontWeight:700, letterSpacing:0.3, fontFamily:"'Barlow Condensed',sans-serif", maxWidth:sz+8, textAlign:"center", overflow:"hidden", whiteSpace:"nowrap", textOverflow:"ellipsis", lineHeight:1.1 }}>
+        {item.name}
+      </div>
+      {showTip && item.note && (
+        <div onClick={e=>e.stopPropagation()} style={{ position:"absolute", bottom:"calc(100% + 6px)", left:"50%", transform:"translateX(-50%)", background:"#0D0D0D", border:"1px solid #2A2A2A", padding:"10px 12px", width:240, zIndex:9999, fontSize:10, color:"#A8A09A", lineHeight:1.55, boxShadow:"0 6px 30px #000C", pointerEvents:"none" }}>
+          <div style={{ fontSize:10, fontWeight:900, color, letterSpacing:1, marginBottom:5, fontFamily:"'Barlow Condensed',sans-serif" }}>{item.name}</div>
+          {type==="tactics" && <div style={{ fontSize:9, color:"#444", letterSpacing:1, marginBottom:4, fontFamily:"'Barlow Condensed',sans-serif" }}>[{item.slot}] {item.val}</div>}
+          {item.note}
         </div>
       )}
-      <div style={{
-        fontSize: 8, fontWeight:700, color:"#686868", letterSpacing:0.4,
-        textAlign:"center", lineHeight:1.1,
-        maxWidth: 52, overflow:"hidden",
-        whiteSpace:"nowrap", textOverflow:"ellipsis",
-        fontFamily:"'Barlow Condensed',sans-serif",
-      }}>
-        {meta.name.split(" ").slice(0,2).join(" ").toUpperCase()}
-      </div>
     </div>
   );
 }
 
-// ── Info panel ────────────────────────────────────────────────────────────────
-function InfoPanel({ id, type }) {
-  if (!id) return (
-    <div style={{ padding:"24px 20px", color:"#2A2A2A", fontSize:11, letterSpacing:2, fontFamily:"'Barlow Condensed',sans-serif", textAlign:"center" }}>
-      CLICK ANY ITEM FOR DETAILS
-    </div>
-  );
-  const meta = type === "chars" ? CHAR_META[id] : type === "tactics" ? TACTIC_META[id] : CRYSTAL_META[id];
-  const color = meta?.color || "#888";
-  return (
-    <div style={{ padding:"16px 18px" }}>
-      {type === "chars" && (
-        <div style={{ width:"100%", height:120, overflow:"hidden", marginBottom:12, clipPath:"polygon(0 0,100% 0,96% 100%,0 100%)", background:"#0A0A0A", border:`1px solid ${color}22` }}>
-          <img src={`/chars/${id}.png`} alt={id} style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"top center", filter:"brightness(0.8) saturate(0.9)" }} onError={e=>{e.target.style.display="none"}}/>
-        </div>
-      )}
-      <div style={{ fontSize:16, fontWeight:900, color, letterSpacing:2, fontFamily:"'Barlow Condensed',sans-serif", marginBottom:3 }}>{meta?.name?.toUpperCase()}</div>
-      <div style={{ fontSize:9, letterSpacing:3, color:"#444", fontFamily:"'Barlow Condensed',sans-serif", marginBottom:10 }}>
-        {type === "chars" ? meta?.tag : type === "tactics" ? `${meta?.slot} SLOT · ${meta?.elem?.toUpperCase()}` : `${meta?.cat} CLASS`}
-      </div>
-      <div style={{ fontSize:11, color:"#888", lineHeight:1.6, fontFamily:"'Courier Prime',monospace", borderLeft:`2px solid ${color}55`, paddingLeft:10 }}>
-        {meta?.note}
-      </div>
-    </div>
-  );
-}
+// ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
+export default function TierList({ cfg={}, mob=false }) {
+  const [activeType, setActiveType] = useState("chars");
+  const [state, setState] = useState(loadState);
+  const [tierNotes, setTierNotes] = useState({});
+  const [dragging, setDragging] = useState(null); // item id string
+  const [copied, setCopied] = useState(false);
+  const dragTarget = useRef(null);
 
-// ── Main component ─────────────────────────────────────────────────────────────
-export default function TierList({ mob = false }) {
-  const [mode, setMode] = useState("chars"); // chars | tactics | crystals
-  const [tiers, setTiers] = useState({
-    chars:   loadTiers(STORAGE_KEYS.chars,   DEFAULT_CHARS),
-    tactics: loadTiers(STORAGE_KEYS.tactics, DEFAULT_TACTICS),
-    crystals:loadTiers(STORAGE_KEYS.crystals,DEFAULT_CRYSTALS),
-  });
-  const [dragging, setDragging] = useState(null); // { id, fromTier }
-  const [dragOver, setDragOver] = useState(null); // tier row being hovered
-  const [selected, setSelected] = useState(null);
-  const [copied, setCopied]     = useState(false);
-  const dragCounter = useRef({});
+  const ALL = { chars: DEFAULT_CHARS, tactics: DEFAULT_TACTICS, crystals: DEFAULT_CRYSTALS };
+  const items = state[activeType] || {};
+  const allItems = ALL[activeType];
 
-  const current = tiers[mode];
+  function getItem(id) { return allItems.find(i => i.id === id); }
 
-  // ── Drag handlers ───────────────────────────────────────────────────────────
-  function handleDragStart(e, id) {
-    let fromTier = null;
-    TIER_ROWS.forEach(t => { if ((current[t]||[]).includes(id)) fromTier = t; });
-    setDragging({ id, fromTier });
-    e.dataTransfer.effectAllowed = "move";
-  }
-
-  function handleDragEnd() { setDragging(null); setDragOver(null); }
-
-  function handleDragEnter(e, tier) {
-    e.preventDefault();
-    dragCounter.current[tier] = (dragCounter.current[tier] || 0) + 1;
-    setDragOver(tier);
-  }
-
-  function handleDragLeave(e, tier) {
-    dragCounter.current[tier] = Math.max(0, (dragCounter.current[tier] || 1) - 1);
-    if (dragCounter.current[tier] === 0) setDragOver(null);
-  }
-
-  function handleDrop(e, toTier) {
-    e.preventDefault();
-    dragCounter.current = {};
-    if (!dragging) return;
-    const { id, fromTier } = dragging;
-    if (fromTier === toTier) { setDragging(null); setDragOver(null); return; }
-
-    const next = JSON.parse(JSON.stringify(current));
-    if (fromTier) next[fromTier] = (next[fromTier]||[]).filter(x => x !== id);
-    if (!next[toTier]) next[toTier] = [];
-    if (!next[toTier].includes(id)) next[toTier].push(id);
-
-    const updated = { ...tiers, [mode]: next };
-    setTiers(updated);
-    saveTiers(STORAGE_KEYS[mode], next);
-    setDragging(null); setDragOver(null);
-  }
-
-  function handleDragOver(e) { e.preventDefault(); e.dataTransfer.dropEffect = "move"; }
-
-  function handleClick(id) {
-    setSelected(prev => prev === id ? null : id);
+  function move(itemId, toTier) {
+    setState(prev => {
+      const next = { ...prev, [activeType]: { ...prev[activeType] } };
+      const d = next[activeType];
+      // Remove from all tiers
+      for (const key of [...TIER_META.map(t=>t.id), "unranked"]) {
+        if (d[key]) d[key] = d[key].filter(x => x !== itemId);
+      }
+      if (!d[toTier]) d[toTier] = [];
+      d[toTier] = [...d[toTier], itemId];
+      saveState(next);
+      return next;
+    });
   }
 
   function handleReset() {
-    const defaults = mode === "chars" ? DEFAULT_CHARS : mode === "tactics" ? DEFAULT_TACTICS : DEFAULT_CRYSTALS;
-    const fresh = JSON.parse(JSON.stringify(defaults));
-    setTiers(t => ({ ...t, [mode]: fresh }));
-    saveTiers(STORAGE_KEYS[mode], fresh);
-    setSelected(null);
+    const fresh = JSON.parse(JSON.stringify(DEFAULT_PLACEMENTS));
+    setState(fresh);
+    saveState(fresh);
   }
 
-  function handleCopyText() {
-    const lines = [`ENTROPY OVERRIDE — ${mode.toUpperCase()} TIER LIST`, ""];
-    TIER_ROWS.forEach(t => {
-      const items = (current[t]||[]);
-      if (items.length === 0) return;
-      const meta = mode === "chars" ? CHAR_META : mode === "tactics" ? TACTIC_META : CRYSTAL_META;
-      const names = items.map(id => meta[id]?.name || id).join(", ");
-      lines.push(`${t.padEnd(3)} | ${names}`);
-    });
+  function handleShare() {
+    const typeLabel = activeType === "chars" ? "CHARACTERS" : activeType === "tactics" ? "TACTICS" : "CRYSTALS";
+    const lines = [`╔══ ENTROPY OVERRIDE — ${typeLabel} TIER LIST ══╗`, ""];
+    for (const t of TIER_META) {
+      const ids = items[t.id] || [];
+      if (!ids.length) continue;
+      const names = ids.map(id => getItem(id)?.name || id).join("  •  ");
+      lines.push(`[ ${t.label} ]  ${names}`);
+      if (tierNotes[t.id]) lines.push(`       ↳ ${tierNotes[t.id]}`);
+    }
+    const unranked = items.unranked || [];
+    if (unranked.length) lines.push(`\n[ — ]  ${unranked.map(id=>getItem(id)?.name||id).join("  •  ")}`);
+    lines.push("", "entropy-override.vercel.app");
     const text = lines.join("\n");
     try { navigator.clipboard.writeText(text); } catch {
-      const el = document.createElement("textarea"); el.value = text;
-      document.body.appendChild(el); el.select(); document.execCommand("copy");
+      const el = document.createElement("textarea");
+      el.value = text; document.body.appendChild(el);
+      el.select(); document.execCommand("copy");
       document.body.removeChild(el);
     }
     setCopied(true);
-    setTimeout(() => setCopied(false), 1800);
+    setTimeout(() => setCopied(false), 2000);
   }
 
-  // ── Styles ──────────────────────────────────────────────────────────────────
-  const S = {
-    wrap:     { display:"flex", flexDirection:"column", height:"100%", background:"#050505", overflow:"hidden" },
-    topBar:   { display:"flex", alignItems:"center", borderBottom:"1px solid #111", background:"#060606", flexShrink:0, padding:"0 16px", gap:0 },
-    modeBtn:  (a) => ({
-      padding: mob ? "10px 12px" : "12px 22px",
-      fontSize: mob ? 10 : 11,
-      letterSpacing: mob ? 2 : 3,
-      fontWeight:900,
-      fontFamily:"'Barlow Condensed',sans-serif",
-      background: a ? "#0D0D0D" : "transparent",
-      border:"none",
-      borderBottom: a ? "2px solid #B91C1C" : "2px solid transparent",
-      color: a ? "#F0EDE5" : "#363636",
-      cursor:"pointer",
-      transition:"all 0.15s",
-    }),
-    actionBtn:(col) => ({
-      marginLeft:"auto", padding:"6px 14px", fontSize:10, letterSpacing:2, fontWeight:700,
-      fontFamily:"'Barlow Condensed',sans-serif", cursor:"pointer",
-      background:"transparent", border:`1px solid ${col}`,
-      color:col, transition:"all 0.12s",
-    }),
-    body:     { display:"flex", flex:1, overflow:"hidden", flexDirection: mob ? "column" : "row" },
-    tiersWrap:{ flex:1, overflowY:"auto", padding: mob ? "10px 8px" : "14px 16px", display:"flex", flexDirection:"column", gap:6 },
-    row:      (tier, over) => ({
-      display:"flex", alignItems:"stretch",
-      background: over ? `${TIER_BG[tier]}AA` : TIER_BG[tier],
-      border:`1px solid ${over ? TIER_COLORS[tier]+"66" : "#111"}`,
-      outline: over ? `1px solid ${TIER_COLORS[tier]}44` : "none",
-      transition:"all 0.12s", minHeight:80,
-    }),
-    rowLabel: (tier) => ({
-      width: mob ? 36 : 52, flexShrink:0,
-      display:"flex", alignItems:"center", justifyContent:"center",
-      background:`${TIER_COLORS[tier]}18`,
-      borderRight:`2px solid ${TIER_COLORS[tier]}55`,
-      fontSize: mob ? 16 : 20,
-      fontWeight:900, color:TIER_COLORS[tier],
-      fontFamily:"'Barlow Condensed',sans-serif",
-      letterSpacing: mob ? 0 : 1,
-      userSelect:"none",
-    }),
-    rowItems: { display:"flex", flexWrap:"wrap", gap:6, padding:"8px 10px", flex:1, alignContent:"flex-start", alignItems:"flex-start" },
-    dropZone: (over) => ({ flex:1, minHeight:64, display:"flex", alignItems:"center", justifyContent: "flex-start" }),
-    info:     { width: mob ? "100%" : 200, flexShrink:0, borderLeft:"1px solid #0E0E0E", overflowY:"auto", background:"#060606" },
-    emptyHint:{ fontSize:9, letterSpacing:2, color:"#1A1A1A", fontFamily:"'Barlow Condensed',sans-serif", padding:"0 10px", alignSelf:"center" },
-  };
+  const TYPE_COLORS = { chars:"#7B8FE4", tactics:"#EAB308", crystals:"#C9A227" };
+  const ac = TYPE_COLORS[activeType];
 
-  const allMeta = mode === "chars" ? CHAR_META : mode === "tactics" ? TACTIC_META : CRYSTAL_META;
-  const allIds  = Object.keys(allMeta);
-  // collect all placed IDs
-  const placed  = new Set(TIER_ROWS.flatMap(t => current[t]||[]));
-  const unplaced = allIds.filter(id => !placed.has(id));
+  const S = {
+    wrap:    { display:"flex", flexDirection:"column", height:"100%", overflow:"hidden", background:"#060606" },
+    topBar:  { display:"flex", alignItems:"center", borderBottom:"1px solid #111", flexShrink:0, background:"#040404" },
+    typeBtn: (a, c) => ({ background:a?`${c}14`:"transparent", border:"none", borderBottom:a?`2px solid ${c}`:"2px solid transparent", color:a?c:"#383838", padding: mob?"10px 12px":"12px 20px", fontSize: mob?10:12, letterSpacing:3, fontWeight:900, cursor:"pointer", fontFamily:"'Barlow Condensed',sans-serif", transition:"all 0.1s", flexShrink:0 }),
+    actions: { marginLeft:"auto", display:"flex", gap:6, padding:"0 12px", alignItems:"center" },
+    actBtn:  (c) => ({ background:`${c}12`, border:`1px solid ${c}44`, color:c, padding: mob?"5px 8px":"6px 14px", fontSize:10, letterSpacing:2, fontWeight:700, cursor:"pointer", fontFamily:"'Barlow Condensed',sans-serif", whiteSpace:"nowrap" }),
+    body:    { flex:1, overflowY:"auto" },
+    row:     (over, tc) => ({ display:"flex", alignItems:"stretch", borderBottom:"1px solid #0D0D0D", minHeight: mob?66:78, background: over?`${tc}07`:"transparent", transition:"background 0.1s" }),
+    tierLbl: (c) => ({ width: mob?38:54, flexShrink:0, background:`${c}1A`, borderRight:`3px solid ${c}`, display:"flex", alignItems:"center", justifyContent:"center" }),
+    tierTxt: (c) => ({ fontSize: mob?22:28, fontWeight:900, color:c, fontFamily:"'Barlow Condensed',sans-serif", lineHeight:1 }),
+    pool:    { display:"flex", flexWrap:"wrap", flex:1, gap: mob?5:7, padding: mob?"6px 8px":"8px 12px", alignItems:"center", alignContent:"center" },
+    noteCol: { width:170, flexShrink:0, borderLeft:"1px solid #0D0D0D", padding:"6px 10px", display:"flex", alignItems:"center" },
+    noteTA:  { background:"transparent", border:"none", outline:"none", color:"#3A3A3A", fontSize:10, lineHeight:1.4, resize:"none", width:"100%", fontFamily:"'Courier Prime',monospace", cursor:"text" },
+    unranked:{ borderTop:"2px solid #111", background:"#030303", padding: mob?"8px":"10px 16px", minHeight:64 },
+    hdr:     { fontSize:9, letterSpacing:3, color:"#252525", fontWeight:700, fontFamily:"'Barlow Condensed',sans-serif", marginBottom:6 },
+  };
 
   return (
     <div style={S.wrap}>
-      {/* Top bar */}
+      {/* Tab bar */}
       <div style={S.topBar}>
         {[["chars","CHARACTERS"],["tactics","TACTICS"],["crystals","CRYSTALS"]].map(([id,lbl])=>(
-          <button key={id} style={S.modeBtn(mode===id)} onClick={()=>{setMode(id); setSelected(null);}}>
-            {lbl}
-          </button>
+          <button key={id} style={S.typeBtn(activeType===id, TYPE_COLORS[id])} onClick={()=>setActiveType(id)}>{lbl}</button>
         ))}
-        <button style={{ ...S.actionBtn("#C9A227"), marginLeft:"auto" }} onClick={handleCopyText}>
-          {copied ? "✓ COPIED" : "EXPORT TEXT"}
-        </button>
-        <button style={{ ...S.actionBtn("#B91C1C"), marginLeft:8 }} onClick={handleReset}>
-          RESET
-        </button>
-      </div>
-
-      <div style={S.body}>
-        {/* Tier grid */}
-        <div style={S.tiersWrap}>
-          {/* Unplaced pool (only show if items not yet in tiers) */}
-          {unplaced.length > 0 && (
-            <div style={{ ...S.row("B", false), borderStyle:"dashed", opacity:0.7 }}
-              onDragOver={handleDragOver}
-              onDrop={e => handleDrop(e, "__pool__")}
-              onDragEnter={e => handleDragEnter(e, "__pool__")}
-              onDragLeave={e => handleDragLeave(e, "__pool__")}
-            >
-              <div style={{ ...S.rowLabel("B"), width: mob?36:52, fontSize: mob?9:10, letterSpacing:1, background:"#111", borderRight:"2px solid #1E1E1E", color:"#333" }}>
-                {mob ? "?" : "POOL"}
-              </div>
-              <div style={S.rowItems}>
-                {unplaced.map(id => (
-                  <ItemChip key={id} id={id} type={mode}
-                    isDragging={dragging?.id === id}
-                    onDragStart={handleDragStart}
-                    onDragEnd={handleDragEnd}
-                    selected={selected === id}
-                    onClick={handleClick}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Tier rows */}
-          {TIER_ROWS.map(tier => {
-            const items = current[tier]||[];
-            const over  = dragOver === tier;
-            return (
-              <div key={tier} style={S.row(tier, over)}
-                onDragOver={handleDragOver}
-                onDrop={e => handleDrop(e, tier)}
-                onDragEnter={e => handleDragEnter(e, tier)}
-                onDragLeave={e => handleDragLeave(e, tier)}
-              >
-                <div style={S.rowLabel(tier)}>{tier}</div>
-                <div style={S.rowItems}>
-                  {items.map(id => (
-                    <ItemChip key={id} id={id} type={mode}
-                      isDragging={dragging?.id === id}
-                      onDragStart={handleDragStart}
-                      onDragEnd={handleDragEnd}
-                      selected={selected === id}
-                      onClick={handleClick}
-                    />
-                  ))}
-                  {items.length === 0 && !over && (
-                    <div style={S.emptyHint}>DROP HERE</div>
-                  )}
-                  {over && (
-                    <div style={{ ...S.emptyHint, color: TIER_COLORS[tier]+"88", border:`1px dashed ${TIER_COLORS[tier]}44`, padding:"4px 12px", borderRadius:2 }}>
-                      PLACE IN {tier}
-                    </div>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-
-          {/* Footer hint */}
-          <div style={{ fontSize:9, color:"#1E1E1E", letterSpacing:2, textAlign:"center", padding:"10px 0 4px", fontFamily:"'Barlow Condensed',sans-serif" }}>
-            DRAG TO RERANK · CLICK TO INSPECT · EXPORT COPIES TEXT · RESET RESTORES MORPHEUS DEFAULTS
-          </div>
+        <div style={S.actions}>
+          <button style={S.actBtn(copied?"#22C55E":"#555")} onClick={handleShare}>
+            {copied?"COPIED!":"COPY LIST"}
+          </button>
+          <button style={S.actBtn("#E53935")} onClick={handleReset}>RESET</button>
         </div>
-
-        {/* Info panel — desktop sidebar / mobile bottom strip */}
-        {!mob && (
-          <div style={S.info}>
-            <div style={{ fontSize:9, letterSpacing:3, color:"#282828", padding:"12px 18px 0", fontFamily:"'Barlow Condensed',sans-serif", fontWeight:700 }}>
-              {mode.toUpperCase()} DETAIL
-            </div>
-            <InfoPanel id={selected} type={mode}/>
-          </div>
-        )}
       </div>
 
-      {/* Mobile detail bar at bottom */}
-      {mob && selected && (
-        <div style={{ borderTop:"1px solid #111", background:"#060606", padding:"12px 16px", flexShrink:0 }}>
-          <InfoPanel id={selected} type={mode}/>
+      {/* Column header */}
+      {!mob && (
+        <div style={{ display:"flex", borderBottom:"1px solid #0A0A0A", flexShrink:0 }}>
+          <div style={{ width:54, flexShrink:0, background:"#030303", borderRight:"1px solid #0A0A0A", padding:"4px 0", textAlign:"center", fontSize:9, color:"#222", letterSpacing:2, fontFamily:"'Barlow Condensed',sans-serif" }}>TIER</div>
+          <div style={{ flex:1, padding:"4px 12px", fontSize:9, color:"#222", letterSpacing:2, fontFamily:"'Barlow Condensed',sans-serif" }}>DRAG TO REARRANGE — CLICK FOR MORPHEUS NOTES</div>
+          <div style={{ width:170, flexShrink:0, borderLeft:"1px solid #0A0A0A", padding:"4px 10px", fontSize:9, color:"#222", letterSpacing:2, fontFamily:"'Barlow Condensed',sans-serif" }}>YOUR TIER NOTES</div>
         </div>
       )}
+
+      {/* Tier rows */}
+      <div style={S.body}>
+        {TIER_META.map(tier => {
+          const [over, setOver] = useState(false);
+          const rowItems = (items[tier.id]||[]).map(id=>getItem(id)).filter(Boolean);
+          return (
+            <div key={tier.id}
+              style={S.row(over, tier.color)}
+              onDragOver={e=>{ e.preventDefault(); setOver(true); dragTarget.current=tier.id; }}
+              onDragLeave={()=>setOver(false)}
+              onDrop={e=>{ e.preventDefault(); setOver(false); if(dragging) move(dragging, tier.id); setDragging(null); }}
+            >
+              <div style={S.tierLbl(tier.color)}>
+                <span style={S.tierTxt(tier.color)}>{tier.label}</span>
+              </div>
+              <div style={S.pool}>
+                {rowItems.map(item=>(
+                  <ItemCard key={item.id} item={item} type={activeType}
+                    isDragging={dragging===item.id}
+                    onDragStart={id=>setDragging(id)}
+                    onDragEnd={()=>setDragging(null)}
+                    mob={mob}/>
+                ))}
+                {rowItems.length===0 && (
+                  <div style={{ fontSize:9, color:"#1A1A1A", letterSpacing:2, fontFamily:"'Barlow Condensed',sans-serif", pointerEvents:"none" }}>DROP HERE</div>
+                )}
+              </div>
+              {!mob && (
+                <div style={S.noteCol}>
+                  <textarea
+                    style={S.noteTA}
+                    placeholder={tier.desc}
+                    value={tierNotes[tier.id]||""}
+                    onChange={e=>setTierNotes(p=>({...p,[tier.id]:e.target.value}))}
+                    rows={3}
+                  />
+                </div>
+              )}
+            </div>
+          );
+        })}
+
+        {/* Unranked pool */}
+        {(()=>{
+          const [over, setOver] = useState(false);
+          const unranked = (items.unranked||[]).map(id=>getItem(id)).filter(Boolean);
+          return (
+            <div style={{ ...S.unranked, background: over?"#0A0A0A":"#030303", transition:"background 0.1s" }}
+              onDragOver={e=>{ e.preventDefault(); setOver(true); }}
+              onDragLeave={()=>setOver(false)}
+              onDrop={e=>{ e.preventDefault(); setOver(false); if(dragging) move(dragging,"unranked"); setDragging(null); }}
+            >
+              <div style={S.hdr}>UNRANKED — {unranked.length} ITEM{unranked.length!==1?"S":""}</div>
+              <div style={{ display:"flex", flexWrap:"wrap", gap: mob?5:7 }}>
+                {unranked.map(item=>(
+                  <ItemCard key={item.id} item={item} type={activeType}
+                    isDragging={dragging===item.id}
+                    onDragStart={id=>setDragging(id)}
+                    onDragEnd={()=>setDragging(null)}
+                    mob={mob}/>
+                ))}
+                {unranked.length===0 && (
+                  <div style={{ fontSize:10, color:"#1A1A1A", letterSpacing:1, fontFamily:"'Barlow Condensed',sans-serif" }}>ALL RANKED ✓</div>
+                )}
+              </div>
+            </div>
+          );
+        })()}
+      </div>
     </div>
   );
 }
