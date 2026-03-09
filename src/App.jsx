@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import MindCrystals from "./components/MindCrystals.jsx";
 
 function useIsMobile() {
   const [mob, setMob] = useState(() => window.innerWidth < 768);
@@ -1920,8 +1921,8 @@ export default function App() {
 
       <div style={S.nav}>
         {(mob
-          ? [["home","HOME"],["builds","BUILDS"],["tactics","TACTICS"],["guide","GUIDE"]]
-          : [["home","HOME"],["builds","BUILD ANALYZER"],["tactics","TACTICS DATABASE"],["guide","CHARACTER GUIDE"]]
+          ? [["home","HOME"],["builds","BUILDS"],["tactics","TACTICS"],["guide","GUIDE"],["crystals","CRYSTALS"]]
+          : [["home","HOME"],["builds","BUILD ANALYZER"],["tactics","TACTICS DATABASE"],["guide","CHARACTER GUIDE"],["crystals","MIND CRYSTALS"]]
         ).map(([id,lbl])=>(
           <button key={id} className={`eo-nav-btn${tab===id?" active":""}`} style={{
             ...S.navBtn(tab===id),
@@ -1936,6 +1937,8 @@ export default function App() {
 
       {tab === "home" ? (
         <HomePage setTab={setTab} cfg={cfg} mob={mob}/>
+      ) : tab === "crystals" ? (
+        <MindCrystals cfg={cfg} mob={mob}/>
       ) : tab === "tactics" ? (
         <div style={{flex:1, display:"flex", overflow:"hidden", flexDirection: mob ? "column" : "row"}}>
           {renderTactics()}
