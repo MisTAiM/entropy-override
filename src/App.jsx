@@ -998,7 +998,7 @@ const CHARACTERS = [
     ]
   },
   { id:"icey", name:"ICEY", tag:"PIXEL / DANCER", tier:"A", color:"#A78BFA",
-    img:"/chars/icey.jpg",
+    img:"/chars/icey.png",
     talent:"Pixel Perfect — ICEY's dash has the shortest iframe window in the game, but landing a kill within 0.5s of a dash grants a brief invincibility buff.",
     legacySkill:"EX Mode — ICEY temporarily enters a powered state, increasing all damage by 30% and dash speed by 50% for 5 seconds.",
     mechanics:[
@@ -1251,61 +1251,59 @@ function HomePage({setTab, cfg={}, mob=false}) {
     {
       id:"builds",
       label:"BUILD ANALYZER",
-      desc:"3 curated builds per character with full DPS math, radar profiles, tactic loadouts, and synergy charts.",
+      desc:"48 curated builds across all 16 characters. Full DPS math, radar profiles, tactic loadouts, crystal synergy breakdowns, and Morpheus analysis per build.",
       stat:"48 BUILDS",
-      icon:(
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-          <rect x="2" y="18" width="6" height="12" fill="#B91C1C" opacity="0.9"/>
-          <rect x="10" y="12" width="6" height="18" fill="#C9A227" opacity="0.9"/>
-          <rect x="18" y="6" width="6" height="24" fill="#B91C1C" opacity="0.7"/>
-          <rect x="26" y="2" width="4" height="28" fill="#C9A227" opacity="0.5"/>
-          <polyline points="5,18 13,12 21,6 28,2" stroke="#F0EDE5" strokeWidth="1.5" fill="none" strokeDasharray="2 2"/>
-        </svg>
-      ),
+      icon:(<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="2" y="18" width="6" height="12" fill="#B91C1C" opacity="0.9"/><rect x="10" y="12" width="6" height="18" fill="#C9A227" opacity="0.9"/><rect x="18" y="6" width="6" height="24" fill="#B91C1C" opacity="0.7"/><rect x="26" y="2" width="4" height="28" fill="#C9A227" opacity="0.5"/><polyline points="5,18 13,12 21,6 28,2" stroke="#F0EDE5" strokeWidth="1.5" fill="none" strokeDasharray="2 2"/></svg>),
     },
     {
       id:"tactics",
       label:"TACTICS DATABASE",
-      desc:"15 tactics across 5 elements with rarity scaling charts, damage math breakdowns, and tier justifications.",
-      stat:"15 TACTICS",
-      icon:(
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-          <circle cx="16" cy="16" r="13" stroke="#B91C1C" strokeWidth="1.5" fill="none"/>
-          <circle cx="16" cy="16" r="8" stroke="#C9A227" strokeWidth="1" fill="none" opacity="0.6"/>
-          <circle cx="16" cy="16" r="3" fill="#B91C1C"/>
-          <line x1="16" y1="3" x2="16" y2="8" stroke="#B91C1C" strokeWidth="1.5"/>
-          <line x1="16" y1="24" x2="16" y2="29" stroke="#B91C1C" strokeWidth="1.5"/>
-          <line x1="3" y1="16" x2="8" y2="16" stroke="#B91C1C" strokeWidth="1.5"/>
-          <line x1="24" y1="16" x2="29" y2="16" stroke="#B91C1C" strokeWidth="1.5"/>
-          <line x1="7" y1="7" x2="11" y2="11" stroke="#C9A227" strokeWidth="1" opacity="0.7"/>
-          <line x1="21" y1="21" x2="25" y2="25" stroke="#C9A227" strokeWidth="1" opacity="0.7"/>
-          <line x1="25" y1="7" x2="21" y2="11" stroke="#C9A227" strokeWidth="1" opacity="0.7"/>
-          <line x1="11" y1="21" x2="7" y2="25" stroke="#C9A227" strokeWidth="1" opacity="0.7"/>
-        </svg>
-      ),
+      desc:"20 tactics across 5 elements with rarity scaling charts, damage math, element coverage analysis, and tier justifications per slot.",
+      stat:"20 TACTICS",
+      icon:(<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="13" stroke="#B91C1C" strokeWidth="1.5" fill="none"/><circle cx="16" cy="16" r="8" stroke="#C9A227" strokeWidth="1" fill="none" opacity="0.6"/><circle cx="16" cy="16" r="3" fill="#B91C1C"/><line x1="16" y1="3" x2="16" y2="8" stroke="#B91C1C" strokeWidth="1.5"/><line x1="16" y1="24" x2="16" y2="29" stroke="#B91C1C" strokeWidth="1.5"/><line x1="3" y1="16" x2="8" y2="16" stroke="#B91C1C" strokeWidth="1.5"/><line x1="24" y1="16" x2="29" y2="16" stroke="#B91C1C" strokeWidth="1.5"/></svg>),
     },
     {
       id:"guide",
       label:"CHARACTER GUIDE",
-      desc:"Full leveling paths per build, key mechanics, talent breakdowns, and Morpheus's personal tips for every character.",
+      desc:"Full leveling paths per build, core mechanics, talent breakdowns, Evotype synergy notes, and Morpheus personal tips for all 16 characters.",
       stat:"16 CHARS",
-      icon:(
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-          <rect x="4" y="2" width="20" height="26" rx="1" stroke="#C9A227" strokeWidth="1.5" fill="none"/>
-          <rect x="6" y="6" width="10" height="1.5" fill="#B91C1C" opacity="0.8"/>
-          <rect x="6" y="10" width="14" height="1" fill="#555"/>
-          <rect x="6" y="13" width="14" height="1" fill="#555"/>
-          <rect x="6" y="16" width="10" height="1" fill="#555"/>
-          <rect x="6" y="19" width="12" height="1" fill="#555"/>
-          <path d="M22 20 L30 16 L22 12 Z" fill="#C9A227" opacity="0.9"/>
-        </svg>
-      ),
+      icon:(<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="2" width="20" height="26" rx="1" stroke="#C9A227" strokeWidth="1.5" fill="none"/><rect x="6" y="6" width="10" height="1.5" fill="#B91C1C" opacity="0.8"/><rect x="6" y="10" width="14" height="1" fill="#555"/><rect x="6" y="13" width="14" height="1" fill="#555"/><rect x="6" y="16" width="10" height="1" fill="#555"/><rect x="6" y="19" width="12" height="1" fill="#555"/><path d="M22 20 L30 16 L22 12 Z" fill="#C9A227" opacity="0.9"/></svg>),
+    },
+    {
+      id:"crystals",
+      label:"MIND CRYSTALS",
+      desc:"All 38 crystals catalogued with base vs ascended stats, category breakdowns, damage math, and build recommendations per crystal.",
+      stat:"38 CRYSTALS",
+      icon:(<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><polygon points="16,2 28,10 28,22 16,30 4,22 4,10" stroke="#C9A227" strokeWidth="1.5" fill="none"/><polygon points="16,7 23,12 23,20 16,25 9,20 9,12" stroke="#B91C1C" strokeWidth="1" fill="none" opacity="0.5"/><circle cx="16" cy="16" r="3" fill="#C9A227" opacity="0.8"/></svg>),
+    },
+    {
+      id:"calc",
+      label:"FUSION LAB",
+      desc:"163 character fusion combinations — every possible pairing covered. Legacy move picker, Evotype builder, Fusion Lab with full synergy math and crystal recommendations.",
+      stat:"163 FUSIONS",
+      icon:(<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="10" cy="10" r="6" stroke="#B91C1C" strokeWidth="1.5" fill="none"/><circle cx="22" cy="22" r="6" stroke="#C9A227" strokeWidth="1.5" fill="none"/><path d="M14 14 L18 18" stroke="#F0EDE5" strokeWidth="1.5" strokeDasharray="2 2"/><circle cx="10" cy="10" r="2" fill="#B91C1C" opacity="0.7"/><circle cx="22" cy="22" r="2" fill="#C9A227" opacity="0.7"/></svg>),
+    },
+    {
+      id:"evotype",
+      label:"EVOTYPE PLANNER",
+      desc:"Build and save Evotype loadouts per character. Legacy move + talent picker, 2-tactic slot builder, strategy notes, and clipboard export for sharing.",
+      stat:"16 × 4 BUILDS",
+      icon:(<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="18" rx="1" stroke="#A78BFA" strokeWidth="1.5" fill="none"/><rect x="4" y="8" width="24" height="6" fill="#A78BFA" opacity="0.15"/><line x1="9" y1="11" x2="23" y2="11" stroke="#A78BFA" strokeWidth="1" opacity="0.6"/><rect x="8" y="18" width="7" height="4" rx="0.5" stroke="#A78BFA" strokeWidth="1" fill="none" opacity="0.6"/><rect x="17" y="18" width="7" height="4" rx="0.5" stroke="#C9A227" strokeWidth="1" fill="none" opacity="0.6"/><path d="M16 6 L16 8" stroke="#A78BFA" strokeWidth="1.5"/><circle cx="16" cy="5" r="2" fill="#A78BFA" opacity="0.7"/></svg>),
+    },
+    {
+      id:"tier",
+      label:"TIER LIST",
+      desc:"Interactive drag-and-drop tier lists for characters, tactics, and crystals. Pre-loaded with Morpheus rankings. Save your own, add notes per tier, export to Discord.",
+      stat:"S → C TIERS",
+      icon:(<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="2" y="4" width="28" height="6" rx="0.5" fill="#E53935" opacity="0.2" stroke="#E53935" strokeWidth="1"/><rect x="2" y="13" width="28" height="5" rx="0.5" fill="#F97316" opacity="0.15" stroke="#F97316" strokeWidth="1"/><rect x="2" y="21" width="28" height="5" rx="0.5" fill="#EAB308" opacity="0.1" stroke="#EAB308" strokeWidth="1"/><text x="6" y="9" fill="#E53935" fontSize="5" fontWeight="900" fontFamily="sans-serif">S</text><text x="6" y="17" fill="#F97316" fontSize="5" fontWeight="900" fontFamily="sans-serif">A+</text><text x="6" y="25" fill="#EAB308" fontSize="5" fontWeight="900" fontFamily="sans-serif">A</text></svg>),
     },
   ];
 
   const stats = [
-    {val:"5",  label:"ELEMENTS"},
-    {val:"3",  label:"BUILDS / CHAR"},
+    {val:"163", label:"FUSION COMBOS"},
+    {val:"16",  label:"CHARACTERS"},
+    {val:"48",  label:"BUILDS"},
+    {val:"38",  label:"CRYSTALS"},
   ];
 
   return (
@@ -1436,7 +1434,7 @@ function HomePage({setTab, cfg={}, mob=false}) {
             fontSize:11,letterSpacing:3,color:"#3A3A3A",
             fontFamily:"'Courier Prime',monospace",
             marginBottom:28,
-          }}>THE DEFINITIVE BUILD REFERENCE — V4.0</div>
+          }}>THE DEFINITIVE BUILD REFERENCE — V5.0</div>
 
 
         </div>
@@ -1461,7 +1459,7 @@ function HomePage({setTab, cfg={}, mob=false}) {
       {/* ── FEATURE CARDS ── */}
       <div className="home-feat" style={{padding:"40px 40px 0"}}>
         <div style={{fontSize:11,letterSpacing:4,color:"#3A3A3A",fontWeight:900,marginBottom:20,fontFamily:"'Barlow Condensed',sans-serif"}}>TOOLS</div>
-        <div style={{display:"grid",gridTemplateColumns:mob?"1fr":"repeat(3,1fr)",gap:mob?8:16}}>
+        <div style={{display:"grid",gridTemplateColumns:mob?"1fr 1fr":"repeat(4,1fr)",gap:mob?8:14}}>
           {features.map(f=>(
             <div key={f.id} className="feat-card" onClick={()=>setTab(f.id)}
               style={{
