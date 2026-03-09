@@ -74,7 +74,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base Attack",v:500},{n:"+ Shadow Spike",v:775},{n:"× Clone Multi",v:1550},{n:"+ Orb Turret",v:1795},{n:"+ Thunderbolt",v:2195}],
         radar:{burst:70,sustain:95,aoe:100,control:75,survival:80},
-        crystals:["Kill Streak","Combo Counter","Crystal Resonance"],
+        crystals:["exhilaration", "defensive-combo", "giant-slayer", "summon-booster", "not-dead-yet", "straightforward"],
+        crystalMath:"Exhilaration caps at 200% all-dmg at 400 combos (40 stacks). Clones maintain combo count independently — effectively 4× the accumulation rate. At max stacks: base 500 atk → 1500 (+200%). Summon Booster +45% on clone tactic procs: 825 shadow proc → 1196. Giant Slayer: +60% vs elites means bosses die in ~40% fewer hits. Defensive Combo: -80% dmg during attack strings = near-invincible when clones are active.",
+        morpheus:"The combo math here breaks the game. 3 clones + you hitting = 4 simultaneous combo counters. By stage 2 you're already at Exhilaration cap. At that point you're running 1500 effective attack × giant slayer × shadow spike proc loop. This isn't a build — it's a win condition on loop. Summon Booster over Resonance because clones are classified as summons — that's the sleeper pick most guides miss.",
         mathKey:"Shadow Spike at Legendary: 275 × 3 clones = 825 proc per normal attack. At ~3 attacks/sec = 2475 shadow proc DPS alone before base attack. Thunderbolt on each of 3 clone dashes adds ~975/sec. This build has no skill floor — it runs itself." },
       { id:"shadow_blade", name:"SHADOW BLADE", arch:"Precision Burst", rating:88,
         tactics:["Attack Shadow Spike (Umbra)","Skill Cold (Ice)","Dash Blade Slash (Blade)","Legacy Light Spear (Light)","Summon Ice Spike (Ice)"],
@@ -87,7 +89,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base Skills",v:600},{n:"+ Skill Cold (47%)",v:882},{n:"+ Shadow Spike",v:1157},{n:"+ Light Spear",v:1647},{n:"+ Back-Atk Talent",v:2050}],
         radar:{burst:90,sustain:65,aoe:40,control:70,survival:70},
-        crystals:["Phase Shift","Blood Pact","Combo Counter"],
+        crystals:["straightforward", "domination", "giant-slayer", "phantom-step", "not-dead-yet", "legacy-amplifier"],
+        crystalMath:"Straightforward +45% atk × Domination +45% skill = compound multipliers on back-attack procs. Back-attack talent applies AFTER these: (base × 1.45 × 1.45) × back-atk bonus ≈ 3.1× raw output. Legacy Amplifier +50% on Light Spear: 490 → 735 per legacy hit. Phantom Step iframes remove the main risk of repositioning for back-attacks — zero downtime.",
+        morpheus:"The back-attack positioning this build requires is the hardest part — Phantom Step invincibility frames ARE the build. Without them you eat damage repositioning. With them you're untouchable. Legacy Amplifier on Light Spear is 245 free damage per use with zero skill investment. That's your burst window on bosses while clones cover you.",
         mathKey:"Skill Cold at Legendary: base 600 → 882 (47% up). Back-attack talent adds an additional multiplier to shadow spike procs. Combined: each repositioned attack does approx 3.4× what the base game intends. Patch note confirms this is now the intended Hibiki power state." },
       { id:"phantom_step", name:"PHANTOM STEP", arch:"Evasion Tank", rating:82,
         tactics:["Attack Cold (Ice)","Skill Thunderbolt (Light)","Dash Shadow (Umbra)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
@@ -100,7 +104,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base Attack",v:500},{n:"+ Cold (46%)",v:730},{n:"+ Thunderbolt",v:980},{n:"+ Dash Shadow",v:1200},{n:"+ Orb Turret",v:1445}],
         radar:{burst:50,sustain:80,aoe:65,control:100,survival:95},
-        crystals:["Escape Death","Phase Shift","Frost Shield"],
+        crystals:["phantom-step", "defensive-combo", "not-dead-yet", "indestructible", "giant-slayer", "exhilaration"],
+        crystalMath:"Indestructible -30% + Defensive Combo -80% during attacks = effectively 86% total damage reduction window. Net survival: a 1000-dmg hit becomes 140 damage while comboing. Exhilaration still accumulates during defensive play — 200% cap reached slower but maintained longer. Phantom Step + 3 dodge charges = virtually zero time spent in damage range.",
+        morpheus:"This is the build for learning high entropy without dying constantly. The math: 86% mitigation means you need 7× more hits to die vs naked runs. Giant Slayer keeps kill speed competitive so you're not slogging. This isn't a tank build — it's a dodge-chain DPS build that happens to be unkillable when played correctly.",
         mathKey:"Cold Attack: 500 → 730 base. Blackhole freezes enemies = 0 incoming damage windows. Effective DPS formula: not just +46% dealt, but also (attacks avoided × avg incoming damage) added back as 'effective' gain. On Transcendence mode, this approach outperforms pure damage builds by survival alone." }
     ]
   },
@@ -136,7 +142,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base Attack",v:500},{n:"+ Cold (46%)",v:730},{n:"+ Burn DoT",v:1090},{n:"+ Blood Kain",v:1635},{n:"+ Orb Turret",v:1880}],
         radar:{burst:65,sustain:92,aoe:50,control:60,survival:78},
-        crystals:["Blood Pact","Healing Elixir","Kill Streak"],
+        crystals:["vital-boost", "not-dead-yet", "mixture-enhancement", "straightforward", "giant-slayer", "blood-pact"],
+        crystalMath:"Vital Boost +100% HP doubles the Blood Scythe heal threshold — more HP means more healing per hit. Blood Pact +35% on HP-cost abilities: Blood Scythe (which costs 27% HP) deals 35% more. Net: trade HP for higher damage + restore MORE HP per hit. Mixture Enhancement +3 pots: safety net for the inevitable mistakes at sub-50%.",
+        morpheus:"Blood Kain activating at sub-50% is not a bug — it's the entire design. Vital Boost lets you sit at 50% of a much bigger pool, so the actual HP value is the same as a baseline full bar. You're not playing it wrong when you're low — that's the power state. Blood Pact is S-tier on Ragna specifically because it's the only character with a built-in HP-cost damage mechanic.",
         mathKey:"Blood Kain multiplier at ~50% HP (est. ×1.5): 1090 × 1.5 = 1635. This is why Ragna exceeds his B-tier label when played correctly — the multiplier scales EVERYTHING, not just base hits. The HP-cost mechanics become self-funding once Cold slows enemies into predictable hit windows." },
       { id:"inferno", name:"INFERNO GOD", arch:"Max Burst / Glass", rating:78,
         tactics:["Attack Fire Spirit (Fire)","Skill Burn (Fire)","Dash Blade (Blade)","Legacy Ring of Fire (Fire)","Summon Lightning Orb (Electric)"],
@@ -149,7 +157,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base Attack",v:500},{n:"+ Fire Spirit",v:690},{n:"+ Burn DoT",v:1050},{n:"+ Blood Kain low HP",v:1575},{n:"+ Ring of Fire cycle",v:2345}],
         radar:{burst:95,sustain:55,aoe:75,control:30,survival:50},
-        crystals:["Combo Counter","Kill Streak","SP Refuel"],
+        crystals:["straightforward", "domination", "giant-slayer", "predator", "not-dead-yet", "chain-reaction"],
+        crystalMath:"Straightforward +45% × Domination +45% on all damage sources. Predator +75% when enemies below 30% HP — Blood Scythe combos often bring enemies to execute range fast. Chain Reaction: 3 stacks × +12% = +36% damage after 3 kills, maintained through fast kill chains. Combined peak: base × 1.45 × 1.45 × 1.75 × 1.36 ≈ 5.1× damage multiplier at full stacks.",
+        morpheus:"5.1× is the theoretical ceiling — real number is closer to 3.5× in normal gameplay because you don't maintain all buffs simultaneously. But even 3.5× is insane. This build has no safety — it's designed to kill everything before it kills you. At entropy 60+ without Not Dead Yet you WILL die once per run. Accept it. The kill speed is worth it.",
         mathKey:"Ring of Fire burst: 770 per use at ~1 cast per 3 sec = 257 burst DPS added. Fire Spirit: 190 × 3 avg spirits = 570 concurrent passive. Combined with Blood Kain at 50% HP multiplier: peak burst window reaches ~2345 estimated. Highest ceiling Ragna build — also highest floor." },
       { id:"immortal", name:"IMMORTAL BRAWLER", arch:"Tank / Beginner-Proof", rating:80,
         tactics:["Attack Cold (Ice)","Skill Light Spear (Light)","Dash Shadow (Umbra)","Legacy Thunderbolt (Light)","Summon Ice Spike (Ice)"],
@@ -162,7 +172,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base Attack",v:500},{n:"+ Cold (46%)",v:730},{n:"+ Light Spear",v:1220},{n:"+ Thunderbolt",v:1470},{n:"+ Ice Spike Turret",v:1670}],
         radar:{burst:55,sustain:72,aoe:60,control:88,survival:97},
-        crystals:["Escape Death","Phase Shift","Healing Elixir"],
+        crystals:["not-dead-yet", "indestructible", "vital-boost", "mixture-enhancement", "second-wind", "giant-slayer"],
+        crystalMath:"HP pool baseline with Vital Boost: 2× max HP. Second Wind: free full heal every stage transition. Mixture Enhancement: +3 pots, each healing more. Indestructible -30% flat dmg reduction. Not Dead Yet: cheat death + 70% HP restore. Net effective HP across a full run: approximately 8× base pool when all resources are accounted for. Giant Slayer keeps fights short enough that survival investment pays off.",
+        morpheus:"This is the beginner-proof formula. You literally cannot die unless you make 8 separate mistakes in a row. The math on Second Wind alone is mental — that's a full heal EVERY stage meaning you're always topped off going into boss fights. Use this to learn Blood Kain timing. Once you understand the sub-50% power state, swap Indestructible for Domination.",
         mathKey:"Cold Attack: 500 → 730. Light Spear adds flat 490 per skill use — not competing with Attack slot. Heavy Strike heals per hit once upgraded: each of those 730-dmg normals also heals HP. Mathematically self-sustaining. Survivability index: effectively infinite on normal entropy." }
     ]
   },
@@ -198,7 +210,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:550},{n:"+ Cold Attack (46%)",v:803},{n:"+ Skill Cold (47%)",v:1180},{n:"+ Frost Burst AoE",v:1550},{n:"+ Ice Spike Turrets",v:1890}],
         radar:{burst:75,sustain:85,aoe:70,control:100,survival:90},
-        crystals:["Frost Shield","Crystal Resonance","Phase Shift"],
+        crystals:["domination", "giant-slayer", "ice-fortune", "mana-surge", "not-dead-yet", "lethal-momentum"],
+        crystalMath:"Ice Fortune biases ALL tactic drops toward Ice — by stage 3 you're guaranteed double Cold stacks per skill cast. Skill Cold at Legendary: +47% dmg per skill. Lethal Momentum: +45% attack for 6s after each skill — skill spam maintains this near-permanently. MP surge +80: enables ~2.5× more skill uses per fight. Domination +45% on all skill dmg stacks multiplicatively: skill hit = base × 1.47 × 1.45 × 1.45 ≈ 3.1× raw.",
+        morpheus:"Ice Fortune is criminally underrated. The slot efficiency of converting the entire tactic pool into ice drops means you're not praying for Cold Attack to show up — it shows. At stage 2 you lock in double Cold. At stage 3 you upgrade to Freeze. By Omega Space nothing moves and everything dies fast. Mana Surge is mandatory because Jin's skill rotation eats MP like crazy.",
         mathKey:"Double Cold: 550 base → 803 normals (×1.46) → 1180 skills (×1.47). Enemy movement at max stacks ≈ 15% normal speed. Frost Burst AoE hits ALL slowed enemies simultaneously. Effective DPS multiplied not just by the % boosts — but by the additional hits landed while enemies can't dodge. True effective DPS: ~3.4× base." },
       { id:"lightning_parry", name:"LIGHTNING PARRY", arch:"Counter / Transcendence", rating:89,
         tactics:["Skill Light Spear (Light)","Attack Chain Lightning (Light)","Dash Thunderbolt (Light)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
@@ -211,7 +225,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base Skills",v:550},{n:"+ Light Spear",v:1040},{n:"+ Chain Lightning",v:1925},{n:"+ Blackhole ctrl",v:2175},{n:"+ Orb Turret",v:2420}],
         radar:{burst:88,sustain:70,aoe:85,control:80,survival:75},
-        crystals:["Combo Counter","Kill Streak","SP Refuel"],
+        crystals:["straightforward", "domination", "giant-slayer", "not-dead-yet", "legacy-amplifier", "phantom-step"],
+        crystalMath:"Legacy Amplifier +50% on Hakumen counter legacy: 490 base → 735 per counter activation. Counter window procs Thunderbolt on hit — chain reaction. Phantom Step iframes let you bait attacks into counter range safely. Straightforward +45% × Domination +45% compound on all sources. Net peak on counter-punish window: base × 1.45 × 1.45 × 1.5 (legacy amp) ≈ 3.15× spike damage.",
+        morpheus:"The parry build has a skill ceiling but the math rewards it massively. That 3.15× spike happens in a single counter-punish window — for bosses with readable telegraphs, that's almost half their health. Phantom Step removes the risk because you can safely approach for bait positions without eating the attack. Most guides skip Legacy Amplifier here — don't.",
         mathKey:"Chain Lightning at Legendary: 295 × 3 targets = 885 per proc. Jin attack speed ~2/sec = 1770 chain DPS alone. Light Spear adds 490 per skill use on different slot — no competition. Blackhole: 0 incoming damage windows during boss fights. Combined: 2420 estimated DPS with boss kill surety." },
       { id:"blizzard_storm", name:"BLIZZARD STORM", arch:"AoE / Stage Speed", rating:87,
         tactics:["Attack Cold (Ice)","Skill Fire Spirit (Fire)","Dash Shadow Spike (Umbra)","Legacy Frost Burst (Ice)","Summon Ice Spike (Ice)"],
@@ -224,7 +240,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:550},{n:"+ Cold (46%)",v:803},{n:"+ Fire Spirit ×3",v:1373},{n:"+ Frost Burst AoE",v:1773},{n:"+ Ice Spike ×4",v:2533}],
         radar:{burst:65,sustain:90,aoe:97,control:85,survival:80},
-        crystals:["Crystal Resonance","Kill Streak","Frost Shield"],
+        crystals:["straightforward", "giant-slayer", "ice-fortune", "exhilaration", "defensive-combo", "not-dead-yet"],
+        crystalMath:"Exhilaration all-dmg scaling at 200% cap combined with Straightforward +45% and Giant Slayer +60% vs elites: 1500 effective atk × 1.6 = 2400 on elites at max stacks. Defensive Combo -80% while attacking: the AoE nature of Blizzard Storm means you're always in contact, always protected, always accumulating Exhilaration. Ice Fortune guarantees rapid Cold stack completion for Frost Burst procs.",
+        morpheus:"This is the fastest stage clear in the Jin kit. Exhilaration rewards the constant contact that Blizzard style demands. Ice Fortune + Defensive Combo is the secret synergy — you're in the middle of frozen enemies, immune to 80% of their damage, accumulating combo stacks that feed Exhilaration. This is my recommended Jin build if you want to fly through runs.",
         mathKey:"Fire Spirit on 3 slowed targets: 190 × 3 = 570 passive DPS. Frost Burst radius at max Ice stacks hits all simultaneously — estimated 400 AoE per trigger, once every ~4 sec = 100 sustained AoE DPS. Ice Spike turrets: 4 × ~120 = 480 turret DPS. Total: 2533 — with highest room-clear speed of any Jin build." }
     ]
   },
@@ -260,7 +278,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS aerial",v:600},{n:"+ Skill Burn 360/s",v:960},{n:"+ Fire Spirit",v:1150},{n:"+ Orb Turret",v:1395},{n:"+ Blackhole amp",v:1700}],
         radar:{burst:75,sustain:98,aoe:85,control:80,survival:85},
-        crystals:["SP Refuel","Kill Streak","Crystal Resonance"],
+        crystals:["resonance", "summon-booster", "giant-slayer", "not-dead-yet", "exhilaration", "domination"],
+        crystalMath:"Resonance +40% tactic dmg + Summon Booster +45% summon dmg stacks on missile procs: 280 base Fire Projectile → 280 × 1.4 × 1.45 = 569 per projectile, × 10 = 5690 per skill cast. Exhilaration all-dmg at cap adds 200% to every missile. Giant Slayer: bosses are the primary target for aerial positioning. Combined peak: 280 × 1.4 × 1.45 × 3.0 = 1707 per missile, 17070 per cast.",
+        morpheus:"17,070 per full missile cast is not an exaggeration — that's the math at max Exhilaration + both tactic amplifiers. In practice you're looking at 8-12k because enemies die before Exhilaration caps. Aerial positioning removes ALL risk — Kokonoe takes zero damage from ground-level attacks. Giant Slayer is mandatory because boss fights are where this DPS curve matters most.",
         mathKey:"Skill Burn at 360 DoT/s: Kokonoe casts skills near-continuously = constant 360 DPS on every enemy hit, stacking. Fire Spirit: 190/hit × 3 concurrent spirits = 570 passive DPS alongside. Combined sustained damage: ~1700 DPS maintained indefinitely while airborne and functionally invincible." },
       { id:"missile_queen", name:"MISSILE QUEEN", arch:"Burst / Set-and-Forget", rating:90,
         tactics:["Skill Fire Projectile (Fire)","Attack Burn (Fire)","Dash Thunderbolt (Light)","Legacy Light Spear (Light)","Summon Lightning Orb (Electric)"],
@@ -273,7 +293,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:600},{n:"+ Fire Proj 10×280",v:2800},{n:"+ Burn DoT 260/s",v:3060},{n:"+ Light Spear",v:3550},{n:"+ Orb Turret",v:3795}],
         radar:{burst:95,sustain:80,aoe:92,control:55,survival:70},
-        crystals:["Kill Streak","SP Refuel","Combo Counter"],
+        crystals:["resonance", "domination", "giant-slayer", "lethal-momentum", "not-dead-yet", "fire-fortune"],
+        crystalMath:"Domination +45% on Skill → Lethal Momentum +45% ATK for 6s after each Skill cast. Fire Fortune: guarantees fire tactic upgrades by stage 2-3 — Ring of Fire Double becomes accessible early. Fire Projectile at Legendary: 280 × 10 projectiles × Domination × Resonance = 280 × 1.45 × 1.4 = 569 × 10 = 5690 per skill, repeating every skill cast. Lethal Momentum window amplifies normal attacks between casts.",
+        morpheus:"Fire Fortune is the unlock key for this build. Getting Ring of Fire Double without Fortune is luck — with it you're nearly guaranteed it by stage 3. That Double transforms Ring of Fire from mediocre to full-screen AoE every dodge. Combined with Missile Queen's natural aerial advantage, you're dealing damage in every direction simultaneously.",
         mathKey:"Fire Projectile at Legendary with Focused Fire T2: all 10 projectiles in 45° cone on single boss = 10 × 280 = 2800 BURST per cast. Burn DoT: 260/s passive floor. At ~1 skill every 1.5 sec = 1867 burst DPS from projectiles alone. This is Kokonoe's highest raw damage ceiling." },
       { id:"dot_master", name:"DOT MASTER", arch:"Triple DoT Stack", rating:86,
         tactics:["Skill Burn (Fire)","Attack Fire Spirit (Fire)","Dash Blade (Blade)","Legacy Ring of Fire (Fire)","Summon Fire Spirit (Fire)"],
@@ -286,7 +308,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:600},{n:"+ Skill Burn",v:960},{n:"+ Fire Spirit ×3",v:1530},{n:"+ Ring of Fire",v:2300},{n:"+ Catching Fire amp",v:2760}],
         radar:{burst:65,sustain:100,aoe:80,control:40,survival:72},
-        crystals:["Kill Streak","Crystal Resonance","SP Refuel"],
+        crystals:["resonance", "giant-slayer", "not-dead-yet", "exhilaration", "fire-fortune", "straightforward"],
+        crystalMath:"Three DoT sources (Fire Projectile, Skill Burn, Fire Spirit) each amplified by Resonance +40%. Fire Spirit at Legendary: 190 dmg/hit × 1.4 = 266/hit autonomous. Skill Burn: 360 DoT × 1.4 = 504 DPS on the burn. Exhilaration scales all three simultaneously — at 200% cap: all DoT numbers triple. Giant Slayer: Elite enemies take full DoT stacks × 1.6 = approximately 2.56× effective DoT damage.",
+        morpheus:"DoT builds feel slow until you realize three simultaneous DoT stacks at Resonance-amplified values are running 24/7 with zero action from you. At Exhilaration cap with all three active: roughly 2,200 passive DPS before you touch a button. Bosses and elites are burning while you reposition. Giant Slayer makes this viable at entropy 70+ where boss HP pools get thick.",
         mathKey:"Three simultaneous DoTs: 360 (Skill) + 260 (Attack) + 570 (Spirit ×3) = 1190 sustained DoT/s base. Catching Fire T2 at 5 burning enemies: × 1.3 = 1547 sustained DoT. That's DoT alone — before base attack damage. This build has the highest sustained DPS floor of all Kokonoe builds." }
     ]
   },
@@ -322,7 +346,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base Aerial",v:480},{n:"+ Mine per bounce",v:3810},{n:"× 3 bounces burst",v:9990},{n:"+ Cold (46%)",v:11187},{n:"+ Burn+Shadow",v:11660}],
         radar:{burst:100,sustain:60,aoe:95,control:70,survival:65},
-        crystals:["Kill Streak","Combo Counter","SP Refuel"],
+        crystals:["domination", "lethal-momentum", "giant-slayer", "not-dead-yet", "exhilaration", "mana-surge"],
+        crystalMath:"Mine Bouncer math: aerial bounce triggers 3+ mines × 570 (ascended Splashing Mine) = 1710 minimum burst per combo string. Domination +45% skill: 570 → 827 per mine, × 3 = 2480 per string. Lethal Momentum +45% ATK for 6s after skill: every mine cast resets this. Exhilaration caps at 200% — Es aerial bouncing maintains combos effortlessly. Mana Surge enables 3+ additional mine casts per fight.",
+        morpheus:"This is the Es build that exploits the mine-bounce mechanic most guides gloss over. The dev note literally says Es can bounce mines off aerial hits — that's not a feature, that's a guaranteed 2480+ burst window every combo string. Domination is mandatory here because mines are skill-type. Lethal Momentum resets on every mine cast. You're looking at permanent ATK buff uptime with 3+ mine casts per fight.",
         mathKey:"Mine + Splashing Mine T2 per detonation: 570 + (6 × 460) = 3330. Es aerial: 3 bounces = 3 detonations = 9990 total in one combo string. This is the highest documented single-combo burst number in BBEE X, period. Cold Attack adds 46% to normals between bounces for sustained floor." },
       { id:"crest_field", name:"CREST FIELD", arch:"Trap / Consistent", rating:85,
         tactics:["Attack Cold (Ice)","Skill Cold (Ice)","Dash Shadow Spike (Umbra)","Legacy Crest (Ice)","Summon Lightning Orb (Electric)"],
@@ -335,7 +361,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:480},{n:"+ Cold Atk (46%)",v:701},{n:"+ Skill Cold (47%)",v:1030},{n:"+ Crest Burst",v:1480},{n:"+ Orb Turret",v:1725}],
         radar:{burst:80,sustain:75,aoe:80,control:95,survival:80},
-        crystals:["Frost Shield","Phase Shift","Crystal Resonance"],
+        crystals:["resonance", "domination", "giant-slayer", "not-dead-yet", "exhilaration", "defensive-combo"],
+        crystalMath:"Crest placement generates passive field damage amplified by Resonance +40%. Every crest hit also counts as player combo — Defensive Combo -80% dmg while crests are active and Es is attacking. Exhilaration scales with crest hit combo count: passive field maintains high combo stacks between manual inputs. Domination amplifies all crest-triggered skills: 1.45× on every proc.",
+        morpheus:"Crest Field is deceptive — it looks like a setup build but it's actually a sustained DPS machine once crests are placed. Defensive Combo synergy is underrated here: crests trigger your combo counter passively, meaning you're protected even during repositioning windows. Resonance on crest hits is the math that makes this viable at high entropy.",
         mathKey:"Double Cold at Legendary: 480 → 701 normals, 47% on skills. Frozen enemies = 0 movement. Every placed crest confirms hit on approach. Orb turret: 245 DPS autonomous. Reliable 1725 sustained DPS with highest control rating of any Es build." },
       { id:"speed_crest", name:"SPEED CREST", arch:"Mobility + Explosion", rating:88,
         tactics:["Attack Cold (Ice)","Skill Fire Spirit (Fire)","Dash Thunderbolt (Light)","Legacy Ring of Fire (Fire)","Summon Mine (Fire)"],
@@ -348,7 +376,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:480},{n:"+ Mine + Crest",v:1050},{n:"+ Cold (46%)",v:1533},{n:"+ Ring of Fire",v:2303},{n:"+ Fire Spirit",v:2493}],
         radar:{burst:88,sustain:70,aoe:90,control:65,survival:72},
-        crystals:["Kill Streak","Combo Counter","Crystal Resonance"],
+        crystals:["phantom-step", "domination", "giant-slayer", "not-dead-yet", "mixture-enhancement", "exhilaration"],
+        crystalMath:"Phantom Step iframes on dash combined with Es's natural mobility: near-zero downtime between crest placements. Domination +45% on crest skill procs. Exhilaration accumulates through rapid crest-to-crest movement — high combo count maintained by constant contact. Mixture Enhancement: 3 extra pots compensate for the chip damage taken during aggressive crest placement at high entropy.",
+        morpheus:"Speed Crest is the highest skill expression Es build. Phantom Step is the enabler — you're dashing between crest placements, each dash is invincible, you're never actually in damage range. The movement pattern requires practice but once you have it the build is borderline unfair. Exhilaration rewards the constant movement — you're always accumulating.",
         mathKey:"Taokaka speed: 2+ mine placements per second possible during combat. Fire Spirit Detonation on Burning enemies: chain explosions from Mine DoT. Ring of Fire burst: 770 every ~8 sec = 96 DPS average. Total active build: ~2493 DPS with highest mobility of any Es build." }
     ]
   },
@@ -384,7 +414,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:580},{n:"+ Cold (46%)",v:847},{n:"+ Chain Lightning",v:1732},{n:"+ Thunderbolt dash",v:2057},{n:"+ Orb Turret",v:2302}],
         radar:{burst:70,sustain:100,aoe:80,control:65,survival:72},
-        crystals:["Kill Streak","Combo Counter","SP Refuel"],
+        crystals:["straightforward", "defensive-combo", "giant-slayer", "exhilaration", "not-dead-yet", "combo-surge"],
+        crystalMath:"Bullet Storm attack frequency: approx 8-10 hits per second during Drive. Defensive Combo -80% while attacking = permanent protection during Drive sequences. Exhilaration + Combo Surge both scale on combo count — Noel's rapid-fire generates ~100 combo hits per 10 seconds: 10 Exhilaration stacks × 5% = +50% all-dmg per 10 seconds, capping at 200% in ~40s. Straightforward +45% baseline on top.",
+        morpheus:"Noel is the king of Exhilaration and Combo Surge stacking because her attack frequency is the highest in the roster. The combo math: 8 hits/sec × 40s = 320 hits = 32 Exhilaration stacks (cap 40). You hit Exhilaration cap in 40 seconds of sustained combat. Defensive Combo means those 40 seconds are spent completely protected. This is the safest high-DPS setup in the game.",
         mathKey:"Noel has highest attack rate of all characters — ~5 hits/sec base. Cold Attack at 46%: 580 → 847 per sec. Chain Lightning at 295/proc × 5 hits/sec = 1475 chain DPS alone. That's before base attack. Combined: 2302 sustained DPS with zero ceiling on attack speed scaling." },
       { id:"artillery_queen", name:"ARTILLERY QUEEN", arch:"Zoner / Mid-Range", rating:85,
         tactics:["Skill Burn (Fire)","Attack Fire Spirit (Fire)","Dash Shadow Spike (Umbra)","Legacy Ring of Fire (Fire)","Summon Lightning Orb (Electric)"],
@@ -397,7 +429,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:580},{n:"+ Burn DoT",v:940},{n:"+ Fire Spirit",v:1510},{n:"+ Shadow Spike",v:1785},{n:"+ Ring of Fire cycle",v:2130}],
         radar:{burst:80,sustain:88,aoe:72,control:55,survival:68},
-        crystals:["Kill Streak","Crystal Resonance","SP Refuel"],
+        crystals:["domination", "resonance", "giant-slayer", "not-dead-yet", "lethal-momentum", "mana-surge"],
+        crystalMath:"Artillery Queen uses Noel's long-range bias passive: long-range attacks deal bonus damage (passive perk). Domination +45% on all skill-sourced dmg. Resonance +40% on tactic procs triggered by ranged attacks. Lethal Momentum: every skill cast → +45% ATK for 6s. Long-range Legendary tactic (280/hit × 10 projectiles) × Domination × Resonance = 280 × 1.45 × 1.4 = 569 × 10 = 5690 per skill use at range.",
+        morpheus:"The long-range passive on Noel is her most underutilized mechanic. Most players play her like a melee brawler. This build forces correct positioning and the damage ceiling is dramatically higher. Lethal Momentum uptime is near-100% if you're skill-spamming from range — the ATK buff applies to both skills AND ranged normals. Mana Surge is mandatory to maintain the skill frequency.",
         mathKey:"Drive B skills spam at 360 DoT/s each stack. Fire Spirit on 3 targets: 190×3 = 570 passive. Shadow Spike 275 per Drive A hit × 3/sec = 825 shadow DPS. Ring burst: 770 ÷ 8 sec = 96 avg. Combined: ~2130 DPS with Noel's highest sustained boss damage." },
       { id:"frost_dancer", name:"FROST DANCER", arch:"Mobility / Untouchable", rating:82,
         tactics:["Attack Cold (Ice)","Skill Cold (Ice)","Dash Shadow (Umbra)","Legacy Blackhole (Umbra)","Summon Ice Spike (Ice)"],
@@ -410,7 +444,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:580},{n:"+ Cold Atk (46%)",v:847},{n:"+ Skill Cold (47%)",v:1245},{n:"+ Blackhole ctrl",v:1495},{n:"+ Ice Spike Turrets",v:1745}],
         radar:{burst:55,sustain:80,aoe:75,control:95,survival:90},
-        crystals:["Frost Shield","Phase Shift","Escape Death"],
+        crystals:["phantom-step", "defensive-combo", "not-dead-yet", "giant-slayer", "ice-fortune", "exhilaration"],
+        crystalMath:"Phantom Step iframes + Noel's 3-dodge-charge kit = virtually infinite evasion windows. Ice Fortune guarantees Cold Attack + Skill Cold by stage 2-3: +47% skill and +46% attack simultaneously. Defensive Combo -80% while attacking. Exhilaration at cap adds 200% all-dmg. Net evasion-to-DPS ratio: 86% damage mitigation during attacks + Exhilaration-buffed output = highest efficiency damage/survival ratio in Noel's kit.",
+        morpheus:"Frost Dancer is what Noel looks like when you play her right at high entropy. Phantom Step iframe chains into Cold-slowed enemies into Defensive Combo protection. The rhythm: dash (invincible) → attack in Cold-slowed enemies (protected) → dash again. You're never actually hit. Exhilaration just keeps climbing because you never stop attacking. Ice Fortune is the piece most guides skip.",
         mathKey:"Noel stacks Cold faster than any character — 5 hits/sec means max stacks in ~2 sec always. Double Cold: 580 → 847 normals, 1245 skills. Blackhole: zero incoming damage window every ~12 sec. Effective survivability: 95 — highest of all Noel builds by far." }
     ]
   },
@@ -446,7 +482,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base Bat DPS",v:520},{n:"+ Chain Lightning",v:1405},{n:"+ Light Spear skills",v:1895},{n:"+ Thunderbolt dash",v:2195},{n:"+ Orb Turret",v:2440}],
         radar:{burst:78,sustain:95,aoe:88,control:75,survival:70},
-        crystals:["Crystal Resonance","Kill Streak","SP Refuel"],
+        crystals:["resonance", "summon-booster", "legacy-amplifier", "giant-slayer", "not-dead-yet", "exhilaration"],
+        crystalMath:"Bat summons proc Chain Lightning (legacy): 295 × 3 enemies = 885 per proc, × Resonance +40% = 1239 per proc, × Summon Booster +45% = 1796 per bat lightning proc. Legacy Amplifier +50% on Chain Lightning legacy: 1796 × 1.5 = 2694 per autonomous proc. No player input required. Exhilaration scales with bat-triggered combo count — passive system maintains Exhilaration stacks between manual inputs.",
+        morpheus:"2,694 damage per bat lightning proc with zero player input is the Rachel passive DPS fantasy fully realized. The math compounds beyond what most guides account for: Resonance × Summon Booster × Legacy Amplifier is a triple multiplicative stack. No other character has three separate passive amplifiers that all apply to the same auto-attack source. Legacy Amplifier is the hidden S-tier pick for Rachel specifically.",
         mathKey:"Bats as legacy: continuous proc stream. Chain Lightning × 3 targets per bat hit = 295 × 3 = 885 per bat-hit proc. Rachel fires ~2 bats/sec = 1770 chain DPS from legacy alone — zero active input. Light Spear adds 490 per skill on top. Combined: ~2440 DPS while effectively afk." },
       { id:"wind_barrier", name:"WIND BARRIER", arch:"Trap / Control Field", rating:84,
         tactics:["Attack Cold (Ice)","Skill Frost Burst (Ice)","Dash Shadow Spike (Umbra)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
@@ -459,7 +497,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:520},{n:"+ Cold (46%)",v:759},{n:"+ Frost Burst AoE",v:1209},{n:"+ Shadow Spike",v:1484},{n:"+ Orb Turret",v:1730}],
         radar:{burst:72,sustain:78,aoe:95,control:98,survival:75},
-        crystals:["Frost Shield","Phase Shift","Crystal Resonance"],
+        crystals:["resonance", "domination", "giant-slayer", "not-dead-yet", "indestructible", "exhilaration"],
+        crystalMath:"Wind Barrier creates a persistent damage field: Resonance +40% on all tactic procs within field. Indestructible -30% dmg reduction: Rachel has low HP — this is mandatory for staying in field range. Domination +45% on skill-sourced damage including wind field ticks. Exhilaration: field keeps you in sustained combat contact, maintaining combo stacks. Giant Slayer: field damage × 1.6 vs elites = the primary boss damage source.",
+        morpheus:"Wind Barrier is the tanky Rachel build and it needs Indestructible to function at entropy 70+. Her HP pool is too low to tank without it. With Indestructible + the wind field keeping enemies at bay, you take 30% less damage from everything that gets through. Resonance × Domination on field ticks is subtle — the field fires constantly, so those multipliers apply to a continuous DPS stream.",
         mathKey:"Wind mechanic clusters enemies: Frost Burst hits 5+ enemies clustered = 520 × 5 in burst window. Blackhole + Cold: functional 0-movement for 4-6 sec. Highest control rating of any Rachel build at 98 — functionally reduces all incoming damage to near-zero during windows." },
       { id:"pumpkin_artillery", name:"PUMPKIN ARTILLERY", arch:"Long Range / Screen Control", rating:80,
         tactics:["Skill Burn (Fire)","Attack Fire Spirit (Fire)","Dash Thunderbolt (Light)","Legacy Ring of Fire (Fire)","Summon Lightning Orb (Electric)"],
@@ -472,7 +512,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:520},{n:"+ Burn DoT",v:880},{n:"+ Fire Spirit",v:1450},{n:"+ Ring of Fire cycle",v:2220},{n:"+ Thunderbolt dash",v:2470}],
         radar:{burst:82,sustain:75,aoe:80,control:70,survival:80},
-        crystals:["Kill Streak","SP Refuel","Combo Counter"],
+        crystals:["resonance", "domination", "giant-slayer", "not-dead-yet", "lethal-momentum", "fire-fortune"],
+        crystalMath:"Pumpkin Bomb at Legendary: high flat damage per detonation. Domination +45% skill dmg on each bomb. Resonance +40% on bomb-triggered tactic procs. Fire Fortune: guarantees Ring of Fire Double access — pumpkin detonations trigger Ring of Fire on Skill use, creating full-screen AoE on every bomb. Lethal Momentum: +45% ATK for 6s per bomb cast. Multi-bomb sequences maintain this permanently.",
+        morpheus:"Fire Fortune unlocking Ring of Fire Double transforms this build from interesting to broken. Without it you're hoping — with it by stage 3 you have Ring of Fire on every pumpkin detonation, hitting the entire screen. Rachel's unique positioning (floating, out of reach) combined with full-screen bombing is legitimately unfair on non-boss enemies. Lethal Momentum means each bomb resets your ATK buff.",
         mathKey:"Pumpkin range = full screen. Burn at 360/s: applied across stage with zero risk. Fire Spirit 190 × 3 = 570 remote passive. Ring of Fire 770 per legacy from safe range. Combined: 2470 DPS while maintaining maximum distance from all enemies." }
     ]
   },
@@ -508,7 +550,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:560},{n:"+ Shadow Spike",v:835},{n:"+ Chain Lightning",v:1720},{n:"+ Thunderbolt × dashes",v:2170},{n:"+ Blackhole ctrl",v:2420}],
         radar:{burst:82,sustain:75,aoe:90,control:70,survival:72},
-        crystals:["Kill Streak","Combo Counter","SP Refuel"],
+        crystals:["exhilaration", "defensive-combo", "combo-surge", "giant-slayer", "not-dead-yet", "compliment-of-death"],
+        crystalMath:"Taokaka attack speed: one of the fastest in the roster at ~10-12 hits/sec. Exhilaration cap (40 stacks) reached in ~33 seconds. Combo Surge ALL-damage cap (50 stacks) reached simultaneously. Peak: base × 3.0 (Exhilaration) × 3.5 (Combo Surge) = 10.5× multiplier on attack. Defensive Combo -80% during that sustained attack window. Compliment of Death: 15% max HP heal per 20 combo hits — at 12 hits/sec that's healing every 1.7 seconds.",
+        morpheus:"10.5× damage multiplier is the Taokaka ceiling and it's actually achievable because of her raw hit rate. 33 seconds to Exhilaration cap — that's stage 2 early. By the time you hit bosses you're at max stacks. Compliment of Death at 12 hits/sec means you're healing every 1.7 seconds — effectively infinite sustain during combo chains. This build does not have a weakness when played correctly.",
         mathKey:"Taokaka 4-hit claw string: Shadow Spike × 4 = 275 × 4 = 1100 shadow burst per combo. At ~2 combos/sec = 2200 shadow DPS alone. Thunderbolt on fastest dash count in game: ~4 dashes/sec = 325 × 4 = 1300 Thunderbolt DPS. Combined peak: ~2420 with zero setup requirement." },
       { id:"speed_demon", name:"SPEED DEMON", arch:"Hit-and-Run / Entropy Rush", rating:82,
         tactics:["Attack Cold (Ice)","Skill Light Spear (Light)","Dash Thunderbolt (Light)","Legacy Ring of Fire (Fire)","Summon Lightning Orb (Electric)"],
@@ -521,7 +565,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:560},{n:"+ Cold (46%)",v:818},{n:"+ Light Spear",v:1308},{n:"+ Thunderbolt dashes",v:1958},{n:"+ Orb Turret",v:2208}],
         radar:{burst:75,sustain:82,aoe:70,control:72,survival:78},
-        crystals:["Phase Shift","Kill Streak","Crystal Resonance"],
+        crystals:["phantom-step", "exhilaration", "defensive-combo", "giant-slayer", "not-dead-yet", "chain-reaction"],
+        crystalMath:"Phantom Step iframes on Taokaka's already-fast dodge: each iframe dash builds combo without being hit. Chain Reaction: 3 kills in succession = +36% dmg, maintained through rapid kill chains. Exhilaration scales with the constant combo maintained by dodge-into-attack patterns. Giant Slayer: +60% on elites means each elite kill accelerates the Chain Reaction stack reset. Net: fast kill → Chain Reaction full → next kill faster.",
+        morpheus:"Speed Demon is the entropy-rushing build. Chain Reaction synergy with Taokaka's kill speed is perfect — you're never NOT killing things fast enough to maintain stacks. Phantom Step lets you take the aggressive line every time without punishment. The loop: dodge in (invincible) → burst kill → Chain Reaction stacks → next fight with higher damage → repeat. Fastest stage clear in the game.",
         mathKey:"Cold stacks in 1-2 sec on Taokaka: 560 → 818. Thunderbolt on 4 dashes/sec: 325 × 4 = 1300 chain DPS. Light Spear 490 per skill, ~1 per 2 sec = 245 avg. Combined: 2208 DPS with run-speed stage clear significantly faster than other B-tier builds." },
       { id:"ambush_cat", name:"AMBUSH CAT", arch:"Surprise Burst / Flanker", rating:78,
         tactics:["Attack Cold (Ice)","Skill Burn (Fire)","Dash Shadow Spike (Umbra)","Legacy Blackhole (Umbra)","Summon Fire Spirit (Fire)"],
@@ -534,7 +580,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:560},{n:"+ Cold (46%)",v:818},{n:"+ Dash Shadow ×4",v:1918},{n:"+ Burn DoT",v:2178},{n:"+ Fire Spirit",v:2368}],
         radar:{burst:88,sustain:68,aoe:65,control:80,survival:65},
-        crystals:["Combo Counter","Kill Streak","Blood Pact"],
+        crystals:["straightforward", "domination", "giant-slayer", "not-dead-yet", "predator", "legacy-amplifier"],
+        crystalMath:"Predator +75% when enemies below 30% HP: Taokaka's burst naturally brings enemies to execute range fast. Legacy Amplifier +50% on light legacy: Hakumen Light Spear → 735 dmg per use as execute finisher. Straightforward +45% × Domination +45% compound baseline. At Predator threshold: base × 1.45 × 1.45 × 1.75 = 3.7× damage. Legacy execute: 735 × 1.75 (Predator) = 1286 per legacy hit in execute window.",
+        morpheus:"Predator is slept on for Taokaka because everyone just stacks raw damage, but the execute window math is dramatic. 1286 per legacy hit at execute range is a finisher, not a chip. The strategy: Straightforward + Domination gets enemies to 30% HP fast, then Predator + Legacy nuke closes the window. For bosses this means the final phase is extremely fast.",
         mathKey:"Dash Shadow on Taokaka: 4 dashes/sec × 275 = 1100 shadow DPS from movement alone. Cold Attack: 560 → 818 normals. Burn DoT: 260 passive floor. Fire Spirit: 190/hit × 2 spirits = 380 passive. Peak burst from full claw string + 4 dashes: ~2368 DPS. Unique to Taokaka — no other character generates this much DPS from dashes." }
     ]
   },
@@ -570,7 +618,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:570},{n:"+ Light Spear ×2",v:1550},{n:"+ Chain Lightning",v:2435},{n:"+ Thunderbolt",v:2760},{n:"+ Orb Turret",v:3005}],
         radar:{burst:88,sustain:82,aoe:90,control:60,survival:72},
-        crystals:["Kill Streak","SP Refuel","Crystal Resonance"],
+        crystals:["resonance", "exhilaration", "giant-slayer", "not-dead-yet", "summon-booster", "defensive-combo"],
+        crystalMath:"Sword Rain autonomous blades proc Resonance +40% on every sword hit. Summon Booster +45% on blade summons specifically. Combined tactic proc: base blade dmg × 1.4 × 1.45 = 2.03× per sword hit. At full Respawn Double with 4+ swords active: 4 swords × 2.03× per hit × attack frequency ≈ 8.12× equivalent output vs single sword. Exhilaration at cap adds 200% to ALL sword hits.",
+        morpheus:"4 active swords × Resonance × Summon Booster is multiplicative, not additive. The community undersells this — Sword Rain at full Double upgrade is generating more autonomous DPS than most characters' active attacks. Exhilaration reward is also autonomous here: swords maintain your combo count while you reposition. Defensive Combo during your own attacks while swords do the heavy lifting = low-risk, high-reward.",
         mathKey:"Two Light Spear sources (Skill + Legacy): 490 × 2 = 980 flat per rotation. Chain Lightning 295 × 3: Lambda multi-sword = all 3 bounces guaranteed. At Lambda's skill rate: ~1560 chain DPS. Thunderbolt per dash: 325. Orb: 245. Total: ~3005 DPS — highest ceiling of all Lambda builds." },
       { id:"cold_blades", name:"COLD BLADES", arch:"Freeze / Control", rating:85,
         tactics:["Attack Cold (Ice)","Skill Cold (Ice)","Dash Shadow Spike (Umbra)","Legacy Frost Burst (Ice)","Summon Ice Spike (Ice)"],
@@ -583,7 +633,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:570},{n:"+ Cold Attack (46%)",v:833},{n:"+ Skill Cold (47%)",v:1225},{n:"+ Shadow Spike",v:1775},{n:"+ Ice Spikes + Frost",v:2095}],
         radar:{burst:70,sustain:88,aoe:88,control:95,survival:85},
-        crystals:["Frost Shield","Crystal Resonance","Phase Shift"],
+        crystals:["resonance", "domination", "ice-fortune", "giant-slayer", "not-dead-yet", "exhilaration"],
+        crystalMath:"Ice Fortune guarantees Cold Attack + Skill Cold stack by stage 2. Blade skills at Legendary: Mystic Ice Sword → Cold stacks per charge + tactic proc. Skill Cold +47% on every skill use. Domination +45% on skill damage. Combined: skill dmg × 1.47 × 1.45 = 2.13× per skill. At max Cold stacks Frost Burst procs for AoE: 520 burst × Resonance +40% = 728 per Frost Burst proc.",
+        morpheus:"Cold Blades is Lambda's safest build because frozen enemies can't threaten you. Ice Fortune means Cold Attack shows guaranteed — no praying. The Resonance on Frost Burst is where this goes from strong to abusive: 728 AoE every time Cold stacks cap on a frozen group. In dense waves you're proc-ing Frost Burst on multiple enemies simultaneously.",
         mathKey:"Lambda multi-sword = 3 hits per cast = 3 Cold procs per cast. Max stacks in ~2 sec. Double Cold: 570 → 833 → 1225. Shadow Spike × 3 swords = 825 per skill cast. Frost Burst when stacked clears entire room. Control rating: 95 — enemies functionally unable to act." },
       { id:"umbra_blades", name:"UMBRA BLADES", arch:"Shadow Burst", rating:82,
         tactics:["Attack Shadow Spike (Umbra)","Skill Light Spear (Light)","Dash Shadow (Umbra)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
@@ -596,7 +648,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:570},{n:"+ Shadow Spike ×3",v:1395},{n:"+ Light Spear",v:1885},{n:"+ Blackhole pull",v:2135},{n:"+ Orb Turret",v:2380}],
         radar:{burst:90,sustain:72,aoe:80,control:85,survival:70},
-        crystals:["Kill Streak","Combo Counter","Blood Pact"],
+        crystals:["resonance", "summon-booster", "giant-slayer", "not-dead-yet", "exhilaration", "umbra-fortune"],
+        crystalMath:"Umbra Fortune steers drops toward Shadow Spike for Lambda's blades. Shadow Spike on sword procs: 275 × all active swords × Resonance +40% × Summon Booster +45% = 275 × 1.4 × 1.45 = 559 per sword proc. At 4 active Respawn swords: 559 × 4 = 2236 per attack wave from blade field alone. Exhilaration scales all of this at 200% cap: 2236 × 3 = 6708 per wave at max.",
+        morpheus:"6,708 per sword attack wave at Exhilaration cap is the math that makes Umbra Blades the highest ceiling Lambda build. Umbra Fortune is the key — without it getting Shadow Spike early is RNG. With it you're in a dedicated Umbra tactic loop by stage 2. Resonance × Summon Booster on sword Shadow Spike procs is a triple-dip that most guides don't calculate.",
         mathKey:"Shadow Spike × Lambda 3-sword: 275 × 3 = 825 per cast. At 1.5 casts/sec = 1238 shadow DPS. Light Spear 490 per skill separately. Blackhole draws enemies into active sword field — all sword turrets confirm hits. Combined: 2380 DPS with highest boss burst pressure of any Lambda build." }
     ]
   },
@@ -632,7 +686,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:560},{n:"+ Fire Proj 10×280",v:2800},{n:"+ Burn DoT",v:3060},{n:"+ Light Spear",v:3550},{n:"+ Thunderbolt dash",v:3875}],
         radar:{burst:96,sustain:82,aoe:90,control:55,survival:70},
-        crystals:["Kill Streak","SP Refuel","Combo Counter"],
+        crystals:["resonance", "domination", "giant-slayer", "not-dead-yet", "exhilaration", "mana-surge"],
+        crystalMath:"Needle Storm projectile count: approx 5-8 per skill cast. Each needle × Domination +45% × Resonance +40%: base 200/needle → 200 × 1.45 × 1.4 = 406 per needle, × 8 = 3248 per cast. Mana Surge +80 MP: approximately 4 additional skill casts per fight. Exhilaration: projectile hits each count separately for combo — 8 needles per cast = 8 combo hits = rapid Exhilaration stacking.",
+        morpheus:"8 needles per cast × Domination × Resonance is the correct math most guides miss — people calculate flat skill damage but not per-projectile. At 3248 per cast with 4 additional casts from Mana Surge: you're getting roughly 3248 × 7 = 22,736 needle damage per fight just from skills. That's before Exhilaration. This build stacks faster than any other Mai build.",
         mathKey:"Mai spear: full-screen reach. Focused Fire T2 at close range: 10 × 280 = 2800 burst per skill cast. At 1 throw/1.5 sec = 1867 burst DPS. Burn 260/s passive on everything hit. Light Spear adds 490 per skill on same cast = triple damage per throw at close range. Peak: 3875 DPS." },
       { id:"frost_spear", name:"FROST SPEAR", arch:"Slow + Burst Combo", rating:85,
         tactics:["Attack Cold (Ice)","Skill Cold (Ice)","Dash Shadow Spike (Umbra)","Legacy Frost Burst (Ice)","Summon Ice Spike (Ice)"],
@@ -645,7 +701,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:560},{n:"+ Cold Atk (46%)",v:818},{n:"+ Skill Cold (47%)",v:1202},{n:"+ Shadow Spike",v:1477},{n:"+ Frost Burst AoE",v:1827}],
         radar:{burst:75,sustain:88,aoe:85,control:92,survival:88},
-        crystals:["Frost Shield","Crystal Resonance","Phase Shift"],
+        crystals:["domination", "ice-fortune", "giant-slayer", "not-dead-yet", "lethal-momentum", "exhilaration"],
+        crystalMath:"Ice Fortune guarantees Cold Attack by stage 2. Mai Spear skill + Cold Attack: skill proc applies Cold stacks × Domination +45%. Cold-frozen enemies take hit × Domination × Lethal Momentum +45% during 6s window after each skill cast. Lethal Momentum maintenance: spear skills fire frequently = near-100% uptime. At max stacks: dmg × 1.45 (Dom) × 1.45 (LM) × Exhilaration cap = 6.3× base.",
+        morpheus:"The Lethal Momentum uptime on Mai Spear is the key insight. Spear skills trigger it, then Cold slows enemies so they can't escape the buff window. You're hitting frozen enemies during your ATK buff with Domination applied. That's three multipliers on every spear hit in the window. Exhilaration climbs because Cold-slowed enemies stay in contact range — you're always hitting.",
         mathKey:"Full-screen Cold application: stacks from range = safest Cold build. Double Cold: 560 → 818 → 1202. Shadow Spike per throw: 275 independent DPS. Frost Burst AoE at max stacks: hits entire room from safe throw range. Highest survivability Mai build at 88." },
       { id:"chain_spear", name:"CHAIN SPEAR", arch:"Multi-Hit Chain", rating:81,
         tactics:["Skill Chain Lightning (Light)","Attack Cold (Ice)","Dash Thunderbolt (Light)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
@@ -658,7 +716,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:560},{n:"+ Chain Lightning",v:1445},{n:"+ Cold (46%)",v:1710},{n:"+ Thunderbolt",v:2035},{n:"+ Orb Turret",v:2280}],
         radar:{burst:72,sustain:88,aoe:92,control:80,survival:82},
-        crystals:["Kill Streak","Crystal Resonance","SP Refuel"],
+        crystals:["resonance", "exhilaration", "giant-slayer", "not-dead-yet", "defensive-combo", "straightforward"],
+        crystalMath:"Chain Spear multi-hit: each chain hit procs Resonance +40% separately. At 5 chain hits: base 250/hit × 1.4 = 350/hit × 5 = 1750 per full chain. Straightforward +45% baseline. Defensive Combo -80% during multi-hit chain sequence. Exhilaration: 5 hits per chain = 5 combo stacks per cast — rapid accumulation. At 200% Exhilaration cap: 1750 × 3 = 5250 per chain.",
+        morpheus:"5250 per chain at Exhilaration cap with 5 ticks of Resonance is what Chain Spear actually does when properly built. The Defensive Combo pickup here is smart — during the chain animation you're locked into attack, Defensive Combo protects you for the entire cast. Giant Slayer: boss fights are where multi-hit chains truly shine since each hit counts separately toward elite damage bonus.",
         mathKey:"Chain Lightning from spear: 295 × 3 = 885 per throw. At 1.5 throws/sec = 1328 chain DPS from range. Cold adds 46% to spear base. Blackhole concentrates enemies into spear kill zone — all chain lightning bounces guaranteed. Combined: 2280 DPS with full-screen coverage." }
     ]
   },
@@ -694,7 +754,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:530},{n:"+ Shadow Spike chain",v:805},{n:"+ Chain Lightning",v:1690},{n:"+ Thunderbolt",v:2015},{n:"+ Orb Turret",v:2260}],
         radar:{burst:78,sustain:78,aoe:82,control:78,survival:68},
-        crystals:["Kill Streak","Combo Counter","SP Refuel"],
+        crystals:["resonance", "exhilaration", "giant-slayer", "not-dead-yet", "umbra-fortune", "straightforward"],
+        crystalMath:"Umbra Fortune steers drops toward Shadow Spike for Hazama chain whip procs. Each chain hit procs Shadow Spike × Resonance +40%: 275 × 1.4 = 385 per proc. Chain whip can reach 3-5 targets × 385 = 1155-1925 per whip extension. Exhilaration at 200% cap triples this: 1155-1925 × 3 = 3465-5775 per whip wave. Straightforward +45% baseline amplifies all.",
+        morpheus:"Umbra Fortune is mandatory for Hazama — Shadow Spike procs on chain whip are his power state, not nice-to-have. Without it you're spending stages hoping for Shadow Spike. With it you're in guaranteed Umbra loops by stage 2. The chain range means each whip extension hitting 3-5 enemies all proc Shadow Spike individually. At Exhilaration cap this is the highest sustained AoE in Hazama's kit.",
         mathKey:"Hazama chain hits 2-3× per animation: Shadow Spike × 3 = 825 per chain use. Chain Lightning: 295 × 3 targets guaranteed via chain spread = 885 per proc. Thunderbolt on counter-dash: 325. Combined: 2260 DPS with skill-ceiling reward for Ouroboros users." },
       { id:"snake_burn", name:"SNAKE BURN", arch:"DoT / Attrition", rating:78,
         tactics:["Skill Burn (Fire)","Attack Fire Spirit (Fire)","Dash Shadow Spike (Umbra)","Legacy Ring of Fire (Fire)","Summon Lightning Orb (Electric)"],
@@ -707,7 +769,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:530},{n:"+ Burn DoT",v:890},{n:"+ Fire Spirit",v:1460},{n:"+ Shadow Spike dash",v:1735},{n:"+ Ring of Fire",v:2080}],
         radar:{burst:72,sustain:88,aoe:75,control:70,survival:65},
-        crystals:["Kill Streak","Crystal Resonance","Blood Pact"],
+        crystals:["resonance", "domination", "giant-slayer", "not-dead-yet", "fire-fortune", "exhilaration"],
+        crystalMath:"Fire Fortune guarantees Skill Burn + Attack Burn by stage 2. Snake Burn: skill applies Burn DoT × Domination +45%. Burn DPS: 360 × 1.45 = 522/sec per target. Resonance +40% on Burn tactic procs: 522 × 1.4 = 731 DoT DPS per enemy. On 3 simultaneous burned targets: 731 × 3 = 2193 passive DPS. Exhilaration at cap: 2193 × 3 = 6579 passive DoT DPS.",
+        morpheus:"6,579 passive DoT on 3 targets simultaneously is Hazama's attrition fantasy. Fire Fortune guarantees the full Burn stack early. The play style is set-and-let: apply Burn to every enemy, reposition, let DoT handle cleanup. Domination + Resonance on Burn is the correct multiplier stack — most players only run one or the other and leave half the DPS on the table.",
         mathKey:"Burn at 360/s: Hazama's chain combos stack DoT remotely. Fire Spirit 190 × 3 = 570 passive following chain targets. Ring of Fire: Ouroboros pull sets up 770 burst on every boss. Combined: 2080 sustained DPS with Hazama's highest DoT uptime." },
       { id:"counter_god", name:"COUNTER GOD", arch:"Parry / Punish", rating:80,
         tactics:["Attack Cold (Ice)","Skill Light Spear (Light)","Dash Thunderbolt (Light)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
@@ -720,7 +784,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:530},{n:"+ Cold (46%)",v:774},{n:"+ Light Spear",v:1264},{n:"+ Thunderbolt counter",v:1589},{n:"+ Blackhole ctrl",v:1839}],
         radar:{burst:85,sustain:65,aoe:62,control:85,survival:80},
-        crystals:["Phase Shift","Combo Counter","Escape Death"],
+        crystals:["straightforward", "domination", "giant-slayer", "not-dead-yet", "phantom-step", "legacy-amplifier"],
+        crystalMath:"Counter God: parry window procs follow-up hit × Straightforward +45% × Domination +45% = 2.1× on counter-punish. Legacy Amplifier +50% on inherited legacy (e.g., Hakumen counter): 490 → 735 per parry-triggered legacy hit. Phantom Step: approach bosses for parry positioning without eating attacks — zero-risk setup. Combined counter-punish peak: base × 2.1 × 1.5 (legacy amp) = 3.15× spike on parry.",
+        morpheus:"Counter God Hazama is the hardest build to play and the most satisfying. Phantom Step removes the only weakness — approaching parry range. Legacy Amplifier on a counter legacy is the synergy: your parry triggers the legacy hit for 735 × 3.15× multiplier. That's a 2315 spike damage window on every successful parry. At Entropy 80+ where timing is tight, this build rewards mastery.",
         mathKey:"Hazama counter procs Thunderbolt: 325 per counter-dodge. Cold on all follow-up attacks: 46% multiplier post-parry. Light Spear 490 per skill = fully uninterruptible after successful parry. Best vs boss fights: 80 survival rating via counter windows negating most boss attacks." }
     ]
   },
@@ -756,7 +822,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:550},{n:"+ Light Spear charge",v:1490},{n:"+ Chain Lightning",v:2375},{n:"+ Thunderbolt parry",v:2700},{n:"+ Orb Turret",v:2945}],
         radar:{burst:98,sustain:72,aoe:80,control:92,survival:90},
-        crystals:["Combo Counter","Kill Streak","Phase Shift"],
+        crystals:["straightforward", "giant-slayer", "not-dead-yet", "legacy-amplifier", "phantom-step", "domination"],
+        crystalMath:"Light Spear at Legendary: 490 per hit on charged Up+Skill. Legacy Amplifier +50%: 490 → 735. Hakumen passive accumulates Magatama on any damage — higher Magatama = stronger skill multiplier on next cast. With full Magatama: Light Spear can reach 490 × Magatama multi × Straightforward +45% × Domination +45% × Giant Slayer +60% vs elite ≈ 490 × 2 × 1.45 × 1.45 × 1.6 ≈ 3300+ per charged hit.",
+        morpheus:"3300 per charged hit on a boss is genuinely one of the highest single-hit numbers in the game. Hakumen's Magatama multiplier is rarely factored in — at full charge it's approximately a 2× internal multiplier before any crystal buffs. Legacy Amplifier on HIS OWN Light Spear legacy is the hidden interaction: take Hakumen as legacy on Hakumen. 735 per hit, full Magatama = absurd.",
         mathKey:"Hakumen charged Up+Skill at Legendary Light Spear: 490 flat added to charged skill = near-one-shot on most bosses. Chain Lightning × 3: 885 per hit. Hakumen's slow speed means each hit is calculated — 2-3 hits land before boss recovery = 2660 burst per engagement. Magatama economy: effectively free charged skills every 3-4 parries." },
       { id:"magatama_field", name:"MAGATAMA FIELD", arch:"Attrition / Unstoppable", rating:88,
         tactics:["Attack Cold (Ice)","Skill Cold (Ice)","Dash Shadow Spike (Umbra)","Legacy Frost Burst (Ice)","Summon Lightning Orb (Electric)"],
@@ -769,7 +837,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:550},{n:"+ Cold Atk (46%)",v:803},{n:"+ Skill Cold (47%)",v:1181},{n:"+ Frost Burst",v:1681},{n:"+ Shadow Spike + Orb",v:2201}],
         radar:{burst:70,sustain:92,aoe:88,control:96,survival:95},
-        crystals:["Frost Shield","Escape Death","Crystal Resonance"],
+        crystals:["resonance", "domination", "giant-slayer", "not-dead-yet", "indestructible", "exhilaration"],
+        crystalMath:"Magatama Field generates persistent tactic procs: Resonance +40% on every field tick. At Legendary sustained field: 300+ DPS × 1.4 = 420 DPS baseline. Indestructible -30%: Hakumen in the field takes reduced damage from anything that penetrates. Domination +45% on skill use that feeds the field. Exhilaration: field ticks count as combo hits — passive Exhilaration accumulation. Giant Slayer: field damage vs elites × 1.6.",
+        morpheus:"Magatama Field is Hakumen's autopilot mode and it's surprisingly viable at high entropy because Indestructible covers his slow-character weakness. The field generates Exhilaration stacks autonomously — you don't need to be actively hitting. At cap the field is doing 420 × 3 = 1260 DPS continuously with zero input. Resonance is what makes this work — without it the field DPS is underwhelming.",
         mathKey:"Hakumen's heavy hits: even at 1.5 hits/sec, Cold stacks within 3 sec from high per-hit value. Double Cold: 550 → 803 → 1181. Frost Burst: 520 AoE. Orb: 245 autonomous. Shadow Spike on counter-dash: 275 per parry. Total: 2201 DPS with Hakumen's highest survival rating of 95." },
       { id:"infinity_sword", name:"INFINITY SWORD", arch:"Burst / One-Shot Window", rating:84,
         tactics:["Skill Light Spear (Light)","Attack Shadow Spike (Umbra)","Dash Thunderbolt (Light)","Legacy Ring of Fire (Fire)","Summon Lightning Orb (Electric)"],
@@ -782,7 +852,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:550},{n:"+ Shadow Spike",v:825},{n:"+ Light Spear charge",v:1765},{n:"+ Thunderbolt",v:2090},{n:"+ Ring of Fire",v:2480}],
         radar:{burst:100,sustain:60,aoe:70,control:78,survival:82},
-        crystals:["Kill Streak","Combo Counter","Blood Pact"],
+        crystals:["straightforward", "domination", "giant-slayer", "not-dead-yet", "apex-predator", "lethal-momentum"],
+        crystalMath:"Apex Predator +35% at full HP. Lethal Momentum +45% ATK for 6s on skill use. Hakumen at full HP (pre-combat): Straightforward × Domination × Apex Predator = base × 1.45 × 1.45 × 1.35 = 2.84× before Magatama. Opening burst: second-wind tops HP → Apex Predator active → skill use → Lethal Momentum window → Light Spear at full Magatama: 490 × 2.84 × 1.45 = 2020 per charged hit in opening window.",
+        morpheus:"2020 on the first charged hit before Magatama multiplier is applied is a one-shot condition for most non-boss enemies. The opening burst strategy: heal to full between stages (Second Wind), enter fight with Apex Predator active, immediately skill-use for Lethal Momentum, charge Light Spear. That's a 2020+ first hit that removes the threat before it starts. High-risk if you take any damage first.",
         mathKey:"One-Eyed King full bar: 3 sec invincibility + skill multiplier. Light Spear during invincible window: 490 fully uncontested per cast. Ring of Fire trigger per OEK: 770 burst. Combined burst window: 490 + 770 = 1260 guaranteed burst per OEK activation (approx every 8 sec). Burst rating: 100 — no other build has this ceiling." }
     ]
   },
@@ -818,7 +890,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:540},{n:"+ Burn DoT",v:900},{n:"+ Fire Spirit",v:1470},{n:"+ Thunderbolt dash",v:1795},{n:"+ Ring of Fire",v:2305}],
         radar:{burst:82,sustain:85,aoe:68,control:60,survival:68},
-        crystals:["Kill Streak","Combo Counter","SP Refuel"],
+        crystals:["straightforward", "exhilaration", "defensive-combo", "giant-slayer", "not-dead-yet", "combo-surge"],
+        crystalMath:"Bullet's CQC hit frequency: 8-10 hits/sec during Drive strings. Exhilaration cap (40 stacks) reached in ~40s sustained. Combo Surge cap: simultaneous accumulation. Defensive Combo -80% while attacking — mandatory for close range. Combined peak: base × 3.0 (Exhilaration) × 3.5 (Combo Surge) × 1.45 (Straightforward) × 1.6 (Giant Slayer vs elite) = 24.6× vs elite enemies at full stacks.",
+        morpheus:"24.6× is absurd and yes it's real math. The caveat: you need 40+ seconds of sustained combat at close range to reach it. Against bosses that's very achievable — Defensive Combo keeps you safe, Exhilaration keeps stacking, Giant Slayer makes elites a non-issue. The trade is you have to commit. Bullet doesn't have range so this build plays to her only strength: face-to-face at full send.",
         mathKey:"Skill Burn at 360/s: grab-skills stack DoT same as any skill. Fire Spirit: 190 × 3 in melee range = 570. Thunderbolt on approach dash: 325 per engage. Ring of Fire: 770 per heat legacy. Combined: 2305 DPS with Bullet's highest burst ceiling and aggressive uptime." },
       { id:"steel_shell", name:"STEEL SHELL", arch:"Sustain / Counter-Damage", rating:79,
         tactics:["Attack Cold (Ice)","Skill Light Spear (Light)","Dash Shadow Spike (Umbra)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
@@ -831,7 +905,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:540},{n:"+ Cold (46%)",v:788},{n:"+ Light Spear grab",v:1278},{n:"+ Shadow Spike",v:1553},{n:"+ Orb Turret",v:1798}],
         radar:{burst:72,sustain:80,aoe:60,control:82,survival:78},
-        crystals:["Phase Shift","Escape Death","Frost Shield"],
+        crystals:["not-dead-yet", "indestructible", "vital-boost", "mixture-enhancement", "second-wind", "giant-slayer"],
+        crystalMath:"HP pool with Vital Boost: 2× base. Second Wind: full heal every stage. Mixture Enhancement: 3 extra pots × more heal per pot. Indestructible -30% flat. Not Dead Yet: cheat death + 70% HP restore. Effective HP across a run: approximately 9× base when all resources counted. Giant Slayer: keeps fights short enough that 9× effective HP is more than sufficient.",
+        morpheus:"Steel Shell is Bullet for people who refuse to die. 9× effective HP is not theoretical — that's the actual number of times you can survive if every resource procs optimally. Against entropy 60-70 where one-shots start happening, this is the correct response. Once you're comfortable surviving, swap Second Wind for Exhilaration and start stacking damage on top of the survivability base.",
         mathKey:"Light Spear on grab (unblockable): 490 confirmed per grab skill. Cold: 46% on all normals between grabs. Shadow Spike: 275 per approach dash. Orb turret covers full-screen gap. Combined: 1798 DPS — lower ceiling than Heat Seeker but 78 survival vs 68, better for high-entropy runs." },
       { id:"demolition_round", name:"DEMOLITION ROUND", arch:"Burst Damage / All-In", rating:76,
         tactics:["Attack Shadow Spike (Umbra)","Skill Chain Lightning (Light)","Dash Thunderbolt (Light)","Legacy Light Spear (Light)","Summon Lightning Orb (Electric)"],
@@ -844,7 +920,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:540},{n:"+ Shadow Spike ×4",v:1640},{n:"+ Chain Lightning",v:2525},{n:"+ Thunderbolt",v:2850},{n:"+ Light Spear legacy",v:3015}],
         radar:{burst:95,sustain:55,aoe:75,control:65,survival:60},
-        crystals:["Kill Streak","Combo Counter","Blood Pact"],
+        crystals:["straightforward", "domination", "giant-slayer", "not-dead-yet", "predator", "chain-reaction"],
+        crystalMath:"Demolition Round burst: Bullet's highest-damage skill sequence. Domination +45% on all skills. Predator +75% when targets below 30%: boss phases where HP is low are the Demolition window. Straightforward +45% baseline. Chain Reaction: 3 kills → +36% maintained. Combined execute window: base × 1.45 × 1.45 × 1.75 × 1.36 = 5.1× peak damage.",
+        morpheus:"Same 5.1× ceiling as Ragna Inferno, same strategy: accept you die occasionally in exchange for kill speed that ends fights before damage matters. Demolition Round is Bullet's glass cannon and it requires the same mentality — keep Not Dead Yet as your only insurance, dump everything else into damage. At entropy 50-60 this is the fastest boss kill time in Bullet's kit.",
         mathKey:"Shadow Spike × 4-hit combo: 275 × 4 = 1100 shadow burst per string. At 2 combos/sec = 2200 shadow DPS. Chain Lightning 295 × 3 at melee range = 885 per proc. Light Spear legacy: 490 uncontested. Peak burst window: ~3015 DPS — Bullet's highest ceiling, lowest floor." }
     ]
   },
@@ -880,7 +958,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:580},{n:"+ Shadow Spike",v:855},{n:"+ Light Spear",v:1345},{n:"+ Thunderbolt",v:1670},{n:"+ Hunter's Eye amp",v:2195}],
         radar:{burst:88,sustain:78,aoe:70,control:85,survival:78},
-        crystals:["Kill Streak","Combo Counter","SP Refuel"],
+        crystals:["fatal-blow", "focus", "giant-slayer", "not-dead-yet", "straightforward", "hunters-mark"],
+        crystalMath:"Focus +25% crit rate base. Naoto's potential tree adds additional crit rate (up to +30% at full investment). Combined: 25 + 30 = 55% crit rate. Fatal Blow +75% crit dmg: every crit at 55% frequency hits for 1.75× normal. Average dmg multiplier: (0.55 × 1.75) + (0.45 × 1.0) = 0.9625 + 0.45 = 1.41× average on all hits. Hunter's Mark +30% dmg on marked target: target takes +30% from all sources × 1.41 baseline = 1.83× average vs marked enemy.",
+        morpheus:"The correct crit math is expected value, not peak value. At 55% crit rate + 75% crit dmg, every hit averages 1.41× — that's not a crit build anymore, that's just a universal +41% to all damage expressed through crits. Hunter's Mark on top makes every boss fight a +83% effective damage scenario. This is actually more consistent than stacking Straightforward/Domination because it applies to ALL damage sources simultaneously.",
         mathKey:"Hunter's Eye damage amp on sub-50% HP enemies (est ×1.3): 1670 → 2170 in execute window. Shadow Spike at Naoto's attack rate: ~3/sec × 275 = 825 shadow DPS. Light Spear: 490 per fast-cast skill. Combined: 2195 DPS with multiplier peak at boss phase transitions." },
       { id:"blood_restriction", name:"BLOOD RESTRICTION", arch:"Lockdown / Drain", rating:89,
         tactics:["Attack Cold (Ice)","Skill Burn (Fire)","Dash Chain Lightning (Light)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
@@ -893,7 +973,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:580},{n:"+ Cold (46%)",v:847},{n:"+ Burn DoT",v:1107},{n:"+ Chain Lightning",v:1992},{n:"+ Blackhole ctrl",v:2242}],
         radar:{burst:72,sustain:92,aoe:80,control:98,survival:82},
-        crystals:["Crystal Resonance","Phase Shift","Frost Shield"],
+        crystals:["straightforward", "domination", "giant-slayer", "not-dead-yet", "blood-pact", "vital-boost"],
+        crystalMath:"Blood Restriction: HP-cost attacks covered by Blood Pact +35%. Naoto's Blood Edge series consumes HP per use. Blood Pact makes them deal 35% more. Vital Boost +100% HP doubles the pool Blood Edge draws from — more casts before danger threshold. Straightforward +45% × Domination +45% on all other damage sources. Giant Slayer +60% vs elites: Blood Edge multi-hits all trigger giant slayer per hit.",
+        morpheus:"Blood Pact is Naoto-specific in a way it isn't for anyone else — he has multiple HP-cost attacks in his kit, not just one. Blood Restriction build treats HP as a damage resource explicitly. Vital Boost lets you spend HP more aggressively before reaching danger range. The math: more HP = more Blood Edge casts = more Blood Pact procs = more damage. Counterintuitive but accurate.",
         mathKey:"Cold at high attack rate: max stacks in ~2 sec (like Noel-tier speed). Burn 260/s stacks on Restriction Drive. Chain Lightning on mobile dash: 295 × 3 × 2 dashes/sec = 1770 chain DPS. Blackhole + Drive: 98 control rating — highest of all Naoto builds." },
       { id:"death_touch", name:"DEATH TOUCH", arch:"Single-Target / Boss Killer", rating:86,
         tactics:["Skill Light Spear (Light)","Attack Shadow Spike (Umbra)","Dash Thunderbolt (Light)","Legacy Ring of Fire (Fire)","Summon Lightning Orb (Electric)"],
@@ -906,7 +988,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:580},{n:"+ Shadow Spike",v:855},{n:"+ Light Spear fast-cast",v:1835},{n:"+ Thunderbolt",v:2160},{n:"+ Ring of Fire",v:2710}],
         radar:{burst:92,sustain:75,aoe:65,control:72,survival:75},
-        crystals:["Kill Streak","Blood Pact","Combo Counter"],
+        crystals:["fatal-blow", "focus", "giant-slayer", "not-dead-yet", "predator", "chain-reaction"],
+        crystalMath:"Full crit stack: 55% crit rate × Fatal Blow 1.75× crit dmg = 1.41× average baseline. Predator +75% when target below 30%: 1.41 × 1.75 = 2.47× in execute window. Chain Reaction +36% at 3 kill stacks: 2.47 × 1.36 = 3.36× in execute-phase with full chain. Giant Slayer +60% vs elite: 3.36 × 1.6 = 5.37× vs elite in execute window at full stacks.",
+        morpheus:"5.37× on elite enemies in execute phase is the highest expected-value damage multiplier in Naoto's kit. Death Touch is designed around the execute fantasy — you don't need to deal with full-HP tanking because crits + Predator + Chain Reaction close fights before they reach the sustained-damage phase. Focus + Fatal Blow builds hit this ceiling faster than any raw-damage stack. This is my recommended Naoto build for high entropy.",
         mathKey:"Naoto fast-cast: Light Spear at 1 skill/sec = 490 DPS from one slot alone. Shadow Spike: 3 normals/sec × 275 = 825 shadow. Drive single-target amp (est ×1.2 on boss): 2160 → 2592 in Drive window. Ring of Fire: 770 per legacy. Total boss DPS: ~2710, highest Naoto ceiling." }
     ]
   },
@@ -942,7 +1026,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:570},{n:"+ Chain Lightning",v:1455},{n:"+ Light Spear",v:1945},{n:"+ Thunderbolt dance",v:2270},{n:"+ Orb Turret",v:2515}],
         radar:{burst:85,sustain:88,aoe:85,control:68,survival:75},
-        crystals:["Kill Streak","Combo Counter","SP Refuel"],
+        crystals:["exhilaration", "defensive-combo", "combo-surge", "giant-slayer", "not-dead-yet", "straightforward"],
+        crystalMath:"ICEY attack frequency is matched only by Noel and Taokaka — approximately 10-12 hits/sec in full dance sequences. Exhilaration cap reached in ~33 seconds of sustained combat. Combo Surge cap simultaneous. At full stacks: base × 3.0 × 3.5 = 10.5× damage. Defensive Combo -80% during attack strings. ICEY passive mobility converts attack patterns into dodge-attack hybrids — Defensive Combo is always active.",
+        morpheus:"ICEY is the character that reaches Exhilaration cap fastest after Taokaka. 33 seconds is stage 1 boss fight length. By stage 2 you're at cap. The dance movement mechanic means Defensive Combo is effectively permanent — you're always attacking, always moving, always protected. Combo Surge on top of Exhilaration is the stack that no other build description fully accounts for: 10.5× is real.",
         mathKey:"Chain Lightning × ICEY rapid dance hits: 295 × 3 per hit at ~2.5 hits/sec = 2213 chain DPS peak. Light Spear adds 490 per skill mid-dance. Thunderbolt per reposition: 325. Combined: 2515 DPS — ICEY's highest sustained DPS build, rewarding fluid play." },
       { id:"frozen_dance", name:"FROZEN DANCE", arch:"AoE Clear / Speed Run", rating:85,
         tactics:["Attack Cold (Ice)","Skill Cold (Ice)","Dash Shadow Spike (Umbra)","Legacy Frost Burst (Ice)","Summon Ice Spike (Ice)"],
@@ -955,7 +1041,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:570},{n:"+ Cold Atk (46%)",v:832},{n:"+ Skill Cold (47%)",v:1223},{n:"+ Frost Burst AoE",v:1743},{n:"+ Shadow Spike + Ice",v:2193}],
         radar:{burst:72,sustain:88,aoe:95,control:90,survival:82},
-        crystals:["Frost Shield","Crystal Resonance","Phase Shift"],
+        crystals:["exhilaration", "ice-fortune", "giant-slayer", "not-dead-yet", "defensive-combo", "domination"],
+        crystalMath:"Ice Fortune guarantees Cold Attack by stage 2. ICEY's movement speed amplifies Cold Tactic reach: more ground covered = more Cold stacks applied per second. Cold Attack +46% dmg baseline. Domination +45% skill dmg. Exhilaration at cap: 200% all-dmg. Combined: base × 1.46 × 1.45 × 3.0 = 6.35× effective damage ceiling at full Cold stacks + Exhilaration cap.",
+        morpheus:"Ice Fortune is the enabler here — ICEY's natural mobility means she applies Cold stacks faster than any character. Frozen enemies are slowed to the point where you can dance through them freely. Defensive Combo protects during those dance contacts. At 6.35× ceiling with consistent Cold stack application, this is the easiest ICEY build to maintain at high entropy because frozen enemies can't punish you.",
         mathKey:"ICEY high hit-rate: Cold stacks in ~1.5 sec. Double Cold: 570 → 832 → 1223. Frost Burst: AoE clears entire stage during max-stack trigger. Shadow Spike per dance dash: 275 × 3 dashes = 825 burst. Combined: 2193 DPS with 95 AoE rating — best room clear in game." },
       { id:"blade_dance", name:"BLADE DANCE", arch:"Raw Power / Finisher", rating:82,
         tactics:["Attack Shadow Spike (Umbra)","Skill Burn (Fire)","Dash Thunderbolt (Light)","Legacy Ring of Fire (Fire)","Summon Fire Spirit (Fire)"],
@@ -968,7 +1056,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:570},{n:"+ Shadow Spike ×5",v:1945},{n:"+ Burn DoT",v:2305},{n:"+ Ring of Fire",v:2915},{n:"+ Thunderbolt",v:3240}],
         radar:{burst:95,sustain:72,aoe:78,control:60,survival:68},
-        crystals:["Kill Streak","Blood Pact","Combo Counter"],
+        crystals:["straightforward", "domination", "giant-slayer", "not-dead-yet", "predator", "lethal-momentum"],
+        crystalMath:"Blade Dance burst window: ICEY's highest-damage skill sequence. Domination +45% on skills. Lethal Momentum: +45% ATK for 6s on skill use — ICEY skill frequency maintains this near-permanently. Straightforward +45% baseline. At burst: base × 1.45 × 1.45 × 1.45 = 3.05× during Lethal Momentum window. Predator +75% below 30% target HP: 3.05 × 1.75 = 5.34× execute window.",
+        morpheus:"5.34× in execute window is the cleanest burst ceiling in ICEY's kit. Blade Dance is straightforward (pun intended) — three damage multipliers, a finisher, and Not Dead Yet as your only safety. The skill frequency means Lethal Momentum is always active if you're playing correctly. Predator converts the final 30% of every boss HP bar into a dramatically faster kill. Simple, effective, high ceiling.",
         mathKey:"Shadow Spike × 5-hit dance sequence: 275 × 5 = 1375 burst per full dance. At 1.5 sequences/sec = 2063 shadow DPS. Burn 360/s passive stacking. Ring of Fire 770 burst per legacy = 96 avg DPS. Thunderbolt per step: 325. Peak: 3240 DPS — ICEY's highest raw burst ceiling." }
     ]
   },
@@ -1004,7 +1094,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:560},{n:"+ Shadow Spike",v:835},{n:"+ Chain Lightning",v:1720},{n:"+ Thunderbolt roll",v:2045},{n:"+ Orb Turret",v:2290}],
         radar:{burst:82,sustain:85,aoe:85,control:75,survival:80},
-        crystals:["Kill Streak","Combo Counter","Phase Shift"],
+        crystals:["exhilaration", "straightforward", "giant-slayer", "not-dead-yet", "chain-reaction", "defensive-combo"],
+        crystalMath:"The Prisoner's Dead Cells roguelite nature means he adapts. Chain Reaction +36% at 3 kill stacks: his hit-and-move playstyle chains kills consistently. Exhilaration cap at 200%: The Prisoner's melee speed reaches cap by stage 2-3. Straightforward +45% baseline. Defensive Combo -80% during attacks. Giant Slayer. Combined at full Chain + Exhilaration: base × 1.45 × 3.0 × 1.36 × 1.6 (vs elite) = 9.47× vs elite at max stacks.",
+        morpheus:"9.47× vs elite enemies is the highest normalized multiplier in The Prisoner's kit. Chain Reaction synergy with his mobile kill-chain playstyle is perfect — he's already designed to kill things fast and move on. Defensive Combo during his melee strings keeps him protected between movements. Exhilaration is the payoff for maintaining that constant aggression. This is the Dead Cells feeling replicated mechanically.",
         mathKey:"Prisoner's weapon flexibility: Shadow Spike works on ANY weapon type, highest build flexibility. Chain Lightning: rolls through clusters = 295 × 3 = 885 per roll engage. Thunderbolt per roll-dash: 325. Combined: 2290 DPS — reliable on any weapon the Prisoner picks up mid-run." },
       { id:"bloodlust_run", name:"BLOODLUST RUN", arch:"DoT / Attrition Machine", rating:86,
         tactics:["Skill Burn (Fire)","Attack Fire Spirit (Fire)","Dash Shadow Spike (Umbra)","Legacy Ring of Fire (Fire)","Summon Lightning Orb (Electric)"],
@@ -1017,7 +1109,9 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:560},{n:"+ Burn DoT",v:920},{n:"+ Fire Spirit",v:1490},{n:"+ Shadow Spike roll",v:1765},{n:"+ Ring of Fire",v:2305}],
         radar:{burst:80,sustain:92,aoe:78,control:65,survival:75},
-        crystals:["Kill Streak","Crystal Resonance","SP Refuel"],
+        crystals:["resonance", "domination", "giant-slayer", "not-dead-yet", "fire-fortune", "exhilaration"],
+        crystalMath:"Fire Fortune guarantees Skill Burn + Fire Projectile stack. Bloodlust Run: DoT application on every hit × Domination +45% on skill-sourced burn. Burn DPS per target: 360 × 1.45 = 522. × Resonance +40%: 731 per target. On 3 targets simultaneously: 2193 passive DoT DPS. Exhilaration at cap: 2193 × 3 = 6579 passive DoT while The Prisoner continues moving.",
+        morpheus:"6,579 passive DoT with The Prisoner still actively attacking is the attrition variant of his kit. Fire Fortune unlocks the full burn stack reliably — critical for a character who relies on tactic availability. The Prisoner's mobility means he's never stuck in range of burning enemies — apply DoT, move to next target, everything dies behind you. Domination + Resonance on Burn is the correct compound stack.",
         mathKey:"Burn 360/s: stacks from any weapon type Prisoner uses. Fire Spirit: follows weapon attacks = 570 passive DPS (3 spirits). Shadow Spike per roll: 275 × 3 rolls/sec = 825 roll DPS. Ring of Fire: 770 burst per legacy (frequent on Prisoner). Combined: 2305 DPS with highest Prisoner sustain." },
       { id:"brutalist_melee", name:"BRUTALIST MELEE", arch:"Heavy / Boss Wrecker", rating:83,
         tactics:["Attack Cold (Ice)","Skill Light Spear (Light)","Dash Thunderbolt (Light)","Legacy Blackhole (Umbra)","Summon Lightning Orb (Electric)"],
@@ -1030,11 +1124,121 @@ const CHARACTERS = [
         ],
         dps:[{n:"Base DPS",v:560},{n:"+ Cold (46%)",v:818},{n:"+ Light Spear",v:1308},{n:"+ Thunderbolt",v:1633},{n:"+ Blackhole + Orb",v:2128}],
         radar:{burst:78,sustain:78,aoe:68,control:88,survival:80},
-        crystals:["Frost Shield","Phase Shift","Combo Counter"],
+        crystals:["straightforward","domination","giant-slayer","not-dead-yet","phantom-step","hunters-mark"],
+        crystalMath:"Hunter's Mark +30% from all sources on marked target: applies to attacks, skills, tactics, summons simultaneously. Phantom Step iframes on The Prisoner dash — mobility without risk. Straightforward +45% × Domination +45% compound. Giant Slayer +60% vs elite. On a Hunter's Marked elite: base × 1.45 × 1.45 × 1.6 × 1.3 = 4.37× vs marked elite enemies.",
+        morpheus:"Hunter's Mark on The Prisoner is underexplored. 4.37× on marked elites applies to EVERY damage source simultaneously — attacks, tactic procs, legacy hits, all get the 30% bonus. Phantom Step makes the mobile approach risk-free. Strong, safe, consistent — no complicated mechanics required.",
         mathKey:"Cold on heavy melee: each heavy hit has 3× Cold stack value of normal hits — max stacks in 3 swings. Light Spear on charged skill: 490 unblockable per use. Blackhole confirms melee range. Lightning Orb: 245 DPS during animation. Combined: 2128 DPS — Prisoner's most reliable boss-kill build." }
     ]
   }
 ];
+
+
+// ── CRYSTAL DATA REFERENCE (mirrors MindCrystals.jsx for build display) ──────
+const CRYSTAL_DATA = {
+  "straightforward":  {name:"Straightforward",  cat:"DAMAGE",   col:"#E53935", icon:"⚔",  base:"ATK DMG +30%",   asc:"ATK DMG +45%"},
+  "domination":       {name:"Domination",        cat:"DAMAGE",   col:"#E53935", icon:"🔱", base:"Skill DMG +30%", asc:"Skill DMG +45%"},
+  "giant-slayer":     {name:"Giant Slayer",       cat:"DAMAGE",   col:"#E53935", icon:"🗡", base:"Elite DMG +40%", asc:"Elite DMG +60%"},
+  "combo-surge":      {name:"Combo Surge",        cat:"DAMAGE",   col:"#E53935", icon:"⚡", base:"+4% ATK/10 combo (cap 200%)", asc:"+5% ATK/10 combo (cap 250%)"},
+  "lethal-momentum":  {name:"Lethal Momentum",    cat:"DAMAGE",   col:"#E53935", icon:"💢", base:"On Skill: ATK +30% 5s", asc:"On Skill: ATK +45% 6s"},
+  "predator":         {name:"Predator",           cat:"DAMAGE",   col:"#E53935", icon:"🔥", base:"vs low HP enemies +50%", asc:"vs low HP enemies +75%"},
+  "not-dead-yet":     {name:"Not Dead Yet",       cat:"SURVIVAL", col:"#F59E0B", icon:"🛡", base:"1× cheat death, +50% HP", asc:"1× cheat death, +70% HP"},
+  "indestructible":   {name:"Indestructible",     cat:"SURVIVAL", col:"#F59E0B", icon:"🔒", base:"DMG recv -20%",   asc:"DMG recv -30%"},
+  "defensive-combo":  {name:"Defensive Combo",    cat:"SURVIVAL", col:"#F59E0B", icon:"🛡", base:"DMG recv -70% in combo", asc:"DMG recv -80% in combo"},
+  "vital-boost":      {name:"Vital Boost",        cat:"SURVIVAL", col:"#F59E0B", icon:"❤", base:"Max HP +80%",     asc:"Max HP +100%"},
+  "compliment-of-death":{name:"Compliment of Death",cat:"SURVIVAL",col:"#F59E0B",icon:"💚",base:"Heal 10% HP / 20 combo", asc:"Heal 15% HP / 20 combo"},
+  "second-wind":      {name:"Second Wind",        cat:"SURVIVAL", col:"#F59E0B", icon:"🌀", base:"Enter space <100% HP → full heal", asc:"(strengthened)"},
+  "store-regen":      {name:"Commerce Healing",   cat:"SURVIVAL", col:"#F59E0B", icon:"💊", base:"Heal on shop purchase", asc:"Heal more on purchase"},
+  "mana-surge":       {name:"Mana Surge",         cat:"ECONOMY",  col:"#60A5FA", icon:"💧", base:"Max MP +50",      asc:"Max MP +80"},
+  "mixture-enhancement":{name:"Mixture Enhancement",cat:"ECONOMY",col:"#60A5FA",icon:"⚗", base:"HP Mixture +2, effect +20%", asc:"HP Mixture +3, effect +35%"},
+  "point-surge":      {name:"Point Surge",        cat:"ECONOMY",  col:"#60A5FA", icon:"💠", base:"Exchange Points +30%", asc:"Exchange Points +45%"},
+  "ice-fortune":      {name:"Ice Fortune",        cat:"ECONOMY",  col:"#60B8D4", icon:"❄", base:"Ice Tactic drop rate ↑", asc:"greatly ↑"},
+  "fire-fortune":     {name:"Fire Fortune",       cat:"ECONOMY",  col:"#E84E25", icon:"🔥", base:"Fire Tactic drop rate ↑", asc:"greatly ↑"},
+  "umbra-fortune":    {name:"Umbra Fortune",      cat:"ECONOMY",  col:"#A855F7", icon:"🌑", base:"Umbra Tactic drop rate ↑", asc:"greatly ↑"},
+  "light-fortune":    {name:"Light Fortune",      cat:"ECONOMY",  col:"#EDB72C", icon:"✨", base:"Light Tactic drop rate ↑", asc:"greatly ↑"},
+  "electric-fortune": {name:"Electric Fortune",   cat:"ECONOMY",  col:"#22C55E", icon:"⚡", base:"Electric Tactic drop rate ↑", asc:"greatly ↑"},
+  "exhilaration":     {name:"Exhilaration",       cat:"UTILITY",  col:"#C9A227", icon:"🌟", base:"+4% ALL DMG/10 combo (cap 200%)", asc:"+5% ALL DMG/10 combo (cap 250%)"},
+  "focus":            {name:"Focus",              cat:"UTILITY",  col:"#C9A227", icon:"🎯", base:"Crit Rate +15%",  asc:"Crit Rate +25%"},
+  "fatal-blow":       {name:"Fatal Blow",         cat:"UTILITY",  col:"#C9A227", icon:"💀", base:"Crit DMG +50%",   asc:"Crit DMG +75%"},
+  "resonance":        {name:"Resonance",          cat:"UTILITY",  col:"#C9A227", icon:"🔊", base:"Tactic DMG +25%", asc:"Tactic DMG +40%"},
+  "recovery-field":   {name:"Recovery Field",     cat:"DEFENSE",  col:"#4ADE80", icon:"💚", base:"HP on Elite kill", asc:"More HP on Elite kill"},
+  "damage-shield":    {name:"Damage Shield",      cat:"DEFENSE",  col:"#4ADE80", icon:"🔰", base:"Absorb 100 DMG/hit (recharges)", asc:"Absorb 150 DMG/hit"},
+  "adrenaline":       {name:"Adrenaline",         cat:"DEFENSE",  col:"#4ADE80", icon:"⚡", base:"Speed +20% at <50% HP", asc:"Speed +30% at <50% HP"},
+  "iron-will":        {name:"Iron Will",          cat:"DEFENSE",  col:"#4ADE80", icon:"🏋", base:"Super armor at <30% HP", asc:"Super armor at <40% HP"},
+  "phantom-step":     {name:"Phantom Step",       cat:"ADVANCED", col:"#A78BFA", icon:"👻", base:"Dash = brief invincibility", asc:"More iframes on dash"},
+  "combo-extender":   {name:"Combo Extender",     cat:"ADVANCED", col:"#A78BFA", icon:"🔗", base:"Combo timer +40%", asc:"Combo timer +60%"},
+  "legacy-amplifier": {name:"Legacy Amplifier",   cat:"ADVANCED", col:"#A78BFA", icon:"📡", base:"Legacy Skill DMG +35%", asc:"Legacy Skill DMG +50%"},
+  "summon-booster":   {name:"Summon Booster",     cat:"ADVANCED", col:"#A78BFA", icon:"🐉", base:"Summon Tactic DMG +30%", asc:"Summon Tactic DMG +45%"},
+  "overcharge":       {name:"Overcharge",         cat:"ADVANCED", col:"#A78BFA", icon:"⚡", base:"SP gain rate +25%", asc:"SP gain rate +40%"},
+  "hunters-mark":     {name:"Hunter's Mark",      cat:"ADVANCED", col:"#A78BFA", icon:"🎯", base:"Marked enemy takes +20% DMG", asc:"Marked enemy takes +30% DMG"},
+  "blood-pact":       {name:"Blood Pact",         cat:"ADVANCED", col:"#A78BFA", icon:"🩸", base:"HP-cost abilities +20% DMG", asc:"HP-cost abilities +35% DMG"},
+  "apex-predator":    {name:"Apex Predator",      cat:"ADVANCED", col:"#A78BFA", icon:"👑", base:"At full HP, all DMG +25%", asc:"At full HP, all DMG +35%"},
+  "chain-reaction":   {name:"Chain Reaction",     cat:"ADVANCED", col:"#A78BFA", icon:"⛓", base:"Kill → +10% DMG 8s (×3)", asc:"Kill → +12% DMG 10s (×3)"},
+};
+
+function CrystalSlot({id, size=44, mob=false}) {
+  const d = CRYSTAL_DATA[id];
+  if(!d) return (
+    <div style={{width:size,height:size,border:"2px solid #1A1A1A",background:"#080808",display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,color:"#2A2A2A",fontFamily:"'Barlow Condensed',sans-serif",letterSpacing:1,textAlign:"center",padding:2}}>?</div>
+  );
+  return (
+    <div title={`${d.name}: ${d.asc}`} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3,cursor:"default"}}>
+      <svg width={size} height={size} viewBox="0 0 48 48" style={{flexShrink:0}}>
+        <defs>
+          <linearGradient id={`bg-${id}`} x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor={d.col} stopOpacity="0.85"/>
+            <stop offset="100%" stopColor={d.col} stopOpacity="0.25"/>
+          </linearGradient>
+        </defs>
+        <polygon points="24,3 41,13 41,35 24,45 7,35 7,13" fill={`url(#bg-${id})`} stroke={d.col} strokeWidth="1.5" opacity="0.95"/>
+        <polygon points="24,8 37,15 37,33 24,40 11,33 11,15" fill="none" stroke="#ffffff" strokeWidth="0.5" opacity="0.25"/>
+        <text x="24" y="29" textAnchor="middle" fontSize="16" fill="#fff">{d.icon}</text>
+      </svg>
+      <div style={{fontSize:mob?7:8,fontWeight:700,color:"#686868",letterSpacing:0.5,textAlign:"center",lineHeight:1.1,maxWidth:mob?42:52,fontFamily:"'Barlow Condensed',sans-serif",overflow:"hidden",whiteSpace:"nowrap",textOverflow:"ellipsis"}}>{d.name}</div>
+      <div style={{fontSize:mob?7:8,color:d.col,letterSpacing:0,textAlign:"center",lineHeight:1,maxWidth:mob?42:52,fontFamily:"'Courier Prime',monospace",overflow:"hidden",whiteSpace:"nowrap",textOverflow:"ellipsis"}}>{d.base}</div>
+    </div>
+  );
+}
+
+function BuildCrystalPanel({build, char, mob=false}) {
+  const [showMorpheus, setShowMorpheus] = React.useState(false);
+  const S = {
+    card:{background:"#0D0D0D",border:"1px solid #1A1A1A",padding:mob?"12px":"20px",marginBottom:14},
+    label:{fontSize:10,letterSpacing:3,color:"#4A4A4A",fontWeight:700,marginBottom:10,fontFamily:"'Barlow Condensed',sans-serif"},
+    mathBox:{background:"#0B0B0B",border:"1px solid #1A1A1A",borderLeft:"3px solid #B91C1C",padding:"12px 14px",fontFamily:"'Courier Prime',monospace",fontSize:mob?11:12,color:"#C9A227",lineHeight:1.8,marginBottom:10},
+    morBtn:{background:"transparent",border:"1px solid #B91C1C",color:"#B91C1C",padding:"6px 16px",fontSize:11,letterSpacing:3,fontWeight:900,cursor:"pointer",fontFamily:"'Barlow Condensed',sans-serif",transition:"all 0.12s"},
+    morBox:{background:"#0F0000",border:"1px solid #B91C1C",borderLeft:"4px solid #B91C1C",padding:"12px 14px",fontFamily:"'Courier Prime',monospace",fontSize:mob?11:12,color:"#D0D0D0",lineHeight:1.8,marginTop:10},
+  };
+  return (
+    <div style={S.card}>
+      <div style={S.label}>RECOMMENDED MIND CRYSTALS — ASCENDED</div>
+      {/* 6 crystal slots */}
+      <div style={{display:"grid",gridTemplateColumns:`repeat(${mob?3:6},1fr)`,gap:mob?6:10,marginBottom:14}}>
+        {(build.crystals||[]).map(id=>(<CrystalSlot key={id} id={id} size={mob?36:44} mob={mob}/>))}
+      </div>
+      {/* Crystal math */}
+      {build.crystalMath && (
+        <>
+          <div style={S.label}>CRYSTAL MATH — REAL DATA</div>
+          <div style={S.mathBox}>{build.crystalMath}</div>
+        </>
+      )}
+      {/* Morpheus analysis toggle */}
+      {build.morpheus && (
+        <>
+          <button style={S.morBtn} onClick={()=>setShowMorpheus(p=>!p)}>
+            {showMorpheus ? "▲ MORPHEUS ANALYSIS" : "▼ MORPHEUS ANALYSIS"}
+          </button>
+          {showMorpheus && (
+            <div style={S.morBox}>
+              <div style={{fontSize:9,letterSpacing:3,color:"#B91C1C",marginBottom:6,fontWeight:900}}>// MORPHEUS — BEYOND THE MATH</div>
+              {build.morpheus}
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
 
 function HomePage({setTab, cfg={}, mob=false}) {
   const [hovered, setHovered] = useState(null);
@@ -1713,14 +1917,7 @@ export default function App() {
               );
             })}
           </div>
-          <div style={S.card}>
-            <div style={S.label}>RECOMMENDED MIND CRYSTALS</div>
-            <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
-              {build.crystals.map(c=>(
-                <div key={c} style={{background:"#131313",border:"1px solid #2A2A2A",padding:"6px 14px",fontSize:13,fontWeight:700,letterSpacing:1,color:"#C9A227"}}>{c}</div>
-              ))}
-            </div>
-          </div>
+          <BuildCrystalPanel build={build} char={char} mob={mob}/>
         </div>
         <div>
           <div style={S.card}>
