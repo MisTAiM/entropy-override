@@ -1203,10 +1203,10 @@ function BuildCrystalPanel({build, char, mob=false}) {
   const [showMorpheus, setShowMorpheus] = React.useState(false);
   const S = {
     card:{background:"#0D0D0D",border:"1px solid #1A1A1A",padding:mob?"12px":"20px",marginBottom:14},
-    label:{fontSize:10,letterSpacing:3,color:"#4A4A4A",fontWeight:700,marginBottom:10,fontFamily:"'Barlow Condensed',sans-serif"},
-    mathBox:{background:"#0B0B0B",border:"1px solid #1A1A1A",borderLeft:"3px solid #B91C1C",padding:"12px 14px",fontFamily:"'Courier Prime',monospace",fontSize:mob?11:12,color:"#C9A227",lineHeight:1.8,marginBottom:10},
-    morBtn:{background:"transparent",border:"1px solid #B91C1C",color:"#B91C1C",padding:"6px 16px",fontSize:11,letterSpacing:3,fontWeight:900,cursor:"pointer",fontFamily:"'Barlow Condensed',sans-serif",transition:"all 0.12s"},
-    morBox:{background:"#0F0000",border:"1px solid #B91C1C",borderLeft:"4px solid #B91C1C",padding:"12px 14px",fontFamily:"'Courier Prime',monospace",fontSize:mob?11:12,color:"#D0D0D0",lineHeight:1.8,marginTop:10},
+    label:{fontSize:mob?9:10,letterSpacing:mob?2:3,color:"#4A4A4A",fontWeight:700,marginBottom:mob?6:10,fontFamily:"'Barlow Condensed',sans-serif"},
+    mathBox:{background:"#0B0B0B",border:"1px solid #1A1A1A",borderLeft:"3px solid #B91C1C",padding:mob?"8px 10px":"12px 14px",fontFamily:"'Courier Prime',monospace",fontSize:mob?10:12,color:"#C9A227",lineHeight:1.6,marginBottom:8,wordBreak:"break-word",overflowWrap:"break-word"},
+    morBtn:{background:"transparent",border:"1px solid #B91C1C",color:"#B91C1C",padding:mob?"5px 10px":"6px 16px",fontSize:mob?9:11,letterSpacing:mob?1:3,fontWeight:900,cursor:"pointer",fontFamily:"'Barlow Condensed',sans-serif",transition:"all 0.12s",width:mob?"100%":"auto"},
+    morBox:{background:"#0F0000",border:"1px solid #B91C1C",borderLeft:"4px solid #B91C1C",padding:mob?"8px 10px":"12px 14px",fontFamily:"'Courier Prime',monospace",fontSize:mob?10:12,color:"#D0D0D0",lineHeight:1.6,marginTop:8,wordBreak:"break-word",overflowWrap:"break-word"},
   };
   return (
     <div style={S.card}>
@@ -1442,7 +1442,7 @@ function HomePage({setTab, cfg={}, mob=false}) {
       {cfg.showStatsBar!==false ? <div className="home-stats" style={{
         display:"flex", alignItems:"stretch",
         borderTop:"2px solid #B91C1C", borderBottom:"1px solid #161616",
-        background:"#0A0A0A", overflow:"hidden",
+        background:"#0A0A0A", overflowX:"auto", overflowY:"hidden",
       }}>
         {stats.map((s,i)=>(
           <div key={s.label} style={{
@@ -1458,12 +1458,12 @@ function HomePage({setTab, cfg={}, mob=false}) {
       {/* ── FEATURE CARDS ── */}
       <div className="home-feat" style={{padding:"40px 40px 0"}}>
         <div style={{fontSize:11,letterSpacing:4,color:"#3A3A3A",fontWeight:900,marginBottom:20,fontFamily:"'Barlow Condensed',sans-serif"}}>TOOLS</div>
-        <div style={{display:"grid",gridTemplateColumns:mob?"1fr":"repeat(3,1fr)",gap:16}}>
+        <div style={{display:"grid",gridTemplateColumns:mob?"1fr":"repeat(3,1fr)",gap:mob?8:16}}>
           {features.map(f=>(
             <div key={f.id} className="feat-card" onClick={()=>setTab(f.id)}
               style={{
                 background:"#0D0D0D", border:"1px solid #1E1E1E",
-                padding:"24px 24px 22px", position:"relative", overflow:"hidden",
+                padding:mob?"14px":"24px 24px 22px", position:"relative", overflow:"hidden",
                 cursor:"pointer",
               }}>
               {/* Top accent line */}
@@ -1493,7 +1493,7 @@ function HomePage({setTab, cfg={}, mob=false}) {
           <div style={{flex:1,height:"1px",background:"#1A1A1A"}}/>
           <div style={{fontSize:10,letterSpacing:2,color:"#2A2A2A",fontFamily:"'Courier Prime',monospace"}}>16 PLAYABLE</div>
         </div>
-        <div style={{display:"grid",gridTemplateColumns:mob?"repeat(4,1fr)":"repeat(8,1fr)",gap:8}}>
+        <div className="home-roster-grid" style={{display:"grid",gridTemplateColumns:mob?"repeat(4,1fr)":"repeat(8,1fr)",gap:mob?4:8}}>
           {CHARACTERS.map((c,i)=>(
             <div key={c.id} className="char-card" onClick={()=>setTab("builds")}
               style={{"--char-color":c.color, animationDelay:`${i*0.04}s`}}
@@ -1773,15 +1773,15 @@ const CustomTip = ({active,payload,label}) => {
   );
 };
 
-function DPSChart({data,color}) {
+function DPSChart({data,color,mob=false}) {
   return (
-    <ResponsiveContainer width="100%" height={175}>
-      <BarChart data={data} margin={{top:4,right:8,bottom:28,left:8}}>
+    <ResponsiveContainer width="100%" height={mob?130:175}>
+      <BarChart data={data} margin={{top:4,right:mob?4:8,bottom:mob?20:28,left:mob?-10:8}}>
         <CartesianGrid stroke="#181818" vertical={false}/>
-        <XAxis dataKey="n" tick={{fill:"#666",fontSize:12,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:700}} angle={-35} textAnchor="end" interval={0}/>
-        <YAxis tick={{fill:"#555", fontSize:12,fontFamily:"'Courier Prime',monospace"}} width={50}/>
+        <XAxis dataKey="n" tick={{fill:"#555",fontSize:mob?8:11,fontFamily:"'Barlow Condensed',sans-serif",fontWeight:700}} angle={mob?-45:-35} textAnchor="end" interval={0}/>
+        <YAxis tick={{fill:"#444",fontSize:mob?8:11,fontFamily:"'Courier Prime',monospace"}} width={mob?36:50}/>
         <Tooltip content={<CustomTip/>}/>
-        <Bar dataKey="v" radius={[2,2,0,0]} maxBarSize={44}>
+        <Bar dataKey="v" radius={[2,2,0,0]} maxBarSize={mob?28:44}>
           {data.map((_,i)=>(
             <Cell key={i} fill={i===data.length-1?color:`${color}${Math.round(45+i*35).toString(16).padStart(2,'0')}`}/>
           ))}
@@ -1854,24 +1854,24 @@ export default function App() {
       outline:"none",
       whiteSpace:"nowrap",
     }),
-    main:{display:"grid",gridTemplateColumns:`${cfg.sidebarWidth||272}px 1fr`,flex:1,overflow:"hidden"},
+    main:{display:mob?"flex":"grid",flexDirection:mob?"column":undefined,gridTemplateColumns:mob?undefined:`${cfg.sidebarWidth||272}px 1fr`,flex:1,overflow:"hidden"},
     sidebar:{background:"#080808",borderRight:"1px solid #141414",overflowY:"auto"},
     charRow:(a,col)=>({display:"flex",alignItems:"center",gap:10,padding:"10px 14px",cursor:"pointer",background:a?`${col}14`:"transparent",borderLeft:a?`3px solid ${col}`:"3px solid transparent",transition:"all 0.1s"}),
-    content:{padding:"22px 26px",overflowY:"auto",flex:1},
-    card:{background:cfg.cardBg||"#0D0D0D",border:"1px solid #1A1A1A",padding:`${cfg.cardPadding||20}px`,marginBottom:14,borderRadius:`${cfg.borderRadius||0}px`},
+    content:{padding:mob?"12px 10px":"22px 26px",overflowY:"auto",flex:1,minWidth:0},
+    card:{background:cfg.cardBg||"#0D0D0D",border:"1px solid #1A1A1A",padding:mob?"12px":(`${cfg.cardPadding||20}px`),marginBottom:10,borderRadius:`${cfg.borderRadius||0}px`,minWidth:0,overflow:"hidden"},
     label:{fontSize:12,letterSpacing:3,color:"#4A4A4A",fontWeight:700,marginBottom:10,fontFamily:"'Barlow Condensed',sans-serif"},
-    h1:(col="#F0EDE5")=>({fontSize:22,fontWeight:900,letterSpacing:3,color:col,marginBottom:3}),
+    h1:(col="#F0EDE5")=>({fontSize:mob?16:22,fontWeight:900,letterSpacing:mob?1:3,color:col,marginBottom:3}),
     mono:{fontFamily:"'Courier Prime','Courier New',monospace"},
-    mathBox:{background:"#0B0B0B",border:"1px solid #B91C1C",borderLeft:"4px solid #B91C1C",padding:"14px 18px",fontFamily:"'Courier Prime','Courier New',monospace",fontSize:14,color:"#C9A227",lineHeight:2,marginBottom:14},
+    mathBox:{background:"#0B0B0B",border:"1px solid #B91C1C",borderLeft:"4px solid #B91C1C",padding:mob?"10px 12px":"14px 18px",fontFamily:"'Courier Prime','Courier New',monospace",fontSize:mob?11:14,color:"#C9A227",lineHeight:mob?1.6:2,marginBottom:10,wordBreak:"break-word",overflowWrap:"break-word"},
     g2:{display:"grid",gridTemplateColumns:mob?"1fr":"1fr 1fr",gap:mob?10:16},
     buildTabBtn:(a,col)=>({background:a?`${col}1A`:"#111",border:`2px solid ${a?col:"#1E1E1E"}`,color:a?col:"#505050",padding:"10px 22px",fontSize:14,letterSpacing:2,fontWeight:700,cursor:"pointer",fontFamily:"'Barlow Condensed','Arial Narrow',Arial,sans-serif",clipPath:mob?undefined:"polygon(0 0,100% 0,94% 100%,0 100%)",transition:"all 0.15s",marginRight:mob?4:6,padding:mob?"8px 12px":"10px 22px",fontSize:mob?11:14}),
-    tacticElem:(col)=>({background:`${col}1A`,color:col,padding:"3px 10px",fontSize:12,fontWeight:900,letterSpacing:1,fontFamily:"'Barlow Condensed',sans-serif",flexShrink:0}),
-    ratingBadge:(v)=>({display:"inline-block",background:v>=90?"#0F2710":v>=80?"#211D00":"#1F0A0A",border:`2px solid ${v>=90?"#22C55E":v>=80?"#EAB308":"#EF4444"}`,color:v>=90?"#22C55E":v>=80?"#EAB308":"#EF4444",padding:"3px 14px",fontSize:18,fontWeight:900,letterSpacing:2,fontFamily:"'Barlow Condensed',sans-serif"}),
+    tacticElem:(col)=>({background:`${col}1A`,color:col,padding:mob?"2px 6px":"3px 10px",fontSize:mob?9:12,fontWeight:900,letterSpacing:mob?0:1,fontFamily:"'Barlow Condensed',sans-serif",flexShrink:0}),
+    ratingBadge:(v)=>({display:"inline-block",background:v>=90?"#0F2710":v>=80?"#211D00":"#1F0A0A",border:`2px solid ${v>=90?"#22C55E":v>=80?"#EAB308":"#EF4444"}`,color:v>=90?"#22C55E":v>=80?"#EAB308":"#EF4444",padding:mob?"2px 8px":"3px 14px",fontSize:mob?14:18,fontWeight:900,letterSpacing:mob?1:2,fontFamily:"'Barlow Condensed',sans-serif"}),
   };
 
   const renderBuilds = () => (
-    <div>
-      <div style={{display:"flex",marginBottom:20}}>
+    <div className="eo-content-wrap">
+      <div style={{display:"flex",flexWrap:"nowrap",gap:0,marginBottom:mob?10:20,overflowX:"auto",WebkitOverflowScrolling:"touch",paddingBottom:mob?4:0}}>
         {char.builds.map((b,i)=>(
           <button key={b.id} style={S.buildTabBtn(activeBuild===i,char.color)} onClick={()=>setActiveBuild(i)}>
             {b.name}
@@ -1880,13 +1880,13 @@ export default function App() {
       </div>
 
       <div style={{...S.card,borderColor:char.color+"33",marginBottom:18}}>
-        <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:20}}>
-          <div style={{flex:1}}>
-            <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:6}}>
+        <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:mob?8:20,flexDirection:mob?"column":"row"}}>
+          <div style={{flex:1,minWidth:0,width:"100%"}}>
+            <div style={{display:"flex",alignItems:"center",gap:mob?6:12,marginBottom:6,flexWrap:"wrap"}}>
               <div style={S.h1(char.color)}>{build.name}</div>
               <div style={S.ratingBadge(build.rating)}>{build.rating}</div>
             </div>
-            <div style={{fontSize:14,letterSpacing:2,color:"#666",marginBottom:14}}>{build.arch}</div>
+            <div style={{fontSize:mob?11:14,letterSpacing:mob?1:2,color:"#666",marginBottom:mob?8:14}}>{build.arch}</div>
             <div style={S.mathBox}>
               <div style={{color:"#5A5A5A",fontSize:12,letterSpacing:2,marginBottom:5}}>MATH SUMMARY</div>
               {build.mathKey}
@@ -1910,8 +1910,8 @@ export default function App() {
                 <div key={i} style={{display:"flex",alignItems:"flex-start",gap:8,padding:"9px 11px",marginBottom:5,background:"#111",borderLeft:`3px solid ${ec}`}}>
                   <div style={S.tacticElem(ec)}>{elem.toUpperCase()}</div>
                   <div>
-                    <div style={{fontSize:14,color:"#E8E8E8",fontWeight:700,letterSpacing:0.5}}>{t}</div>
-                    <div style={{fontSize:11,color:"#525252",marginTop:2,lineHeight:1.5}}>{build.reasoning[i]}</div>
+                    <div style={{fontSize:mob?12:14,color:"#E8E8E8",fontWeight:700,letterSpacing:0.5,wordBreak:"break-word"}}>{t}</div>
+                    <div style={{fontSize:mob?10:11,color:"#525252",marginTop:2,lineHeight:1.5,wordBreak:"break-word"}}>{build.reasoning[i]}</div>
                   </div>
                 </div>
               );
@@ -1922,11 +1922,11 @@ export default function App() {
         <div>
           <div style={S.card}>
             <div style={S.label}>EFFECTIVE DPS BREAKDOWN — LEGENDARY RARITY</div>
-            <div style={{color:"#3A3A3A",fontSize:12,marginBottom:8,...S.mono}}>Source: BlazBlue Wiki base values + community play data</div>
-            {cfg.showDPS!==false && <DPSChart data={build.dps} color={char.color}/>}
-            <div style={{marginTop:10,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-              <div style={{fontSize:13,color:"#3A3A3A",...S.mono}}>estimates — actual varies by entropy + attack speed</div>
-              <div style={{fontSize:22,fontWeight:700,color:char.color,...S.mono}}>~{build.dps[build.dps.length-1].v.toLocaleString()}</div>
+            <div style={{color:"#3A3A3A",fontSize:mob?10:12,marginBottom:8,...S.mono}}>Source: BlazBlue Wiki base values + community play data</div>
+            {cfg.showDPS!==false && <DPSChart data={build.dps} color={char.color} mob={mob}/>}
+            <div style={{marginTop:8,display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:4}}>
+              <div style={{fontSize:mob?10:13,color:"#3A3A3A",...S.mono}}>estimates — actual varies</div>
+              <div style={{fontSize:mob?18:22,fontWeight:700,color:char.color,...S.mono}}>~{build.dps[build.dps.length-1].v.toLocaleString()}</div>
             </div>
           </div>
         </div>
@@ -1938,13 +1938,13 @@ export default function App() {
         <div style={{...S.card, borderColor: char.color+"33"}}>
           <div style={S.label}>EVOTYPE TALENT</div>
           <div style={{display:"flex", alignItems:"flex-start", gap:12, marginBottom:18}}>
-            <div style={{background:char.color+"22", border:`2px solid ${char.color}`, padding:"6px 14px", fontSize:11, fontWeight:900, letterSpacing:2, color:char.color, flexShrink:0, alignSelf:"flex-start"}}>TALENT</div>
-            <div style={{fontSize:13, color:"#D0D0D0", lineHeight:1.7}}>{char.talent}</div>
+            <div style={{background:char.color+"22", border:`2px solid ${char.color}`, padding:mob?"4px 8px":"6px 14px", fontSize:mob?9:11, fontWeight:900, letterSpacing:mob?1:2, color:char.color, flexShrink:0, alignSelf:"flex-start"}}>TALENT</div>
+            <div style={{fontSize:mob?11:13, color:"#D0D0D0", lineHeight:1.65, wordBreak:"break-word"}}>{char.talent}</div>
           </div>
           <div style={S.label}>LEGACY SKILL</div>
           <div style={{display:"flex", alignItems:"flex-start", gap:12}}>
-            <div style={{background:"#C9A22722", border:"2px solid #C9A227", padding:"6px 14px", fontSize:11, fontWeight:900, letterSpacing:2, color:"#C9A227", flexShrink:0, alignSelf:"flex-start"}}>LEGACY</div>
-            <div style={{fontSize:13, color:"#D0D0D0", lineHeight:1.7}}>{char.legacySkill}</div>
+            <div style={{background:"#C9A22722", border:"2px solid #C9A227", padding:mob?"4px 8px":"6px 14px", fontSize:mob?9:11, fontWeight:900, letterSpacing:mob?1:2, color:"#C9A227", flexShrink:0, alignSelf:"flex-start"}}>LEGACY</div>
+            <div style={{fontSize:mob?11:13, color:"#D0D0D0", lineHeight:1.65, wordBreak:"break-word"}}>{char.legacySkill}</div>
           </div>
         </div>
 
@@ -1958,8 +1958,8 @@ export default function App() {
               <div key={i} style={{display:"flex", alignItems:"flex-start", gap:10, padding:"9px 12px", marginBottom:5, background:"#111", borderLeft:`3px solid ${char.color}`}}>
                 <div style={{fontSize:11, fontWeight:900, letterSpacing:1, color:char.color, flexShrink:0, paddingTop:2}}>#{i+1}</div>
                 <div>
-                  <div style={{fontSize:13, color:"#E0E0E0", fontWeight:700}}>{name}</div>
-                  <div style={{fontSize:11, color:"#555", lineHeight:1.5}}>{reason}</div>
+                  <div style={{fontSize:mob?11:13, color:"#E0E0E0", fontWeight:700}}>{name}</div>
+                  <div style={{fontSize:mob?10:11, color:"#555", lineHeight:1.5, wordBreak:"break-word"}}>{reason}</div>
                 </div>
               </div>
             );
@@ -1970,11 +1970,11 @@ export default function App() {
       {/* KEY MECHANICS */}
       <div style={S.card}>
         <div style={S.label}>KEY MECHANICS</div>
-        <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:10}}>
+        <div style={{display:"grid", gridTemplateColumns:mob?"1fr":"1fr 1fr", gap:8}}>
           {char.mechanics.map((m,i)=>(
             <div key={i} style={{display:"flex", gap:10, padding:"10px 13px", background:"#0D0D0D", border:"1px solid #1A1A1A", borderLeft:`3px solid ${char.color}44`}}>
-              <div style={{fontSize:18, color:char.color, fontWeight:900, flexShrink:0, lineHeight:1}}>{i+1}</div>
-              <div style={{fontSize:12, color:"#B0B0B0", lineHeight:1.65}}>{m}</div>
+              <div style={{fontSize:mob?14:18, color:char.color, fontWeight:900, flexShrink:0, lineHeight:1}}>{i+1}</div>
+              <div style={{fontSize:mob?10:12, color:"#B0B0B0", lineHeight:1.65, wordBreak:"break-word"}}>{m}</div>
             </div>
           ))}
         </div>
@@ -1986,7 +1986,7 @@ export default function App() {
         {char.tips.map((t,i)=>(
           <div key={i} style={{display:"flex", gap:12, padding:"9px 13px", marginBottom:6, background:"#0B0B0B", borderLeft:"3px solid #C9A227"}}>
             <div style={{color:"#C9A227", fontWeight:900, fontSize:13, flexShrink:0}}>TIP {i+1}</div>
-            <div style={{fontSize:12, color:"#C0B070", lineHeight:1.65}}>{t}</div>
+            <div style={{fontSize:mob?10:12, color:"#C0B070", lineHeight:1.65, wordBreak:"break-word"}}>{t}</div>
           </div>
         ))}
       </div>
@@ -2013,7 +2013,7 @@ export default function App() {
           );
         })}
       </div>
-      <div style={{overflowY:"auto",paddingLeft:24,paddingTop:4,paddingRight:4}}>
+      <div style={{overflowY:"auto",paddingLeft:mob?6:24,paddingTop:4,paddingRight:mob?6:4,flex:1,minWidth:0,wordBreak:"break-word"}}>
         {selectedTactic ? (
           <>
             <div style={{...S.card,borderColor:`${ELEM_COLORS[selectedTactic.element]}33`}}>
@@ -2094,13 +2094,16 @@ export default function App() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Courier+Prime:wght@400;700&display=swap');
         *{box-sizing:border-box;margin:0;padding:0;}
+        html,body{overflow:hidden;max-width:100vw;}
         body{background:#080808;}
         button{font-family:inherit;}
         ::-webkit-scrollbar{width:4px;}
         ::-webkit-scrollbar-track{background:#080808;}
         ::-webkit-scrollbar-thumb{background:#B91C1C;}
         button:hover{opacity:0.85;}
-
+        /* prevent horizontal overflow everywhere */
+        .eo-content-wrap * { max-width:100%; word-break:break-word; overflow-wrap:break-word; }
+        .eo-content-wrap img { max-width:100%; height:auto; }
         /* ── MOBILE ── */
         @media (max-width: 767px) {
           .eo-brand-logotype-top { font-size: 16px !important; letter-spacing: 3px !important; }
@@ -2108,9 +2111,12 @@ export default function App() {
           .eo-meta-div  { display: none !important; }
           .eo-brand-bar { height: 50px !important; }
           .eo-mob-char-strip { display: flex !important; }
-          .home-hero { height: 220px !important; }
+          .home-hero { height: 180px !important; }
           .home-feat  > div { grid-template-columns: 1fr !important; }
           .home-roster-grid { grid-template-columns: repeat(4, 1fr) !important; }
+          /* ensure no overflow on mobile build panels */
+          .build-tactic-row { flex-wrap: wrap !important; }
+          .recharts-wrapper { overflow: hidden !important; }
         }
       `}</style>
 
@@ -2123,7 +2129,7 @@ export default function App() {
         ).map(([id,lbl])=>(
           <button key={id} className={`eo-nav-btn${tab===id?" active":""}`} style={{
             ...S.navBtn(tab===id),
-            padding: mob ? "0 14px" : "0 26px",
+            padding: mob ? "0 8px" : "0 26px",
             fontSize: mob ? 11 : 12,
             letterSpacing: mob ? 2 : 4,
             flex: mob ? 1 : "none",
@@ -2158,9 +2164,9 @@ export default function App() {
             ))}
           </div>
           {/* Mobile content — full width */}
-          <div style={{...S.content,padding:"14px 14px"}}>
+          <div className="eo-content-wrap" style={{...S.content,padding:"10px 10px"}}>
             {tab==="builds" && renderBuilds()}
-            {tab==="guide" && <CharacterGuide char={char}/>}
+            {tab==="guide" && <CharacterGuide char={char} mob={mob}/>}
           </div>
         </div>
       ) : (
@@ -2194,9 +2200,9 @@ export default function App() {
         </div>
 
         {/* CONTENT */}
-        <div style={S.content}>
+        <div className="eo-content-wrap" style={S.content}>
           {tab==="builds" && renderBuilds()}
-          {tab==="guide" && <CharacterGuide char={char}/>}
+          {tab==="guide" && <CharacterGuide char={char} mob={mob}/>}
         </div>
       </div>
       )}

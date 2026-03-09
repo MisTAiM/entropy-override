@@ -607,16 +607,16 @@ export default function MindCrystals({ cfg={}, mob=false }) {
   const S = {
     wrap:{ display:"flex", flexDirection:"column", flex:1, overflow:"hidden", background:"#070707" },
     topBar:{ display:"flex", gap:0, borderBottom:"1px solid #141414", background:"#050505", flexShrink:0, alignItems:"stretch", flexWrap:"wrap" },
-    tab:(a)=>({ background:"transparent", border:"none", borderBottom:a?"2px solid #B91C1C":"2px solid transparent", color:a?"#F0EDE5":"#3A3A3A", padding:"10px 20px", fontSize:12, letterSpacing:3, fontWeight:900, cursor:"pointer", fontFamily:"'Barlow Condensed',sans-serif", transition:"all 0.12s", textTransform:"uppercase", whiteSpace:"nowrap" }),
-    catBtn:(a)=>({ background:a?"#1A0A0A":"transparent", border:"none", borderBottom:a?"2px solid #B91C1C":"2px solid transparent", color:a?"#C0C0C0":"#3A3A3A", padding:"8px 14px", fontSize:10, letterSpacing:2, fontWeight:700, cursor:"pointer", fontFamily:"'Barlow Condensed',sans-serif", transition:"all 0.12s", textTransform:"uppercase", whiteSpace:"nowrap" }),
+    tab:(a)=>({ background:"transparent", border:"none", borderBottom:a?"2px solid #B91C1C":"2px solid transparent", color:a?"#F0EDE5":"#3A3A3A", padding:mob?"8px 12px":"10px 20px", fontSize:mob?10:12, letterSpacing:mob?2:3, fontWeight:900, cursor:"pointer", fontFamily:"'Barlow Condensed',sans-serif", transition:"all 0.12s", textTransform:"uppercase", whiteSpace:"nowrap" }),
+    catBtn:(a)=>({ background:a?"#1A0A0A":"transparent", border:"none", borderBottom:a?"2px solid #B91C1C":"2px solid transparent", color:a?"#C0C0C0":"#3A3A3A", padding:mob?"6px 10px":"8px 14px", fontSize:mob?9:10, letterSpacing:mob?1:2, fontWeight:700, cursor:"pointer", fontFamily:"'Barlow Condensed',sans-serif", transition:"all 0.12s", textTransform:"uppercase", whiteSpace:"nowrap" }),
     body:{ display:"flex", flex:1, overflow:"hidden", flexDirection:mob?"column":"row" },
     grid:{ flex:1, overflowY:"auto", padding:mob?"10px":"16px 20px", display:"grid", gridTemplateColumns:mob?"repeat(3,1fr)":"repeat(auto-fill,minmax(160px,1fr))", gap:mob?8:12 },
     card:{ background:"#0D0D0D", border:"1px solid #1A1A1A", padding:mob?"10px 8px":"14px 12px", cursor:"pointer", display:"flex", flexDirection:"column", alignItems:"center", gap:6, transition:"all 0.12s", borderRadius:0 },
     cardActive:{ border:"1px solid #B91C1C", background:"#130808" },
-    detail:{ width:mob?"100%":"340px", borderLeft:mob?"none":"1px solid #141414", borderTop:mob?"1px solid #141414":"none", maxHeight:mob?"45vh":"none", overflowY:"auto", background:"#080808", flexShrink:0 },
+    detail:{ width:mob?"100%":"340px", borderLeft:mob?"none":"1px solid #141414", borderTop:mob?"1px solid #141414":"none", maxHeight:mob?"52vh":"none", overflowY:"auto", background:"#080808", flexShrink:0 },
     label:{ fontSize:10, letterSpacing:3, color:"#3A3A3A", fontWeight:700, marginBottom:8, fontFamily:"'Barlow Condensed',sans-serif" },
-    h2:{ fontSize:18, fontWeight:900, letterSpacing:2, color:"#F0EDE5", fontFamily:"'Barlow Condensed',sans-serif", lineHeight:1.1 },
-    effectBox:{ background:"#0B0B0B", border:"1px solid #1A1A1A", borderLeft:"3px solid #B91C1C", padding:"10px 14px", fontFamily:"'Courier Prime',monospace", fontSize:13, color:"#C9A227", marginBottom:10 },
+    h2:{ fontSize:mob?14:18, fontWeight:900, letterSpacing:mob?1:2, color:"#F0EDE5", fontFamily:"'Barlow Condensed',sans-serif", lineHeight:1.1 },
+    effectBox:{ background:"#0B0B0B", border:"1px solid #1A1A1A", borderLeft:"3px solid #B91C1C", padding:mob?"8px 10px":"10px 14px", fontFamily:"'Courier Prime',monospace", fontSize:mob?11:13, color:"#C9A227", marginBottom:8, wordBreak:"break-word" },
     tag:(col)=>({ display:"inline-flex", alignItems:"center", background:`${col}1A`, color:col, border:`1px solid ${col}40`, padding:"2px 8px", fontSize:10, fontWeight:900, letterSpacing:1, fontFamily:"'Barlow Condensed',sans-serif", marginRight:4, marginBottom:4 }),
     loadoutCard:(col)=>({ background:"#0D0D0D", border:`1px solid ${col}33`, padding:"14px 16px", marginBottom:12, cursor:"pointer", transition:"all 0.12s" }),
     loadoutActive:(col)=>({ background:`${col}0D`, border:`1px solid ${col}`, padding:"14px 16px", marginBottom:12, cursor:"pointer" }),
@@ -636,7 +636,7 @@ export default function MindCrystals({ cfg={}, mob=false }) {
         <button style={S.tab(view==="crystals")} onClick={()=>setView("crystals")}>ALL CRYSTALS</button>
         <button style={S.tab(view==="loadouts")} onClick={()=>setView("loadouts")}>LOADOUT GUIDE</button>
         <div style={{flex:1}}/>
-        <div style={{display:"flex",alignItems:"center",padding:"0 12px",fontSize:10,color:"#2A2A2A",letterSpacing:2}}>6 SLOTS MAX • {CRYSTALS.length} TOTAL</div>
+        {!mob && <div style={{display:"flex",alignItems:"center",padding:"0 12px",fontSize:10,color:"#2A2A2A",letterSpacing:2}}>6 SLOTS MAX • {CRYSTALS.length} TOTAL</div>}
       </div>
 
       {/* CATEGORY FILTER (crystals view) */}
@@ -661,7 +661,7 @@ export default function MindCrystals({ cfg={}, mob=false }) {
                 onClick={()=>setSel(sel===cr.id?null:cr.id)}
               >
                 <CrystalIcon crystal={cr} size={mob?40:48}/>
-                <div style={{fontSize:mob?9:11,fontWeight:900,letterSpacing:1,color:sel===cr.id?"#F0EDE5":"#8A8A8A",textAlign:"center",fontFamily:"'Barlow Condensed',sans-serif",lineHeight:1.2}}>
+                <div style={{fontSize:mob?8:11,fontWeight:900,letterSpacing:mob?0:1,color:sel===cr.id?"#F0EDE5":"#8A8A8A",textAlign:"center",fontFamily:"'Barlow Condensed',sans-serif",lineHeight:1.1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:"100%"}}>
                   {cr.name}
                 </div>
                 <div style={{fontSize:9,color:catColors[cr.category]||"#444",letterSpacing:1,fontFamily:"'Barlow Condensed',sans-serif",textTransform:"uppercase"}}>
@@ -734,8 +734,8 @@ export default function MindCrystals({ cfg={}, mob=false }) {
                 onClick={()=>setActiveLoadout(isActive?null:name)}>
                 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:isActive?12:0}}>
                   <div>
-                    <div style={{fontSize:14,fontWeight:900,letterSpacing:2,color:ld.color,fontFamily:"'Barlow Condensed',sans-serif"}}>{name}</div>
-                    {!isActive && <div style={{fontSize:11,color:"#484848",marginTop:3,fontFamily:"'Courier Prime',monospace"}}>{ld.desc.slice(0,70)}...</div>}
+                    <div style={{fontSize:mob?12:14,fontWeight:900,letterSpacing:mob?1:2,color:ld.color,fontFamily:"'Barlow Condensed',sans-serif"}}>{name}</div>
+                    {!isActive && <div style={{fontSize:mob?9:11,color:"#484848",marginTop:3,fontFamily:"'Courier Prime',monospace"}}>{ld.desc.slice(0,mob?50:70)}...</div>}
                   </div>
                   <div style={{color:"#3A3A3A",fontSize:18,fontWeight:900}}>{isActive?"▲":"▼"}</div>
                 </div>
@@ -747,7 +747,7 @@ export default function MindCrystals({ cfg={}, mob=false }) {
                     {/* Crystal slots */}
                     <div style={{marginBottom:14}}>
                       <div style={{fontSize:10,letterSpacing:3,color:"#3A3A3A",fontWeight:700,marginBottom:8}}>6 CRYSTAL LOADOUT</div>
-                      <div style={{display:"grid",gridTemplateColumns:"repeat(6,1fr)",gap:6}}>
+                      <div style={{display:"grid",gridTemplateColumns:mob?"repeat(3,1fr)":"repeat(6,1fr)",gap:mob?8:6}}>
                         {ld.crystals.map((cid,i)=>{
                           const cr = CRYSTALS.find(c=>c.id===cid);
                           if(!cr) return <div key={i} style={S.slot}><span style={{color:"#2A2A2A",fontSize:10}}>?</span></div>;
@@ -769,7 +769,7 @@ export default function MindCrystals({ cfg={}, mob=false }) {
                     {/* Notes */}
                     <div style={{background:"#0A0A0A",border:"1px solid #1A1A1A",borderLeft:`3px solid ${ld.color}`,padding:"10px 14px"}}>
                       <div style={{fontSize:10,letterSpacing:3,color:"#3A3A3A",fontWeight:700,marginBottom:6}}>STRATEGY NOTES</div>
-                      <div style={{fontSize:12,color:"#888",lineHeight:1.7,fontFamily:"'Courier Prime',monospace"}}>{ld.notes}</div>
+                      <div style={{fontSize:mob?10:12,color:"#888",lineHeight:1.6,fontFamily:"'Courier Prime',monospace",wordBreak:"break-word"}}>{ld.notes}</div>
                     </div>
 
                     {/* Individual crystal effects */}
@@ -783,8 +783,8 @@ export default function MindCrystals({ cfg={}, mob=false }) {
                           <div key={cid} style={{display:"flex",gap:10,alignItems:"flex-start",marginBottom:8,padding:"8px 10px",background:"#080808",borderLeft:`2px solid ${cc}`}}>
                             <CrystalIcon crystal={cr} size={32}/>
                             <div>
-                              <div style={{fontSize:12,fontWeight:900,color:"#C0C0C0",letterSpacing:1,fontFamily:"'Barlow Condensed',sans-serif"}}>{cr.name}</div>
-                              <div style={{fontSize:11,color:cc,fontFamily:"'Courier Prime',monospace"}}>{cr.ascended}</div>
+                              <div style={{fontSize:mob?10:12,fontWeight:900,color:"#C0C0C0",letterSpacing:mob?0:1,fontFamily:"'Barlow Condensed',sans-serif"}}>{cr.name}</div>
+                              <div style={{fontSize:mob?9:11,color:cc,fontFamily:"'Courier Prime',monospace",wordBreak:"break-word"}}>{cr.ascended}</div>
                             </div>
                           </div>
                         );

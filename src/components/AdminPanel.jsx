@@ -5,13 +5,13 @@ const mono   = "'Courier Prime','Courier New',monospace";
 const barlow = "'Barlow Condensed','Arial Narrow',sans-serif";
 
 const S = {
-  overlay: { position:"fixed",inset:0,background:"rgba(0,0,0,0.92)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",backdropFilter:"blur(6px)" },
+  overlay: { position:"fixed",inset:0,overflow:"auto",background:"rgba(0,0,0,0.92)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",backdropFilter:"blur(6px)" },
   box: { background:"#060606",border:"1px solid #1E1E1E",boxShadow:"0 0 80px rgba(185,28,28,0.15)",width:"880px",maxWidth:"96vw",maxHeight:"90vh",display:"flex",flexDirection:"column",position:"relative",fontFamily:mono,color:"#F0EDE5",overflow:"hidden" },
   topBar: { height:"3px",background:"linear-gradient(90deg,#B91C1C 0%,#C9A227 50%,#B91C1C 100%)",flexShrink:0 },
   header: { display:"flex",alignItems:"center",justifyContent:"space-between",padding:"18px 24px 14px",borderBottom:"1px solid #141414",flexShrink:0 },
   body: { display:"flex",flex:1,overflow:"hidden" },
-  sidebar: { width:160,background:"#040404",borderRight:"1px solid #141414",flexShrink:0,overflowY:"auto",padding:"12px 0" },
-  content: { flex:1,overflowY:"auto",padding:"24px 28px" },
+  sidebar: { width:"min(160px,30vw)",background:"#040404",borderRight:"1px solid #141414",flexShrink:0,overflowY:"auto",padding:"12px 0" },
+  content: { flex:1,overflowY:"auto",padding:"16px 14px",minWidth:0,wordBreak:"break-word" },
   label: { fontSize:"9px",letterSpacing:"3px",color:"#444",display:"block",marginBottom:"7px",fontFamily:barlow,fontWeight:700,textTransform:"uppercase" },
   input: { width:"100%",background:"#0C0C0C",border:"1px solid #1E1E1E",borderBottom:"1px solid #2A2A2A",color:"#F0EDE5",padding:"8px 10px",fontSize:"12px",fontFamily:mono,outline:"none",boxSizing:"border-box" },
   textarea: { width:"100%",background:"#0C0C0C",border:"1px solid #1E1E1E",color:"#F0EDE5",padding:"10px",fontSize:"11px",fontFamily:mono,outline:"none",boxSizing:"border-box",resize:"vertical",minHeight:"72px" },
