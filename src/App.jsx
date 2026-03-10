@@ -1849,7 +1849,7 @@ export default function App() {
             {cfg.showDPS!==false && <DPSChart data={build.dps} color={char.color} mob={mob}/>}
             <div style={{marginTop:8,display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:4}}>
               <div style={{fontSize:mob?10:13,color:"#3A3A3A",...S.mono}}>estimates — actual varies</div>
-              <div style={{fontSize:mob?18:22,fontWeight:700,color:char.color,...S.mono}}>~{build.dps[build.dps.length-1].v.toLocaleString()}</div>
+              <div style={{fontSize:mob?18:22,fontWeight:700,color:char.color,...S.mono}}>{build.dps&&build.dps.length>0?`~${build.dps[build.dps.length-1].v.toLocaleString()}`:"DPS UNVERIFIED"}</div>
             </div>
           </div>
         </div>
