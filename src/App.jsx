@@ -1,4 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Component } from "react";
+
+class ErrorBoundary extends Component {
+  constructor(props) { super(props); this.state = { error: null }; }
+  static getDerivedStateFromError(e) { return { error: e }; }
+  componentDidCatch(e, info) { console.error("EO Crash:", e, info); }
+  render() {
+    if (this.state.error) {
+      return (
+        <div style={{padding:24,background:"#0D0000",border:"2px solid #B91C1C",margin:16,fontFamily:"'Courier Prime',monospace"}}>
+          <div style={{fontSize:11,letterSpacing:3,color:"#B91C1C",fontWeight:900,marginBottom:8}}>// RENDER ERROR — REPORT THIS TO MORPHEUS</div>
+          <div style={{fontSize:12,color:"#FF6666",lineHeight:1.6,wordBreak:"break-all"}}>{String(this.state.error)}</div>
+          <button onClick={()=>this.setState({error:null})} style={{marginTop:12,background:"#B91C1C",border:"none",color:"#fff",padding:"6px 16px",fontSize:11,letterSpacing:2,cursor:"pointer",fontFamily:"'Barlow Condensed',sans-serif",fontWeight:900}}>RETRY</button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 import MindCrystals from "./components/MindCrystals.jsx";
 import BuildCalculator from "./components/BuildCalculator.jsx";
 import EvotypePlanner from "./components/EvotypePlanner.jsx";
@@ -1728,8 +1746,8 @@ export default function App() {
   const [selectedTactic, setSelectedTactic] = useState(null);
   const [guideBuild, setGuideBuild] = useState(0);
 
-  const char = CHARACTERS.find(c=>c.id===activeChar);
-  const build = char.builds[activeBuild];
+  const char = CHARACTERS.find(c=>c.id===activeChar) || CHARACTERS[0];
+  const build = char.builds[Math.min(activeBuild, char.builds.length - 1)] || char.builds[0];
 
   const S = {
     wrap:{background:cfg.bgColor||"#080808",height:"100vh",display:"flex",flexDirection:"column",overflow:"hidden",color:cfg.textColor||"#F0EDE5",fontFamily:"'Barlow Condensed','Arial Narrow',Arial,sans-serif",fontSize:`${cfg.fontScale||100}%`},
@@ -2081,7 +2099,7 @@ export default function App() {
           </div>
           {/* Mobile content — full width */}
           <div className="eo-content-wrap" style={{...S.content,padding:"10px 10px"}}>
-            {tab==="builds" && renderBuilds()}
+            {tab==="builds" && <ErrorBoundary>{renderBuilds()}</ErrorBoundary>}
             {tab==="guide" && <CharacterGuide char={char} mob={mob}/>}
           </div>
         </div>
@@ -2117,7 +2135,7 @@ export default function App() {
 
         {/* CONTENT */}
         <div className="eo-content-wrap" style={S.content}>
-          {tab==="builds" && renderBuilds()}
+          {tab==="builds" && <ErrorBoundary>{renderBuilds()}</ErrorBoundary>}
           {tab==="guide" && <CharacterGuide char={char} mob={mob}/>}
         </div>
       </div>
