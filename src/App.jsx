@@ -1221,6 +1221,132 @@ function CrystalSlot({id, size=44, mob=false}) {
   );
 }
 
+function BuildsView({char, build, mob, cfg, activeBuild, setActiveBuild}) {
+  const S = {
+    card:{background:"#0D0D0D",border:"1px solid #1A1A1A",padding:mob?"12px":"20px",marginBottom:14},
+    label:{fontSize:mob?9:10,letterSpacing:mob?2:3,color:"#4A4A4A",fontWeight:700,marginBottom:mob?6:10,fontFamily:"'Barlow Condensed',sans-serif"},
+    mathBox:{background:"#0B0B0B",border:"1px solid #1A1A1A",borderLeft:"3px solid #B91C1C",padding:mob?"8px 10px":"12px 14px",fontFamily:"'Courier Prime',monospace",fontSize:mob?10:12,color:"#C9A227",lineHeight:1.6,marginBottom:8,wordBreak:"break-word"},
+    mono:{fontFamily:"'Courier Prime',monospace"},
+    h1:()=>({fontSize:mob?22:30,fontWeight:900,color:"#F0EDE5",letterSpacing:mob?1:2,lineHeight:1,fontFamily:"'Barlow Condensed',sans-serif",textTransform:"uppercase"}),
+    ratingBadge:(v)=>({display:"inline-block",background:v>=90?"#0F2710":v>=80?"#211D00":"#1F0A0A",border:`2px solid ${v>=90?"#22C55E":v>=80?"#EAB308":"#EF4444"}`,color:v>=90?"#22C55E":v>=80?"#EAB308":"#EF4444",padding:mob?"2px 8px":"3px 14px",fontSize:mob?14:18,fontWeight:900,letterSpacing:mob?1:2,fontFamily:"'Barlow Condensed',sans-serif"}),
+    tacticElem:(c)=>({background:c+"22",color:c,border:`1px solid ${c}44`,padding:mob?"2px 5px":"3px 8px",fontSize:mob?8:10,fontWeight:900,letterSpacing:mob?0.5:1,flexShrink:0,alignSelf:"flex-start",marginTop:2,fontFamily:"'Barlow Condensed',sans-serif"}),
+    g2:{display:"grid",gridTemplateColumns:mob?"1fr":"1fr 1fr",gap:mob?10:14,marginBottom:14},
+    buildTabBtn:(active,c)=>({background:active?c+"22":"transparent",border:`1px solid ${active?c:"#1E1E1E"}`,color:active?c:"#505050",padding:mob?"6px 10px":"8px 18px",fontSize:mob?10:12,fontWeight:900,letterSpacing:mob?1:2,cursor:"pointer",fontFamily:"'Barlow Condensed',sans-serif",flexShrink:0,transition:"all 0.1s",whiteSpace:"nowrap"}),
+  };
+  if (!char || !build) return React.createElement("div",{style:{padding:24,color:"#444",fontFamily:"'Courier Prime',monospace",letterSpacing:2}},"NO DATA");
+  const tactics = build.tactics || [];
+  const reasoning = build.reasoning || [];
+  const synergies = char.synergies || [];
+  const mechanics = char.mechanics || [];
+  const tips = char.tips || [];
+  return (
+    <div className="eo-content-wrap">
+      <div style={{display:"flex",flexWrap:"nowrap",gap:0,marginBottom:mob?10:20,overflowX:"auto",WebkitOverflowScrolling:"touch",paddingBottom:mob?4:0}}>
+        {(char.builds||[]).map((b,i)=>(
+          <button key={b.id} style={S.buildTabBtn(activeBuild===i,char.color)} onClick={()=>setActiveBuild(i)}>{b.name}</button>
+        ))}
+      </div>
+      <div style={{...S.card,borderColor:char.color+"33",marginBottom:18}}>
+        <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:mob?8:20,flexDirection:mob?"column":"row"}}>
+          <div style={{flex:1,minWidth:0,width:"100%"}}>
+            <div style={{display:"flex",alignItems:"center",gap:mob?6:12,marginBottom:6,flexWrap:"wrap"}}>
+              <div style={S.h1()}>{build.name}</div>
+              <div style={S.ratingBadge(build.rating||0)}>{build.rating||"?"}</div>
+            </div>
+            <div style={{fontSize:mob?11:14,letterSpacing:mob?1:2,color:"#666",marginBottom:mob?8:14}}>{build.arch}</div>
+            {cfg.showMath !== false && <div style={S.mathBox}><div style={{color:"#5A5A5A",fontSize:12,letterSpacing:2,marginBottom:5}}>MATH SUMMARY</div>{build.mathKey}</div>}
+          </div>
+          {!mob && <div style={{width:190,flexShrink:0}}>
+            <div style={S.label}>BUILD PROFILE</div>
+            {cfg.showRadar!==false && build.radar && <BuildRadar radar={build.radar} color={char.color}/>}
+          </div>}
+        </div>
+      </div>
+      <div style={S.g2}>
+        <div>
+          <div style={S.card}>
+            <div style={S.label}>TACTICS (5 SLOTS)</div>
+            {tactics.map((t,i)=>{
+              const elem=t.includes("Ice")?"ice":t.includes("Fire")?"fire":t.includes("Umbra")?"umbra":t.includes("Light")?"light":t.includes("Electric")?"electric":"blade";
+              const ec=ELEM_COLORS[elem];
+              return (<div key={i} style={{display:"flex",alignItems:"flex-start",gap:8,padding:"9px 11px",marginBottom:5,background:"#111",borderLeft:`3px solid ${ec}`}}>
+                <div style={S.tacticElem(ec)}>{elem.toUpperCase()}</div>
+                <div>
+                  <div style={{fontSize:mob?12:14,color:"#E8E8E8",fontWeight:700,letterSpacing:0.5,wordBreak:"break-word"}}>{t}</div>
+                  <div style={{fontSize:mob?10:11,color:"#525252",marginTop:2,lineHeight:1.5,wordBreak:"break-word"}}>{reasoning[i]}</div>
+                </div>
+              </div>);
+            })}
+          </div>
+          <BuildCrystalPanel build={build} char={char} mob={mob}/>
+        </div>
+        <div>
+          <div style={S.card}>
+            <div style={S.label}>EFFECTIVE DPS BREAKDOWN — LEGENDARY RARITY</div>
+            <div style={{color:"#3A3A3A",fontSize:mob?10:12,marginBottom:8,...S.mono}}>Source: BlazBlue Wiki base values + community play data</div>
+            {cfg.showDPS!==false && <DPSChart data={build.dps||[]} color={char.color} mob={mob}/>}
+            <div style={{marginTop:8,display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:4}}>
+              <div style={{fontSize:mob?10:13,color:"#3A3A3A",...S.mono}}>estimates — actual varies</div>
+              <div style={{fontSize:mob?18:22,fontWeight:700,color:char.color,...S.mono}}>{build.dps&&build.dps.length>0?`~${build.dps[build.dps.length-1].v.toLocaleString()}`:"DPS UNVERIFIED"}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {(cfg.showTalent!==false||cfg.showSynergies!==false)&&<div style={S.g2}>
+        {cfg.showTalent!==false&&<div style={{...S.card,borderColor:char.color+"33"}}>
+          <div style={S.label}>EVOTYPE TALENT</div>
+          <div style={{display:"flex",alignItems:"flex-start",gap:12,marginBottom:18}}>
+            <div style={{background:char.color+"22",border:`2px solid ${char.color}`,padding:mob?"4px 8px":"6px 14px",fontSize:mob?9:11,fontWeight:900,letterSpacing:mob?1:2,color:char.color,flexShrink:0,alignSelf:"flex-start"}}>TALENT</div>
+            <div style={{fontSize:mob?11:13,color:"#D0D0D0",lineHeight:1.65,wordBreak:"break-word"}}>{char.talent}</div>
+          </div>
+          {cfg.showLegacy!==false&&<>
+            <div style={S.label}>LEGACY SKILL</div>
+            <div style={{display:"flex",alignItems:"flex-start",gap:12}}>
+              <div style={{background:"#C9A22722",border:"2px solid #C9A227",padding:mob?"4px 8px":"6px 14px",fontSize:mob?9:11,fontWeight:900,letterSpacing:mob?1:2,color:"#C9A227",flexShrink:0,alignSelf:"flex-start"}}>LEGACY</div>
+              <div style={{fontSize:mob?11:13,color:"#D0D0D0",lineHeight:1.65,wordBreak:"break-word"}}>{char.legacySkill}</div>
+            </div>
+          </>}
+        </div>}
+        {cfg.showSynergies!==false&&<div style={S.card}>
+          <div style={S.label}>BEST EVOTYPE SYNERGIES</div>
+          {synergies.map((s,i)=>{
+            const name=s.split(" (")[0].replace(/[()]/g,"").trim();
+            const reason=s.includes("(")? s.substring(s.indexOf("(")+1,s.lastIndexOf(")")):s;
+            return (<div key={i} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"9px 12px",marginBottom:5,background:"#111",borderLeft:`3px solid ${char.color}`}}>
+              <div style={{fontSize:11,fontWeight:900,letterSpacing:1,color:char.color,flexShrink:0,paddingTop:2}}>#{i+1}</div>
+              <div>
+                <div style={{fontSize:mob?11:13,color:"#E0E0E0",fontWeight:700}}>{name}</div>
+                <div style={{fontSize:mob?10:11,color:"#555",lineHeight:1.5,wordBreak:"break-word"}}>{reason}</div>
+              </div>
+            </div>);
+          })}
+        </div>}
+      </div>}
+      {cfg.showMechanics!==false&&<div style={S.card}>
+        <div style={S.label}>KEY MECHANICS</div>
+        <div style={{display:"grid",gridTemplateColumns:mob?"1fr":"1fr 1fr",gap:8}}>
+          {mechanics.map((m,i)=>(
+            <div key={i} style={{display:"flex",gap:10,padding:"10px 13px",background:"#0D0D0D",border:"1px solid #1A1A1A",borderLeft:`3px solid ${char.color}44`}}>
+              <div style={{fontSize:mob?14:18,color:char.color,fontWeight:900,flexShrink:0,lineHeight:1}}>{i+1}</div>
+              <div style={{fontSize:mob?10:12,color:"#B0B0B0",lineHeight:1.65,wordBreak:"break-word"}}>{m}</div>
+            </div>
+          ))}
+        </div>
+      </div>}
+      {cfg.showTips!==false&&<div style={S.card}>
+        <div style={S.label}>{"MORPHEUS'S TIPS"}</div>
+        {tips.map((t,i)=>(
+          <div key={i} style={{display:"flex",gap:12,padding:"9px 13px",marginBottom:6,background:"#0B0B0B",borderLeft:"3px solid #C9A227"}}>
+            <div style={{color:"#C9A227",fontWeight:900,fontSize:13,flexShrink:0}}>TIP {i+1}</div>
+            <div style={{fontSize:mob?10:12,color:"#C0B070",lineHeight:1.65,wordBreak:"break-word"}}>{t}</div>
+          </div>
+        ))}
+      </div>}
+    </div>
+  );
+}
+
+
 function BuildCrystalPanel({build, char, mob=false}) {
   const [showMorpheus, setShowMorpheus] = React.useState(false);
   const S = {
@@ -2104,7 +2230,7 @@ export default function App() {
           </div>
           {/* Mobile content — full width */}
           <div className="eo-content-wrap" style={{...S.content,padding:"10px 10px"}}>
-            {tab==="builds" && <ErrorBoundary>{renderBuilds()}</ErrorBoundary>}
+            {tab==="builds" && <ErrorBoundary><BuildsView char={char} build={build} mob={mob} cfg={cfg} activeBuild={activeBuild} setActiveBuild={setActiveBuild}/></ErrorBoundary>}
             {tab==="guide" && <CharacterGuide char={char} mob={mob}/>}
           </div>
         </div>
@@ -2140,7 +2266,7 @@ export default function App() {
 
         {/* CONTENT */}
         <div className="eo-content-wrap" style={S.content}>
-          {tab==="builds" && <ErrorBoundary>{renderBuilds()}</ErrorBoundary>}
+          {tab==="builds" && <ErrorBoundary><BuildsView char={char} build={build} mob={mob} cfg={cfg} activeBuild={activeBuild} setActiveBuild={setActiveBuild}/></ErrorBoundary>}
           {tab==="guide" && <CharacterGuide char={char} mob={mob}/>}
         </div>
       </div>
