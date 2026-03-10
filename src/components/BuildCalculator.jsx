@@ -39,7 +39,7 @@ const CRYSTAL_EFFECTS = {
   "exhilaration":     { atk:0,    skill:0,    elite:0,    combo:2.0,  survival:0, tactic:0,   special:"exhil" },
   "combo-surge":      { atk:0,    skill:0,    elite:0,    combo:2.5,  survival:0, tactic:0,   special:"surge" },
   "lethal-momentum":  { atk:0.45, skill:0,    elite:0,    combo:0,    survival:0, tactic:0,   special:"lm" },
-  "predator":         { atk:0,    skill:0,    elite:0,    combo:0,    survival:0, tactic:0,   special:"pred" },
+  "predator":         { atk:0.75, skill:0,    elite:0,    combo:0,    survival:0, tactic:0,   special:"pred" },
   "resonance":        { atk:0,    skill:0,    elite:0,    combo:0,    survival:0, tactic:0.40,special:null },
   "summon-booster":   { atk:0,    skill:0,    elite:0,    combo:0,    survival:0, tactic:0.45,special:"summon" },
   "legacy-amplifier": { atk:0,    skill:0,    elite:0,    combo:0,    survival:0, tactic:0.50,special:"legacy" },
@@ -58,7 +58,6 @@ const CRYSTAL_EFFECTS = {
   "second-wind":      { atk:0,    skill:0,    elite:0,    combo:0,    survival:0.5,tactic:0,  special:null },
   "mixture-enhancement":{ atk:0, skill:0,    elite:0,    combo:0,    survival:0.4,tactic:0,  special:null },
   "overcharge":       { atk:0,    skill:0.25, elite:0,    combo:0,    survival:0, tactic:0,   special:null },
-  "predator":         { atk:0.75, skill:0,    elite:0,    combo:0,    survival:0, tactic:0,   special:"pred" },
   "ice-fortune":      { atk:0,    skill:0,    elite:0,    combo:0,    survival:0, tactic:0,   special:"fortune-ice" },
   "fire-fortune":     { atk:0,    skill:0,    elite:0,    combo:0,    survival:0, tactic:0,   special:"fortune-fire" },
   "umbra-fortune":    { atk:0,    skill:0,    elite:0,    combo:0,    survival:0, tactic:0,   special:"fortune-umbra" },
@@ -103,14 +102,13 @@ const FUSION_DATA = {
   "hibiki+jin":     { name:"FROZEN ASSASSIN",        rating:"S", desc:"Clones in a slowed field. Jin's Cold permanently plants enemies in back-attack range for Hibiki.", primary:"hibiki", secondary:"jin",     take:{ hibiki:["Shadow Ambush clone spawn","Back-attack talent bonus","3-dodge mobility","Clone tactic proc inheritance"], jin:["Attack Cold slow field","Skill Cold +47% bonus","Frost Burst AoE proc","Ice Fortune stack guarantee"] }, crystal:["exhilaration","ice-fortune","defensive-combo","giant-slayer","not-dead-yet","straightforward"], tactics:["Attack Cold","Skill Cold","Dash Shadow Spike","Legacy Ice Spike","Summon Frost Burst"], synergy:"Ice Fortune guarantees Cold Attack by stage 2. Cold-slowed enemies cannot turn — every clone attack becomes a back-attack. Back-attack talent applies to all 3 clone proc streams simultaneously.", math:"" },
   "hibiki+hakumen": { name:"VOID PHANTOM",            rating:"A+",desc:"Hakumen's void counter + clone ambush. One perfect parry triggers clone shadow procs.", primary:"hibiki", secondary:"hakumen", take:{ hibiki:["Clone shadow spawn","Back-attack positioning","3-dodge chain","Shadow Spike proc inheritance"], hakumen:["Void Counter — parry on incoming attacks","Magatama charge multiplier","AoE counter blast","Light Spear legacy 490/hit"] }, crystal:["straightforward","legacy-amplifier","not-dead-yet","phantom-step","giant-slayer","exhilaration"], tactics:["Attack Shadow Spike","Skill Counter Blast","Dash Phantom","Legacy Light Spear","Summon Lightning Orb"], synergy:"Parry window procs clone shadow ambush on all three clone positions simultaneously. Legacy Amplifier on Light Spear + Magatama: 490 × 1.5 × 2 = 1470 per charged hit as parry follow-up.", math:"" },
   "ragna+naoto":    { name:"BLOOD HUNTER",            rating:"S", desc:"Double HP-cost offense. Blood Pact applies to both characters' HP-cost abilities — pure execute machine.", primary:"ragna",  secondary:"naoto",   take:{ ragna:["Blood Kain sub-50% multiplier","Blood Scythe heal-on-hit","Super armor attacks"], naoto:["Hunter's Eye execute mechanic","Blood Edge HP-cost attacks","Fatal Blow crit system","Blood Restriction drain"] }, crystal:["fatal-blow","focus","not-dead-yet","blood-pact","giant-slayer","vital-boost"], tactics:["Attack Burn","Skill Blood Edge","Dash Shadow Spike","Legacy Blood Scythe","Summon Chain Lightning"], synergy:"Blood Pact +35% on BOTH Blood Scythe (Ragna) and Blood Edge (Naoto) simultaneously. Blood Kain sub-50% + Fatal Blow crit = execute phase where every hit is a critical Blood Kain crit.", math:"" },
-  "ragna+bullet":   { name:"IRON BLOOD",              rating:"A+",desc:"CQC lifesteal + shell burst. Blood Scythe area heal on groups, Bullet's drive sustains between heals.", primary:"ragna",  secondary:"bullet",  take:{ ragna:["Blood Scythe AoE heal","Blood Kain sub-50% multiplier","Super armor through attacks"], bullet:["Drive: 8-10 hits/sec sustained attack","CQC shell burst","Defensive Combo protection","Demolition charge"] }, crystal:["exhilaration","defensive-combo","not-dead-yet","vital-boost","giant-slayer","straightforward"], tactics:["Attack Burn","Skill Blood Scythe","Dash Shadow Spike","Legacy Blackhole","Summon Lightning Orb"], synergy:"Bullet's drive hit rate feeds Exhilaration fast. Blood Scythe acts as reset — every room clear from Scythe restores HP for next fight. Blackhole legacy traps groups for Blood Scythe confirms.", math:"" },
   "jin+noel":       { name:"GLACIER STORM",            rating:"S", desc:"Freeze everything, rapid-fire through it. Noel's drive frequency hits Cold-frozen enemies that can't retaliate.", primary:"jin",    secondary:"noel",    take:{ jin:["Attack Cold + Skill Cold double stack","Ice Fortune tactic control","Frost Burst AoE proc","Freeze mechanic on all enemies"], noel:["Drive: 8-10 hits/sec","Long-range passive bonus","Rapid skill rotation","Bullet Storm speed"] }, crystal:["exhilaration","ice-fortune","defensive-combo","giant-slayer","not-dead-yet","straightforward"], tactics:["Attack Cold","Skill Cold","Dash Thunderbolt","Legacy Ice Spike","Summon Frost Burst"], synergy:"Cold slows enemies to 30% speed — Noel's rapid-fire is never threatened. Ice Fortune guarantees Cold Attack at stage 2. Noel's hit frequency reaches Exhilaration cap in 33 seconds on frozen enemies.", math:"" },
   "jin+hakumen":    { name:"ABSOLUTE ZERO",             rating:"S", desc:"The ultimate control duo. Hakumen's parry on frozen enemies + Magatama charge while Jin holds the freeze.", primary:"jin",    secondary:"hakumen", take:{ jin:["Cold field — enemies frozen in place","Skill Cold +47% on all skills","Ice Fortune drop guarantee","Frost Burst at max Cold stacks"], hakumen:["Magatama charge during freeze window","Void Counter parry","Light Spear burst 490/hit","Magatama × 2 multiplier at full charge"] }, crystal:["domination","giant-slayer","legacy-amplifier","not-dead-yet","ice-fortune","exhilaration"], tactics:["Attack Cold","Skill Cold","Dash Light Spear","Legacy Magatama Counter","Summon Frost Burst"], synergy:"Frozen enemies cannot interrupt Magatama charge. Full Magatama while enemy is frozen = charged Light Spear with no risk. Legacy Amplifier on Magatama Light Spear: 490 × 1.5 × 2.0 (Magatama) = 1470 per hit.", math:"" },
   "kokonoe+rachel": { name:"SCIENCE WITCH",             rating:"A+",desc:"Remote zoning + familiar swarm. Kokonoe's aerial bombing + Rachel's bat lightning = zero floor contact needed.", primary:"kokonoe",secondary:"rachel", take:{ kokonoe:["Aerial positioning — immune to ground attacks","Missile Rain: 10 projectiles per cast","Fire Projectile skill burst","Zoning: enemies can never close distance"], rachel:["Bat summon procs Chain Lightning autonomously","Wind Barrier field damage","Pumpkin detonation burst","Summon Booster on all familiars"] }, crystal:["resonance","summon-booster","legacy-amplifier","giant-slayer","not-dead-yet","exhilaration"], tactics:["Skill Fire Projectile","Attack Chain Lightning","Dash Thunderbolt","Legacy Ring of Fire","Summon Lightning Orb"], synergy:"Both characters' primary damage is ranged/summon-based — Resonance + Summon Booster stack on ALL sources simultaneously. Legacy Amplifier on Ring of Fire: 770 × 1.5 = 1155 burst per legacy. Zero floor contact = zero damage taken.", math:"" },
   "kokonoe+es":     { name:"TECHNO SPATIAL",            rating:"A", desc:"Mine field from orbit. Kokonoe's aerial + Es's spatial crests = stage covered, enemies walking into death.", primary:"kokonoe",secondary:"es",     take:{ kokonoe:["Aerial mobility — above mine detonation radius","Missile fire triggers crest positions","Science-type tactic procs","Fire Projectile crest activators"], es:["Crest field placement — passive damage traps","Mine bounce: 3+ detonations per aerial string","Spatial crest hit combos","Crest generation passive"] }, crystal:["domination","resonance","giant-slayer","not-dead-yet","exhilaration","lethal-momentum"], tactics:["Skill Place Mine","Attack Fire Projectile","Dash Thunderbolt","Legacy Light Spear","Summon Lightning Orb"], synergy:"Kokonoe's aerial position triggers mine bounce from above — 3+ mines per skill cast. Crests placed before flight convert ground space into trap field while Kokonoe fires from above. Domination amplifies both mine (skill) and crest (skill) sources.", math:"" },
   "es+lambda":      { name:"SPATIAL BLADE",             rating:"A+",desc:"Crest field into sword rain. Sword turrets proc on crest positions — every crest becomes an autonomous DPS node.", primary:"es",     secondary:"lambda",  take:{ es:["Crest spatial placement — passive hit fields","Mine detonation on approach","Crest combo generation","Aerial bounce triggers"], lambda:["Sword Rain: 4 autonomous swords","Summon Booster scales all swords","Shadow Spike on sword procs","Respawn Double: permanent sword field"] }, crystal:["resonance","summon-booster","exhilaration","giant-slayer","not-dead-yet","defensive-combo"], tactics:["Skill Ice Sword","Attack Shadow Spike","Dash Thunderbolt","Legacy Light Spear","Summon Sword Rain"], synergy:"Lambda's sword rain hits Es's crests, triggering combo count for Exhilaration without player input. Summon Booster applies to both Lambda's swords AND Es's mine detonations (classified as summon-type). Fully autonomous DPS engine.", math:"" },
   "noel+taokaka":   { name:"BULLET BEAST",              rating:"A+",desc:"Fastest combo stack in the game. Combined hit rates cap Exhilaration before stage 1 is clear.", primary:"noel",   secondary:"taokaka", take:{ noel:["Drive: 8-10 hits/sec","Rapid-fire bullet pattern","Long-range passive bonus","Bullet Storm sustained attack"], taokaka:["Rush speed: 10-12 hits/sec","Infinite dodge direction changes","Claw blitz attack chains","Combo Surge stacking"] }, crystal:["exhilaration","combo-surge","defensive-combo","giant-slayer","not-dead-yet","straightforward"], tactics:["Attack Cold","Skill Thunderbolt","Dash Shadow Spike","Legacy Blackhole","Summon Lightning Orb"], synergy:"Dual hit-rate stack: Noel Drive 9 hits/sec + Taokaka Rush 11 hits/sec combined = Exhilaration cap in ~22 seconds in this fusion context. Combo Surge caps simultaneously. Peak multiplier: 3.0 × 3.5 = 10.5× before any other buffs.", math:"" },
-  "hakumen+naoto":  { name:"DEATH SENTENCE",            rating:"S", desc:"Parry into execute. Hakumen counters, Naoto's Hunter's Eye closes the HP window that was opened.", primary:"hakumen",secondary:"naoto",  take:{ hakumen:["Void Counter — parry anything","Magatama multiplier at full charge","AoE counter blast","Super armor through heavy attacks"], naoto:["Hunter's Eye execute threshold +75%","Blood Edge HP-cost burst","Fatal Blow crit damage","Death Touch execute loop"] }, crystal:["fatal-blow","focus","giant-slayer","not-dead-yet","legacy-amplifier","apex-predator"], tactics:["Attack Light Spear","Skill Counter Blast","Dash Thunderbolt","Legacy Magatama Counter","Summon Chain Lightning"], synergy:"Counter brings enemies to 70-80% HP. Hunter's Eye doesn't activate yet. Second counter brings to 30%. Hunter's Eye + Predator + full Magatama: single execute window closes the fight.", math:"" },
+  "hakumen+naoto":  { name:"DEATH SENTENCE",            rating:"S", desc:"Parry into execute. Hakumen counters, Naoto's Hunter's Eye closes the HP window that was opened.", primary:"hakumen",secondary:"naoto",  take:{ hakumen:["Void Counter — parry anything","Magatama multiplier at full charge","AoE counter blast","Super armor through heavy attacks"], naoto:["Hunter's Eye execute threshold +75%","Blood Edge HP-cost burst","Fatal Blow: [ EFFECT UNVERIFIED ]","Death Touch execute loop"] }, crystal:["fatal-blow","focus","giant-slayer","not-dead-yet","legacy-amplifier","apex-predator"], tactics:["Attack Light Spear","Skill Counter Blast","Dash Thunderbolt","Legacy Magatama Counter","Summon Chain Lightning"], synergy:"Counter brings enemies to 70-80% HP. Hunter's Eye doesn't activate yet. Second counter brings to 30%. Hunter's Eye + Predator + full Magatama: single execute window closes the fight.", math:"" },
   "rachel+lambda":  { name:"SWARM FIELD",                rating:"A+",desc:"Bat summons + autonomous sword turrets. Entirely hands-free DPS that scales off Summon Booster alone.", primary:"rachel", secondary:"lambda",  take:{ rachel:["Bat swarm: procs Chain Lightning on every bat","Wind Barrier persistent field damage","Tempest Dahlia control","Aerial positioning above ground threats"], lambda:["Sword Rain: 4 turrets firing independently","Summon Booster scales all","Umbra Fortune for Shadow Spike on swords","Respawn Double permanent field"] }, crystal:["resonance","summon-booster","legacy-amplifier","not-dead-yet","exhilaration","giant-slayer"], tactics:["Attack Chain Lightning","Skill Sword Rain","Dash Thunderbolt","Legacy Light Spear","Summon Lightning Orb"], synergy:"Three simultaneous autonomous sources: bats, swords, lightning orb. All classified as summon-type — Summon Booster +45% applies to all three simultaneously. Resonance +40% on all tactic procs from all three.", math:"" },
   "taokaka+bullet": { name:"FERAL ROUND",                rating:"A", desc:"Peak aggression. Two highest-hit-rate characters combined into a combo-stacking machine.", primary:"taokaka",secondary:"bullet", take:{ taokaka:["Infinite dodge chains — all directional","Claw Rush: 10-12 hits/sec","Combo Surge aggressive scaling","Ambush flanking speed"], bullet:["Drive shell burst: 8-10 hits/sec","CQC demolition charge","Defensive Combo during attack strings","Steel Shell sustain"] }, crystal:["exhilaration","combo-surge","defensive-combo","not-dead-yet","giant-slayer","straightforward"], tactics:["Attack Cold","Skill Fire Spirit","Dash Shadow Spike","Legacy Blackhole","Summon Lightning Orb"], synergy:"Taokaka's dodge chains feed combo count while Bullet's drive maintains attack contact. Defensive Combo protects during both. Combined hit rate: highest of any non-clone fusion.", math:"" },
   "hazama+naoto":   { name:"VENOM HUNTER",               rating:"A", desc:"DoT from range, execute up close. Set Burn DoT, let it tick, close for the blood execute.", primary:"hazama", secondary:"naoto",  take:{ hazama:["Chain whip: reaches 3-5 targets","Snake Burn DoT application","Ouroboros ring mobility","Counter God parry window"], naoto:["Hunter's Eye: execute threshold","Blood Edge burst damage","Blood Restriction drain loop","Fatal Blow crit in execute"] }, crystal:["resonance","fatal-blow","not-dead-yet","fire-fortune","giant-slayer","exhilaration"], tactics:["Attack Burn","Skill Snake Venom","Dash Shadow Spike","Legacy Blood Edge","Summon Chain Lightning"], synergy:"Burn DoT from chain whip range, then Hunter's Eye activates at 30%. At execute range: Blood Edge + Fatal Blow + Giant Slayer stacks apply simultaneously. Enemy burns to 30%, you dash in for guaranteed crit execute.", math:"" },
@@ -118,200 +116,6 @@ const FUSION_DATA = {
   "icey+taokaka":   { name:"DANCER OF CHAOS",             rating:"A+",desc:"Two of the fastest movers fused. Dance patterns chain into Taokaka rush, always in motion, always attacking.", primary:"icey",   secondary:"taokaka", take:{ icey:["Dance movement: attack patterns dodge attacks","Pixel Storm speed","Blade Dance burst window","ICEY Exhilaration accumulation at dance pace"], taokaka:["Infinite dodge direction changes","Claw Rush 10-12 hits/sec","Speed Demon kill-chain","Ambush Cat execute burst"] }, crystal:["exhilaration","combo-surge","defensive-combo","giant-slayer","not-dead-yet","phantom-step"], tactics:["Attack Cold","Skill Thunderbolt","Dash Shadow Spike","Legacy Blackhole","Summon Lightning Orb"], synergy:"ICEY dance + Taokaka rush = movement never stops. Exhilaration accumulates during both movement phases. Combo Surge stacks in parallel. Defensive Combo covers both — always in attack animation, always protected.", math:"" },
   "prisoner+ragna": { name:"DEAD BLOOD",                  rating:"A+",desc:"Roguelite lifesteal meets BBEE mechanics. Prisoner's weapon variety + Ragna's Blood Scythe sustain.", primary:"prisoner",secondary:"ragna",  take:{ prisoner:["Weapon variety: all weapon procs equal","Roll-dodge invincibility","Adaptive playstyle — any weapon works","Dead Cells-style kill momentum"], ragna:["Blood Scythe AoE heal","Blood Kain sub-50% multiplier","Super armor through heavy attacks","Self-sustaining lifesteal loop"] }, crystal:["exhilaration","straightforward","giant-slayer","not-dead-yet","chain-reaction","vital-boost"], tactics:["Attack Burn","Skill Blood Scythe","Dash Shadow Spike","Legacy Ring of Fire","Summon Lightning Orb"], synergy:"Prisoner weapon variety + Blood Scythe: any weapon type confirms Blood Scythe heal on hit. Chain Reaction kill chains from Prisoner's mobility into Blood Kain threshold activation. Vital Boost doubles the HP pool the sub-50% threshold operates on.", math:"" },
   // ─── HIBIKI EXPANSIONS ───────────────────────────────────────────────────
-  "es+hibiki":      { name:"SHADOW CREST",        rating:"A+", desc:"Clone ambush onto crest positions. Every crest becomes a back-attack trigger — clones materialize exactly where mines explode.", primary:"hibiki", secondary:"es",
-    take:{ hibiki:["Shadow Ambush legacy — clones appear on target","Back-attack positioning bonus","3-dodge chain mobility","Clone tactic proc multiplication"], es:["Crest spatial trap network","Mine detonation on approach","Aerial bounce chain","Speed Crest dash coverage"] },
-    crystal:["exhilaration","defensive-combo","giant-slayer","summon-booster","not-dead-yet","straightforward"],
-    tactics:["Attack Shadow Spike","Skill Place Mine","Dash Phantom","Legacy Light Spear","Summon Sword Rain"],
-    synergy:"Crests define enemy positions — clones appear directly behind crest-trapped enemies. Back-attack talent activates on every clone proc near crest fields. Mine detonation forces enemies into the exact range where clones land back-attacks.",
-    math:"" },
-
-  "hibiki+noel":    { name:"SHADOW DRIVE",         rating:"A+", desc:"Noel Drive speed feeds Hibiki clone combo stacking faster than any other pairing. 9 hits/sec + 3 clone procs = Exhilaration cap in 18 seconds.", primary:"hibiki", secondary:"noel",
-    take:{ hibiki:["Clone shadow spawn — 3 autonomous attackers","Back-attack bonus on all clone hits","3-dodge iframe chain","Shadow Spike proc multiplication"], noel:["Drive: 9 hits/sec rapid fire","Rapid skill rotation speed","Long-range passive bonus","Bullet Storm multi-target spray"] },
-    crystal:["exhilaration","combo-surge","giant-slayer","defensive-combo","not-dead-yet","straightforward"],
-    tactics:["Attack Shadow Spike","Skill Cold","Dash Thunderbolt","Legacy Ice Spike","Summon Lightning Orb"],
-    synergy:"Noel hit frequency builds combo count for both Exhilaration and Surge while clones independently contribute 3 additional hit streams. 18-second Exhilaration cap is top-5 fastest in the game. At cap: Noel Drive × 3 clone procs × 3.0× = 9× effective hit value.",
-    math:"" },
-
-  "hibiki+rachel":  { name:"PHANTOM STORM",        rating:"A",  desc:"Clone ambush + bat swarm. Rachel familiars proc alongside clones — triple proc becomes quadruple-plus proc on every attack string.", primary:"hibiki", secondary:"rachel",
-    take:{ hibiki:["Clone shadow ambush procs","Back-attack positioning talent","3-dodge chain mobility","Shadow Spike clone inheritance"], rachel:["Bat swarm — persistent autonomous attackers","Tempest Dahlia crowd pull","Wind Barrier persistent AoE field","Chain Lightning proc via bats"] },
-    crystal:["resonance","summon-booster","exhilaration","not-dead-yet","giant-slayer","legacy-amplifier"],
-    tactics:["Attack Chain Lightning","Skill Shadow Spike","Dash Thunderbolt","Legacy Light Spear","Summon Bat Swarm"],
-    synergy:"Both sources are classified summon-type: clones and bats trigger Summon Booster simultaneously. Resonance +40% on all tactic procs from both sources. Tempest Dahlia pulls groups into back-attack range for all clone procs.",
-    math:"" },
-
-  "hibiki+taokaka": { name:"BLITZ PHANTOM",         rating:"A+", desc:"Clone back-attacks at Taokaka rush speed. Tao 11 hits/sec establishes combo count in 15s while clones proc on every flanking opportunity.", primary:"hibiki", secondary:"taokaka",
-    take:{ hibiki:["Clone shadow spawn behind targets","Back-attack talent — clones inherit the bonus","3-dodge mobility chain","Shadow Spike autonomous proc stream"], taokaka:["Rush: 10-12 hits/sec claw blitz","Infinite dodge direction changes","Speed Demon kill momentum","Ambush burst window"] },
-    crystal:["exhilaration","combo-surge","defensive-combo","giant-slayer","not-dead-yet","straightforward"],
-    tactics:["Attack Shadow Spike","Skill Thunderbolt","Dash Blade Slash","Legacy Ice Spike","Summon Lightning Orb"],
-    synergy:"Taokaka rush pace + clone proc rate = 15-second Exhilaration cap. Both characters never stop moving — Defensive Combo active 90% of fight. Tao positions naturally into flanking angles, activating Hibiki back-attack talent on every rush string.",
-    math:"" },
-
-  "hibiki+mai":     { name:"NEEDLE SHADOW",         rating:"A",  desc:"8 needles per cast × 3 clone streams = 24 simultaneous tactic procs per Mai skill rotation with full clone overlap.", primary:"hibiki", secondary:"mai",
-    take:{ hibiki:["Clone spawn — 3 independent proc streams","Back-attack positioning talent","3-dodge iframe mobility","Shadow Spike × clone multiplication"], mai:["Needle Storm: 8 projectiles per cast","Frost Spear Cold application + slow","Chain Spear follow-up multi-hit","Needle reach — procs at range"] },
-    crystal:["exhilaration","resonance","giant-slayer","not-dead-yet","domination","straightforward"],
-    tactics:["Attack Shadow Spike","Skill Frost Spear","Dash Thunderbolt","Legacy Light Spear","Summon Sword Rain"],
-    synergy:"Mai needles proc Shadow Spike per needle — 8 procs per cast. Clones triple this: 24 Shadow Spike activations per combined rotation. Cold slow from Frost Spear plants enemies in back-attack range for all clone hits.",
-    math:"" },
-
-  "hibiki+hazama":  { name:"VENOM SHADOW",          rating:"A",  desc:"Chain whip reach + clone ambush. Hazama whip hits all 3-5 targets while clones simultaneously strike from behind on each.", primary:"hibiki", secondary:"hazama",
-    take:{ hibiki:["Clone ambush — all 3 clones inherit chain proc","Back-attack talent on whip range","3-dodge mobility","Shadow Spike per-clone proc"], hazama:["Chain whip: 3-5 simultaneous target hits","Snake Burn DoT application","Ouroboros ring extended range","Counter God parry window"] },
-    crystal:["exhilaration","resonance","giant-slayer","not-dead-yet","fire-fortune","straightforward"],
-    tactics:["Attack Shadow Spike","Skill Chain Venom","Dash Shadow","Legacy Light Spear","Summon Lightning Orb"],
-    synergy:"Chain whip hits 3-5 targets simultaneously — each target takes Shadow Spike from player AND from 3 clones. At 5 targets × 3 clones = 15 shadow procs per whip swing. Fire fortune aligns with Burn DoT application on every proc.",
-    math:"" },
-
-  "hibiki+prisoner":{ name:"DEAD CELL SHADOW",      rating:"A",  desc:"Prisoner weapon variety triggers clones on every weapon type. Dead Cells roll invincibility extends Hibiki dodge chain.", primary:"hibiki", secondary:"prisoner",
-    take:{ hibiki:["Clone ambush spawn","Back-attack talent bonus","3-dodge chain iframe","Shadow Spike clone inheritance"], prisoner:["Weapon variety — all types proc equally","Roll-dodge invincibility frames","Adaptive weapon picks per run","Dead Cells kill momentum"] },
-    crystal:["exhilaration","phantom-step","giant-slayer","not-dead-yet","straightforward","chain-reaction"],
-    tactics:["Attack Shadow Spike","Skill Thunderbolt","Dash Shadow","Legacy Ring of Fire","Summon Lightning Orb"],
-    synergy:"Prisoner roll + Hibiki 3 dodges = 4 consecutive iframe windows. Any weapon Prisoner uses activates clone procs. Chain Reaction kill momentum from Dead Cells-style snowball complements Hibiki clone output acceleration.",
-    math:"" },
-
-  // ─── RAGNA EXPANSIONS ────────────────────────────────────────────────────
-  "jin+ragna":      { name:"BLOOD ICE",              rating:"A+", desc:"Blood Kain activates — enemies frozen and unable to interrupt Scythe heal. Jin freeze field is the perfect Blood Kain delivery system.", primary:"ragna", secondary:"jin",
-    take:{ ragna:["Blood Scythe AoE heal on hit","Blood Kain sub-50% damage multiplier","Super armor through heavy attacks","Self-sustaining lifesteal loop"], jin:["Attack Cold slow — enemies frozen","Skill Cold +47% on all skills","Frost Burst at Cold stack peak","Ice Fortune tactic guarantee"] },
-    crystal:["vital-boost","not-dead-yet","ice-fortune","mixture-enhancement","giant-slayer","straightforward"],
-    tactics:["Attack Cold","Skill Blood Scythe","Dash Shadow Spike","Legacy Ice Spike","Summon Frost Burst"],
-    synergy:"Cold freezes enemies in Blood Scythe range — every hit confirms a heal proc. Vital Boost doubles the HP threshold Blood Kain activates from. Ice Fortune guarantees Cold from first drop.",
-    math:"" },
-
-  "ragna+taokaka":  { name:"BLOOD RUSH",             rating:"A+", desc:"Taokaka rush pace keeps Ragna in blood threshold with minimal downtime. Kill speed from Tao momentum resets Blood Scythe constantly.", primary:"ragna", secondary:"taokaka",
-    take:{ ragna:["Blood Scythe group heal — resets HP for Kain threshold","Blood Kain sub-50% bonus","Super armor on heavy strings"], taokaka:["Rush pace: kill momentum kills bring Blood Scythe range","Claw blitz combo sustain","Infinite dodge direction changes","Speed Demon kill chain"] },
-    crystal:["exhilaration","not-dead-yet","vital-boost","mixture-enhancement","giant-slayer","chain-reaction"],
-    tactics:["Attack Burn","Skill Blood Scythe","Dash Shadow Spike","Legacy Blackhole","Summon Lightning Orb"],
-    synergy:"Taokaka kill chain keeps rooms clear fast — Blood Scythe healing on grouped enemies between rooms. Chain Reaction: 3 kills → +36% on top of Blood Kain. Exhilaration via Tao hit rate stacks before Blood Kain threshold arrives.",
-    math:"" },
-
-  "hakumen+ragna":  { name:"VOID BLOOD",             rating:"A+", desc:"Hakumen parries — Blood Kain activates from the guaranteed sub-50% window. Magatama charges while Ragna recovers HP via Scythe.", primary:"ragna", secondary:"hakumen",
-    take:{ ragna:["Blood Scythe AoE heal resets HP between Kain phases","Blood Kain sub-50% multiplier","Super armor on heavies"], hakumen:["Void Counter — intentional damage absorption to reach Kain threshold","Magatama charge during blood phase","AoE counter blast on parry","Super armor overlapping"] },
-    crystal:["vital-boost","not-dead-yet","legacy-amplifier","giant-slayer","straightforward","apex-predator"],
-    tactics:["Attack Light Spear","Skill Blood Scythe","Dash Shadow Spike","Legacy Magatama Counter","Summon Chain Lightning"],
-    synergy:"Hakumen takes intentional hits to drop Ragna below 50% — Blood Kain activates. Magatama charges during blood phase. Apex Predator activates at full HP when Scythe heals back up. Cycling between peak Kain phase and peak Apex phase.",
-    math:"" },
-
-  "hazama+ragna":   { name:"SNAKE BLOOD",            rating:"A",  desc:"Burn DoT softens targets to Blood Kain threshold. Hazama reach applies Burn at range, Ragna closes for Blood Scythe confirm.", primary:"ragna", secondary:"hazama",
-    take:{ ragna:["Blood Scythe close-range AoE heal","Blood Kain sub-50% multiplier","Super armor through heavy attacks"], hazama:["Chain whip Burn DoT — applies to 3-5 targets at range","Ouroboros ring extended reach","Snake Burn stacking DoT","Counter God parry backup"] },
-    crystal:["fire-fortune","not-dead-yet","vital-boost","giant-slayer","straightforward","mixture-enhancement"],
-    tactics:["Attack Burn","Skill Blood Scythe","Dash Blade Slash","Legacy Ring of Fire","Summon Lightning Orb"],
-    synergy:"Burn DoT from whip range brings enemies to Blood Kain threshold safely. Ragna closes when DoT confirms threshold — Blood Scythe on grouped enemies. Ring of Fire legacy does massive burst at execute range.",
-    math:"" },
-
-  "icey+ragna":     { name:"PIXEL BLOOD",            rating:"A",  desc:"ICEY dance patterns never drop Ragna below Scythe-heal range. Dance mobility keeps Blood Kain threshold accessible without taking lethal hits.", primary:"ragna", secondary:"icey",
-    take:{ ragna:["Blood Scythe heal — dance patterns keep hitting grouped enemies","Blood Kain sub-50% window","Super armor on heavies"], icey:["Dance movement: attack patterns dodge simultaneously","Pixel Storm combo burst","Blade Dance execution window","ICEY combo hit frequency"] },
-    crystal:["exhilaration","not-dead-yet","vital-boost","defensive-combo","giant-slayer","straightforward"],
-    tactics:["Attack Burn","Skill Thunderbolt","Dash Shadow Spike","Legacy Blood Scythe","Summon Lightning Orb"],
-    synergy:"ICEY dance = always attacking, always dodging simultaneously. Blood Scythe on dance procs = constant healing during movement. Never stationary = Defensive Combo always active. Hit frequency from dance pace hits Exhilaration cap at ~25 seconds.",
-    math:"" },
-
-  // ─── JIN EXPANSIONS ──────────────────────────────────────────────────────
-  "es+jin":         { name:"FROST CREST",            rating:"S",  desc:"Freeze field + crest spatial traps. Jin Cold freeze plants enemies onto crest positions — frozen targets cannot escape mine detonation.", primary:"jin",  secondary:"es",
-    take:{ jin:["Attack Cold freeze — enemies locked in place","Skill Cold +47% all skills","Ice Fortune tactic guarantee","Frost Burst at max Cold stacks"], es:["Crest field — passive damage traps","Mine detonation: frozen enemies cannot dodge mines","Aerial bounce chain on frozen groups","Speed Crest mobility through frozen field"] },
-    crystal:["domination","ice-fortune","giant-slayer","exhilaration","not-dead-yet","resonance"],
-    tactics:["Attack Cold","Skill Cold","Dash Thunderbolt","Legacy Ice Spike","Summon Frost Burst"],
-    synergy:"Cold freeze + crest mine = guaranteed detonation. Frozen enemies sit on mines for full tick damage — mine bounce chains confirmed since targets cannot move out of bounce radius. Domination amplifies both Skill Cold and mine simultaneously.",
-    math:"" },
-
-  "jin+rachel":     { name:"STORM FREEZE",           rating:"A+", desc:"Frozen enemies get pulled by Tempest Dahlia then hit by Frost Burst. Jin freezes, Rachel repositions frozen enemies into optimal AoE range.", primary:"jin",  secondary:"rachel",
-    take:{ jin:["Attack Cold freeze field","Skill Cold stacking slow","Ice Fortune tactic drop guarantee","Frost Burst AoE burst"], rachel:["Tempest Dahlia pull — repositions frozen enemies into clusters","Bat summon proc on all grouped enemies","Wind Barrier persistent field","Pumpkin detonation on clusters"] },
-    crystal:["resonance","ice-fortune","exhilaration","not-dead-yet","giant-slayer","domination"],
-    tactics:["Attack Cold","Skill Frost Burst","Dash Thunderbolt","Legacy Ring of Fire","Summon Lightning Orb"],
-    synergy:"Freeze field + Dahlia pull = max enemy density in Frost Burst radius. Frost Burst at max Cold stacks with enemies clustered: 520 × all targets. Ring of Fire on clustered frozen enemies: 770 burst × group size.",
-    math:"" },
-
-  "jin+taokaka":    { name:"FROZEN RUSH",            rating:"A+", desc:"Taokaka rush in a frozen field means 100% back-attack exposure. Tao infinite dodges become infinite flanking through Cold-slowed enemies.", primary:"jin",  secondary:"taokaka",
-    take:{ jin:["Cold field: enemies at 30% speed","Skill Cold +47% damage bonus","Ice Fortune guaranteed drop","Frost Burst at Cold peak"], taokaka:["Rush: flanking every frozen enemy from behind","Infinite dodge chains through frozen zones","Claw blitz against immobile targets","Combo Surge feeding Exhilaration on frozen hit streaks"] },
-    crystal:["exhilaration","combo-surge","ice-fortune","giant-slayer","not-dead-yet","defensive-combo"],
-    tactics:["Attack Cold","Skill Cold","Dash Shadow Spike","Legacy Blackhole","Summon Lightning Orb"],
-    synergy:"Frozen enemies at 30% speed cannot rotate to face Tao rush — 100% back-attack exposure. Tao rush builds combo at maximum rate since zero evasion from enemies. Combo Surge + Exhilaration both hit cap ~20s in frozen field.",
-    math:"" },
-
-  "bullet+jin":     { name:"FROST SHELL",            rating:"A",  desc:"Bullet CQC drive in a frozen field. Drive shells hit frozen enemies with no risk — sub-50% HP protected by Defensive Combo.", primary:"jin",  secondary:"bullet",
-    take:{ jin:["Cold field freeze — enemies cannot interrupt Drive","Skill Cold +47% damage bonus","Ice Fortune tactic guarantee"], bullet:["Drive: 8-10 shells/sec sustained CQC","Defensive Combo protection during drive strings","Steel Shell HP sustain","Demolition Charge burst"] },
-    crystal:["defensive-combo","ice-fortune","not-dead-yet","giant-slayer","straightforward","vital-boost"],
-    tactics:["Attack Cold","Skill Thunderbolt","Dash Blade Slash","Legacy Ring of Fire","Summon Lightning Orb"],
-    synergy:"Frozen enemies cannot interrupt Drive strings — Defensive Combo active 100% during CQC. Drive in frozen field = max shells landed with zero threat. Cold +47% applies to all Drive hits.",
-    math:"" },
-
-  "jin+mai":        { name:"FROST NEEDLE",           rating:"A+", desc:"Mai 8 needles each apply Cold — stack hit count triples. Cold stacks accumulate 8× faster per cast, reaching Frost Burst threshold in 2 skill uses.", primary:"jin",  secondary:"mai",
-    take:{ jin:["Cold stacking: accumulates per hit","Skill Cold +47% damage","Ice Fortune guaranteed","Frost Burst AoE at stack peak"], mai:["Needle Storm: 8 hits per cast = 8× Cold stack rate","Frost Spear single-target Cold confirm","Chain Spear follow-up multi-hit","Mana-efficient skill rotation"] },
-    crystal:["ice-fortune","domination","exhilaration","giant-slayer","not-dead-yet","resonance"],
-    tactics:["Attack Cold","Skill Frost Spear","Dash Thunderbolt","Legacy Ice Spike","Summon Frost Burst"],
-    synergy:"8 needles per cast = 8 Cold stack applications per Mai skill use. Cold freeze threshold reached in 2 casts instead of 8+ normal attacks. Ice Fortune guarantees Cold drop, Frost Burst ready immediately after first Mai skill cast.",
-    math:"" },
-
-  "hazama+jin":     { name:"COLD VENOM",             rating:"A",  desc:"Freeze them, chain them. Hazama whip applies DoT while frozen enemies cannot escape — perfect DoT delivery while Jin holds the field.", primary:"jin",  secondary:"hazama",
-    take:{ jin:["Cold field — enemies frozen, cannot escape whip DoT","Skill Cold +47% damage","Ice Fortune guaranteed","Frost Burst AoE cleanup"], hazama:["Chain whip Burn DoT on all frozen targets","Ouroboros ring range extension","Snake Burn stacking on immobile enemies","Counter God parry if enemies break freeze"] },
-    crystal:["ice-fortune","fire-fortune","not-dead-yet","giant-slayer","resonance","exhilaration"],
-    tactics:["Attack Cold","Skill Burn","Dash Thunderbolt","Legacy Ice Spike","Summon Lightning Orb"],
-    synergy:"Frozen enemies cannot move out of whip range — guaranteed DoT stacks on all targets. Both Ice Fortune and Fire Fortune align simultaneously. Cold drops feed freeze field, Fire drops feed Burn DoT. Dual fortune alignment: unique dual-element build.",
-    math:"" },
-
-  "jin+prisoner":   { name:"DEAD FREEZE",            rating:"A",  desc:"Prisoner weapon variety hits frozen enemies with zero risk. Roll-dodge immunity + Jin freeze = the most defensively invincible fusion.", primary:"jin",  secondary:"prisoner",
-    take:{ jin:["Cold field: total battlefield control","Skill Cold +47% all skills","Ice Fortune tactic control"], prisoner:["Any weapon type hits frozen enemies safely","Roll-dodge: invincibility on every roll","Adaptive weapon picks maximize Cold field usage","Dead Cells kill momentum on frozen rooms"] },
-    crystal:["ice-fortune","not-dead-yet","defensive-combo","giant-slayer","exhilaration","chain-reaction"],
-    tactics:["Attack Cold","Skill Thunderbolt","Dash Blade Slash","Legacy Ring of Fire","Summon Lightning Orb"],
-    synergy:"Frozen field + roll invincibility = permanent safe play. Prisoner weapon rolls against frozen enemies: hit, roll, hit — no gaps. Chain Reaction on frozen room clears: kills accelerate, +36% momentum on clear.",
-    math:"" },
-
-  // ─── KOKONOE EXPANSIONS ──────────────────────────────────────────────────
-  "jin+kokonoe":    { name:"FROZEN SCIENCE",         rating:"A+", desc:"Kokonoe fires missiles from above a frozen field. Jin Cold means no enemy can close distance to Kokonoe — pure aerial artillery.", primary:"kokonoe",secondary:"jin",
-    take:{ kokonoe:["Aerial position: above all ground threats","Missile Rain: 10 proj × Cold-slowed targets","Fire Projectile: frozen enemies absorb full burst","Science-type tactic procs in frozen field"], jin:["Cold field: enemies grounded and slowed","Skill Cold +47% on Kokonoe skills","Ice Fortune tactic guarantee","Frost Burst at Cold stack peak"] },
-    crystal:["domination","ice-fortune","resonance","giant-slayer","not-dead-yet","exhilaration"],
-    tactics:["Attack Cold","Skill Fire Projectile","Dash Thunderbolt","Legacy Ice Spike","Summon Frost Burst"],
-    synergy:"Kokonoe aerial + Jin freeze = absolute zoning control. Fire Projectile 280 × 10 on frozen stationary targets: every projectile lands. Frost Burst at Cold peak hits full room while Kokonoe is untouched above.",
-    math:"" },
-
-  "kokonoe+lambda": { name:"ORBITAL BLADE",          rating:"A+", desc:"Kokonoe missiles trigger Lambda sword rain from above. Swords spawn in aerial positions — the only true aerial summon combo.", primary:"kokonoe",secondary:"lambda",
-    take:{ kokonoe:["Aerial position — missiles and swords both fire downward","Missile Rain: 10 projectile burst","Science-type tactic procs","Fire Spirit autonomous aerial attacker"], lambda:["Sword Rain: 4 autonomous swords — fire into aerial position","Summon Booster scales all swords","Shadow Spike per sword hit","Respawn Double permanent sword field"] },
-    crystal:["resonance","summon-booster","exhilaration","giant-slayer","not-dead-yet","domination"],
-    tactics:["Skill Fire Projectile","Attack Shadow Spike","Dash Thunderbolt","Legacy Light Spear","Summon Sword Rain"],
-    synergy:"Aerial Kokonoe + swords = maximum coverage angle. Missiles fire down while swords cover all quadrants — enemies hit from all directions simultaneously. Summon Booster +45% on all 4 swords + missile procs.",
-    math:"" },
-
-  "kokonoe+noel":   { name:"SCIENCE DRIVE",          rating:"A",  desc:"Noel Drive procs Kokonoe missile tactic chains. Drive hits trigger orbital responses — 9 hits/sec ground fire + missile rain overhead.", primary:"kokonoe",secondary:"noel",
-    take:{ kokonoe:["Aerial bombardment: missiles rain on Drive targets","Fire Projectile: 10 projectiles on Noel skill trigger positions","Zoning — enemies focused on Noel, Kokonoe fires safely"], noel:["Drive: 9 hits/sec rapid fire","Rapid skill rotation feeds Kokonoe tactic slots","Bullet Storm multi-target engagement","Long-range passive bonus"] },
-    crystal:["resonance","domination","exhilaration","giant-slayer","not-dead-yet","mana-surge"],
-    tactics:["Skill Fire Projectile","Attack Chain Lightning","Dash Thunderbolt","Legacy Ring of Fire","Summon Lightning Orb"],
-    synergy:"Drive 9 hits/sec builds tactic proc rates for missile triggers. Mana Surge keeps Noel Drive rotation fast — Kokonoe skills cycle overhead. Enemies attention split between Drive fire and incoming missiles.",
-    math:"" },
-
-  "kokonoe+taokaka":{ name:"SCIENTIFIC CHAOS",       rating:"A",  desc:"Taokaka rushes ground level while Kokonoe bombs from above. Enemies cannot track both attack sources — perfect split attention exploitation.", primary:"kokonoe",secondary:"taokaka",
-    take:{ kokonoe:["Aerial position — safe from ground chaos","Missile Rain: targeting Tao engaged enemies","Fire Spirit: flies autonomously while Tao creates ground chaos"], taokaka:["Rush: draws enemy attention entirely","Infinite dodge chains: never in missile landing zone","Claw blitz combo pace","Ambush Cat flanking draws enemies into missile targeting"] },
-    crystal:["resonance","exhilaration","combo-surge","giant-slayer","not-dead-yet","straightforward"],
-    tactics:["Skill Fire Projectile","Attack Chain Lightning","Dash Thunderbolt","Legacy Ring of Fire","Summon Lightning Orb"],
-    synergy:"Tao draws aggro while Kokonoe bombs. Enemies cannot track aerial attacks while managing Tao rush. Exhilaration from Tao hit rate + Kokonoe missile proc hits feed the combo counter simultaneously.",
-    math:"" },
-
-  "bullet+kokonoe": { name:"ARTILLERY SHELL",        rating:"A",  desc:"Bullet holds the CQC front line while Kokonoe provides aerial artillery support. Shell hits trigger overhead missile targeting.", primary:"kokonoe",secondary:"bullet",
-    take:{ kokonoe:["Aerial position above Bullet CQC range","Missile Rain on Bullet engaged targets","Fire Projectile burst on clustered enemies"], bullet:["Drive shells hit grouped enemies — Kokonoe targets the same cluster","CQC front-line draws enemies to Kokonoe targeting zone","Defensive Combo protection during Drive","Demolition Charge repositions clusters"] },
-    crystal:["resonance","domination","giant-slayer","not-dead-yet","defensive-combo","exhilaration"],
-    tactics:["Skill Fire Projectile","Attack Chain Lightning","Dash Thunderbolt","Legacy Ring of Fire","Summon Lightning Orb"],
-    synergy:"Bullet Drive groups enemies into Kokonoe missile targeting zone. Demolition Charge clusters before Fire Projectile burst — 10 projectiles all confirmed. Defensive Combo during Drive + aerial safety = zero damage taken.",
-    math:"" },
-
-  // ─── ES EXPANSIONS ───────────────────────────────────────────────────────
-  "es+rachel":      { name:"SPATIAL STORM",          rating:"A+", desc:"Es crests + Rachel wind. Tempest Dahlia pulls enemies onto crest positions — mines explode where enemies are repositioned, chains to bats.", primary:"es",    secondary:"rachel",
-    take:{ es:["Crest field: mine positions placed pre-fight","Mine detonation: Dahlia pulls enemies to trigger positions","Aerial bounce confirms mine chains","Speed Crest dash into bat swarm range"], rachel:["Tempest Dahlia pull: moves enemies to crest positions","Bat swarm procs on mine-positioned enemies","Wind Barrier field around crest network","Chain Lightning via bat hits on crest targets"] },
-    crystal:["resonance","summon-booster","not-dead-yet","giant-slayer","exhilaration","defensive-combo"],
-    tactics:["Skill Place Mine","Attack Chain Lightning","Dash Thunderbolt","Legacy Light Spear","Summon Bat Swarm"],
-    synergy:"Dahlia pull repositions enemies precisely onto crest-mine positions. Three sources firing on the same confirmed target: mine detonation + bat chain + Chain Lightning tactic. Summon Booster applies to bats and mine classification simultaneously.",
-    math:"" },
-
-  "es+taokaka":     { name:"CREST BLITZ",            rating:"A+", desc:"Tao rush charges through crest fields, detonating mines on every enemy she passes. Infinite dodge chain navigates crest network without self-damage.", primary:"es",    secondary:"taokaka",
-    take:{ es:["Crest trap network covering full floor","Mine bounce: Tao rush detonates mines on engaged enemies","Aerial chain above Tao charges","Speed Crest dash speed matching Tao rush angle"], taokaka:["Rush charges through mine fields targeting enemies","Infinite dodge navigates crest positions","Combo Surge feeding Exhilaration during crest blitz","Kill chain from mine-assisted clears"] },
-    crystal:["exhilaration","combo-surge","resonance","not-dead-yet","giant-slayer","defensive-combo"],
-    tactics:["Skill Place Mine","Attack Shadow Spike","Dash Thunderbolt","Legacy Blackhole","Summon Lightning Orb"],
-    synergy:"Tao rush detonates mines on every enemy she engages — control rush direction to chain mine detonations. Blackhole legacy captures room, Tao rushes through the stationary cluster triggering the full crest field simultaneously.",
-    math:"" },
-
-  "es+noel":        { name:"DRIVE CREST",            rating:"A",  desc:"Noel Drive activates Es crest combos at 9 procs/sec. The fastest crest chain generator — Drive hits chain-activate spatial fields.", primary:"es",    secondary:"noel",
-    take:{ es:["Crest field generates combo on each tactic hit","Mine detonation on Drive-engaged enemies","Speed Crest dash after Drive combos","Aerial bounce keeps Es above Drive range"], noel:["Drive: 9 hits/sec feeds Es crest combo generation","Rapid skill rotation keeps crest fields refreshed","Bullet Storm multi-target tears through crest zones","Long-range passive bonus"] },
-    crystal:["domination","exhilaration","resonance","giant-slayer","not-dead-yet","mana-surge"],
-    tactics:["Skill Place Mine","Attack Cold","Dash Thunderbolt","Legacy Light Spear","Summon Lightning Orb"],
-    synergy:"Drive 9 hits/sec generates crest combo count faster than any other pairing for Es. Mana Surge keeps Drive going continuously — crest chains maintain throughout. Exhilaration accumulates from Drive feed, reaching cap at ~25s.",
-    math:"" },
-
-  // ─── NOEL EXPANSIONS ─────────────────────────────────────────────────────
   "noel+rachel":    { name:"RAPID STORM",            rating:"A",  desc:"Noel Drive attracts enemies, Rachel bats pick off strays. Tempest Dahlia groups enemies into Drive range — maximum efficiency.", primary:"noel",   secondary:"rachel",
     take:{ noel:["Drive: 9 hits/sec on Dahlia-grouped enemies","Rapid skill rotation","Bullet Storm AoE spray","Long-range passive bonus"], rachel:["Tempest Dahlia pull groups enemies into Drive range","Bat swarm procs on all Dahlia-pulled targets","Wind Barrier persistent field around drive zone","Pumpkin detonation on grouped Drive targets"] },
     crystal:["exhilaration","resonance","giant-slayer","not-dead-yet","defensive-combo","straightforward"],
@@ -359,7 +163,7 @@ const FUSION_DATA = {
     take:{ rachel:["Bat swarm: persistent pressure, drives HP to 30% for Hunter Eye","Tempest Dahlia: positions Hunter Eye targets","Wind Barrier persistent DoT field","Chain Lightning finishing burst on marked targets"], naoto:["Hunter Eye: execute burst on bat-weakened enemies","Blood Edge HP-cost execute","Fatal Blow crit in execute window","Blood Restriction long-range drain"] },
     crystal:["resonance","fatal-blow","not-dead-yet","giant-slayer","focus","summon-booster"],
     tactics:["Attack Chain Lightning","Skill Blood Edge","Dash Thunderbolt","Legacy Light Spear","Summon Bat Swarm"],
-    synergy:"Bats apply sustained damage to bring enemies to 30% HP. Hunter Eye activates — Naoto closes for execute. Rachel bats cover the approach with Chain Lightning procs. Fatal Blow crit on execute: reliable crit rate via Focus.",
+    synergy:"Bats apply sustained damage to bring enemies to 30% HP. Hunter Eye activates — Naoto closes for execute. Rachel bats cover the approach with Chain Lightning procs. Fatal Blow + Focus: unverified interaction on execute.",
     math:"" },
 
   "icey+rachel":    { name:"STORM DANCER",           rating:"A",  desc:"ICEY dance attracts bat procs on every dance hit. Dance movement keeps ICEY in bat swarm range — autonomous damage amplifies dance DPS.", primary:"rachel", secondary:"icey",
@@ -370,13 +174,6 @@ const FUSION_DATA = {
     math:"" },
 
   // ─── LAMBDA EXPANSIONS ───────────────────────────────────────────────────
-  "lambda+ragna":   { name:"BLADE BLOOD",            rating:"A",  desc:"Lambda swords proc lifesteal through Blood Scythe inheritance. All 4 swords independently trigger Ragna Scythe ability.", primary:"lambda", secondary:"ragna",
-    take:{ lambda:["Sword Rain: 4 independent swords proc per hit","Umbra Fortune for Shadow Spike confirmation","Respawn Double permanent sword field","Summon Booster scales all swords"], ragna:["Blood Scythe: procs on sword hits = autonomous healing","Blood Kain sub-50% multiplier","Super armor on heavy attacks"] },
-    crystal:["resonance","summon-booster","not-dead-yet","vital-boost","giant-slayer","umbra-fortune"],
-    tactics:["Attack Shadow Spike","Skill Thunderbolt","Dash Blade Slash","Legacy Blood Scythe","Summon Sword Rain"],
-    synergy:"Blood Scythe legacy procs on all 4 sword hits — autonomous healing without player casting. Sub-50% HP activates Blood Kain while swords heal back up. Umbra Fortune guarantees Shadow Spike drops for sword proc amplification.",
-    math:"" },
-
   "hazama+lambda":  { name:"CHAIN BLADE",            rating:"A",  desc:"Hazama chain reach extends Lambda sword strike range. Swords proc on all chain targets simultaneously — area sword coverage.", primary:"lambda", secondary:"hazama",
     take:{ lambda:["Sword Rain procs on all Hazama chain targets","Summon Booster on all swords","Shadow Spike per sword hit across chain range","Respawn Double permanent coverage"], hazama:["Chain whip: 3-5 simultaneous targets = swords proc on all","Ouroboros ring extended reach","Snake Burn DoT on all sword-targeted enemies","Counter God parry backup"] },
     crystal:["resonance","summon-booster","umbra-fortune","giant-slayer","not-dead-yet","exhilaration"],
@@ -399,13 +196,6 @@ const FUSION_DATA = {
     math:"" },
 
   // ─── MAI EXPANSIONS ──────────────────────────────────────────────────────
-  "mai+ragna":      { name:"NEEDLE BLOOD",           rating:"A",  desc:"Mai needles bring enemies to Blood Kain range safely. 8 needles per cast at range = precise HP management for Blood Scythe confirm.", primary:"mai",    secondary:"ragna",
-    take:{ mai:["Needle Storm: 8 procs per cast at safe range","Frost Spear Cold slow — enables Blood Kain approach","Chain Spear follow-up multi-hit"], ragna:["Blood Scythe close-range confirm on needle-weakened enemies","Blood Kain sub-50% multiplier","Super armor through close approach"] },
-    crystal:["vital-boost","not-dead-yet","giant-slayer","straightforward","mixture-enhancement","ice-fortune"],
-    tactics:["Attack Cold","Skill Frost Spear","Dash Shadow Spike","Legacy Blood Scythe","Summon Lightning Orb"],
-    synergy:"Needles reduce enemy HP to 30-40% at range. Cold slow prevents retaliation during Ragna close approach. Blood Scythe on needle-weakened grouped enemies: confirms heal + Blood Kain threshold in one cast.",
-    math:"" },
-
   "hazama+mai":     { name:"VENOM NEEDLE",           rating:"A",  desc:"Mai needles at range + Hazama chain at mid-range = no safe distance for any enemy. Coverage from needle range to chain reach.", primary:"mai",    secondary:"hazama",
     take:{ mai:["Needle Storm: 8 procs from far range","Frost Spear Cold application at needle range","Multi-needle coverage: no target position is safe"], hazama:["Chain whip mid-range 3-5 target coverage","Snake Burn DoT on chain-distance enemies","Ouroboros ring repositioning after needle barrage","Counter God as defensive answer"] },
     crystal:["resonance","fire-fortune","ice-fortune","giant-slayer","not-dead-yet","exhilaration"],
@@ -428,18 +218,11 @@ const FUSION_DATA = {
     math:"" },
 
   // ─── HAZAMA EXPANSIONS ───────────────────────────────────────────────────
-  "es+hazama":      { name:"VENOM CREST",            rating:"A",  desc:"Crest positions trap enemies for Hazama whip DoT. Enemies walk onto crests, freeze, then receive full Burn DoT stack application.", primary:"hazama", secondary:"es",
-    take:{ hazama:["Chain whip DoT on crest-trapped targets","Snake Burn stacks on immobile crest enemies","Ouroboros ring extended reach from crest positions"], es:["Crest traps: enemy enters crest = Hazama DoT confirm","Mine detonation on crest-entering enemies","Speed Crest positions Hazama in optimal chain range","Aerial bounce above crest field"] },
-    crystal:["resonance","fire-fortune","giant-slayer","not-dead-yet","exhilaration","domination"],
-    tactics:["Attack Burn","Skill Snake Venom","Dash Thunderbolt","Legacy Light Spear","Summon Lightning Orb"],
-    synergy:"Crest traps enemy → Hazama applies DoT at guaranteed range. Mine detonation on same trapped target. Enemies cannot escape crest field while taking full Burn DoT stack. Fire Fortune guarantees Burn DoT upgrade drops.",
-    math:"" },
-
   "hakumen+hazama": { name:"COUNTER VENOM",          rating:"A+", desc:"Hazama DoT softens enemies to counter range. Hakumen Void Counter then activates at precisely the right moment on DoT-weakened enemies.", primary:"hazama", secondary:"hakumen",
     take:{ hazama:["Chain Burn DoT: reduces enemy HP to counter threshold safely","Ouroboros ring repositioning after DoT application","Snake Venom long-range DoT setup"], hakumen:["Void Counter: activates on DoT-weakened enemies","Magatama charge during DoT application phase","AoE counter blast on threshold-reached enemies","Light Spear burst on counter confirm"] },
     crystal:["legacy-amplifier","resonance","not-dead-yet","giant-slayer","fatal-blow","focus"],
     tactics:["Attack Burn","Skill Counter Blast","Dash Thunderbolt","Legacy Magatama Counter","Summon Chain Lightning"],
-    synergy:"Burn DoT brings enemies to ~40% HP safely. Magatama charges during DoT window. Counter triggers at 40% with full Magatama. Fatal Blow crit on counter: 55% crit rate via Focus × 1.75 crit DMG × full Magatama 2.0.",
+    synergy:"Burn DoT brings enemies to ~40% HP safely. Magatama charges during DoT window. Counter triggers at 40% with full Magatama. Fatal Blow + Focus on counter: unverified crit interaction × full Magatama 2.0.",
     math:"" },
 
   "bullet+hazama":  { name:"SHELL VENOM",            rating:"A",  desc:"Bullet CQC clusters enemies at chain DoT range. Hazama whip reaches all Drive targets simultaneously — group DoT application.", primary:"hazama", secondary:"bullet",
@@ -482,7 +265,7 @@ const FUSION_DATA = {
     take:{ hakumen:["Void Counter activates during ICEY cross-path movements","Magatama charges during dance recovery frames","AoE counter blast catches dance-proximity enemies"], icey:["Dance cross-paths expose Hakumen to parry windows","Pixel Storm combo pace keeps Magatama charging","Blade Dance execute after Hakumen counter weakens target"] },
     crystal:["legacy-amplifier","exhilaration","not-dead-yet","giant-slayer","fatal-blow","focus"],
     tactics:["Attack Light Spear","Skill Counter Blast","Dash Thunderbolt","Legacy Magatama Counter","Summon Lightning Orb"],
-    synergy:"Dance cross-paths are predictable attack windows — Hakumen counter timing aligns with dance pattern. Fatal Blow + Focus on counter spike: 55% crit rate with 1.75× crit DMG. Magatama charges between dance-counter windows.",
+    synergy:"Dance cross-paths are predictable attack windows — Hakumen counter timing aligns with dance pattern. Fatal Blow + Focus on counter spike: unverified crit interaction on counter. Magatama charges between dance-counter windows.",
     math:"" },
 
   "hakumen+prisoner":{ name:"VOID EXILE",            rating:"A", desc:"Prisoner roll-dodge creates counter windows. Roll into attack path, Hakumen counters — guaranteed parry timing via roll animation.", primary:"hakumen",secondary:"prisoner",
@@ -504,7 +287,7 @@ const FUSION_DATA = {
     take:{ bullet:["Drive softens enemy HP to Hunter Eye threshold","Demolition Charge clusters for execute sweep","Defensive Combo: protected while executing Drive-softened targets"], naoto:["Hunter Eye executes on Drive-softened enemies","Blood Edge HP-cost burst on Drive-confirmed targets","Fatal Blow crit in execute window","Blood Restriction drain on tougher Drive-weakened enemies"] },
     crystal:["fatal-blow","focus","not-dead-yet","giant-slayer","vital-boost","blood-pact"],
     tactics:["Attack Burn","Skill Blood Edge","Dash Shadow Spike","Legacy Ring of Fire","Summon Chain Lightning"],
-    synergy:"Drive softens enemies to 30% HP without risk via Defensive Combo. Hunter Eye activates — Blood Edge execute with Fatal Blow crit. Blood Pact +35% on Blood Edge HP-cost ability. Focus 55% crit rate makes execute consistent.",
+    synergy:"Drive softens enemies to 30% HP without risk via Defensive Combo. Hunter Eye activates — Blood Edge execute with Fatal Blow + Focus unverified on execute. Blood Pact +35% on Blood Edge HP-cost ability.",
     math:"" },
 
   "bullet+prisoner":{ name:"IRON EXILE",             rating:"A",  desc:"Maximum tank-and-spank. Both character defenses overlap — Steel Shell + roll invincibility = nearly immortal front-line.", primary:"bullet",  secondary:"prisoner",
@@ -530,13 +313,6 @@ const FUSION_DATA = {
     math:"" },
 
   // ─── ICEY EXPANSIONS ─────────────────────────────────────────────────────
-  "icey+jin":       { name:"FROZEN DANCE",           rating:"A+", desc:"Dance through a frozen field. Jin Cold means enemies cannot rotate or retaliate during ICEY dance patterns — zero counterattack risk.", primary:"icey",   secondary:"jin",
-    take:{ jin:["Cold field: enemies frozen during dance patterns","Skill Cold +47% — ICEY dance hits scaled","Ice Fortune guaranteed","Frost Burst at Cold peak on dance-accumulated stacks"], icey:["Dance patterns: omnidirectional hits on frozen enemies","Pixel Storm blast on Cold-stacked groups","Blade Dance execute on frozen threshold enemies","Dance pace feeds Cold stack accumulation"] },
-    crystal:["exhilaration","ice-fortune","defensive-combo","giant-slayer","not-dead-yet","domination"],
-    tactics:["Attack Cold","Skill Thunderbolt","Dash Shadow Spike","Legacy Ice Spike","Summon Frost Burst"],
-    synergy:"Frozen enemies + dance patterns = 100% hit confirmation, 0% counter rate. Dance accumulates Cold stacks rapidly via omnidirectional hits. Frost Burst at stack peak during dance: 520 AoE × Domination 1.45 × full dance combo.",
-    math:"" },
-
   "icey+hakumen":   { name:"DANCE OF VOID",          rating:"A+", desc:"ICEY dance triggers Hakumen Void Counter timing. Dance cross-patterns create parry windows — the most reliable Magatama charging method.", primary:"icey",   secondary:"hakumen",
     take:{ hakumen:["Void Counter: dance cross-pattern creates exact parry timing","Magatama full charge during dance-counter cycles","AoE blast on dance-proximity enemies"], icey:["Dance patterns: cross-paths expose counter timing predictably","Combo accumulation from dance drives Exhilaration","Blade Dance execute after Hakumen counter confirms target","Pixel Storm AoE on post-counter recovery"] },
     crystal:["legacy-amplifier","exhilaration","not-dead-yet","giant-slayer","apex-predator","combo-surge"],
@@ -780,7 +556,7 @@ const FUSION_DATA = {
     take:{ jin:["Cold field: enemies frozen during Hunter's Eye approach","Skill Cold +47% on all skills","Ice Fortune guaranteed","Frost Burst on threshold-reached frozen enemies"], naoto:["Hunter's Eye execute on frozen enemies — guaranteed approach","Blood Edge HP-cost burst on frozen targets","Fatal Blow crit in frozen execute window","Blood Restriction at range before close"] },
     crystal:["fatal-blow","focus","ice-fortune","not-dead-yet","giant-slayer","blood-pact"],
     tactics:["Attack Cold","Skill Blood Edge","Dash Thunderbolt","Legacy Ice Spike","Summon Lightning Orb"],
-    synergy:"Frozen enemies cannot counter Hunter's Eye approach — guaranteed execute timing every time. Blood Pact +35% on Blood Edge. Focus 55% crit rate on execute.",
+    synergy:"Frozen enemies cannot counter Hunter's Eye approach — guaranteed execute timing every time. Blood Pact +35% on Blood Edge. Focus: unverified on execute.",
     math:"" },
 
   "icey+jin": { name:"FROZEN DANCE", rating:"A+", desc:"Dance through a frozen field. Jin Cold means enemies cannot rotate or retaliate during ICEY dance patterns — zero counterattack risk.", primary:"jin", secondary:"icey",
@@ -850,7 +626,7 @@ const FUSION_DATA = {
     take:{ kokonoe:["Missile Rain: depletes enemy HP to Hunter's Eye threshold from range","Fire Projectile 10-burst on pre-execute clusters","Aerial safety — Naoto tanks no missile retaliation"], naoto:["Hunter's Eye: executes on missile-weakened targets","Blood Edge HP-cost burst on confirmed threshold","Fatal Blow crit on missile-defined execute window"] },
     crystal:["fatal-blow","focus","not-dead-yet","giant-slayer","resonance","blood-pact"],
     tactics:["Skill Fire Projectile","Attack Blood Edge","Dash Thunderbolt","Legacy Magatama Counter","Summon Lightning Orb"],
-    synergy:"Missile depletion to 30% HP: safe, aerial, consistent. Hunter's Eye activates — Naoto executes. Blood Pact +35% on Blood Edge. Focus 55% crit rate makes execute reliable.",
+    synergy:"Missile depletion to 30% HP: safe, aerial, consistent. Hunter's Eye activates — Naoto executes. Blood Pact +35% on Blood Edge. Focus: unverified on execute.",
     math:"" },
 
   "icey+kokonoe": { name:"DANCE SCIENCE", rating:"A", desc:"ICEY dance draws enemy aggro while Kokonoe bombs freely. Dance creates perfect distraction — orbital bombardment confirms on every dance-engaged target.", primary:"kokonoe", secondary:"icey",
@@ -1159,7 +935,7 @@ function calcDPS(charId, tactics, crystals, entropy, comboSec=60) {
   // Crystal multipliers
   let atkBonus = 1, skillBonus = 1, eliteBonus = 1, tacticBonus = 1, survivalScore = 0;
   let comboScaling = 0, hasExhil = false, hasSurge = false, hasFortune = null;
-  let hasCrit = false, critRate = 0.1, critDmg = 1.5;
+  // Crit system removed — crit DMG/rate are NOT real stats in this game
 
   for(const cid of crystals) {
     const fx = CRYSTAL_EFFECTS[cid];
@@ -1171,12 +947,11 @@ function calcDPS(charId, tactics, crystals, entropy, comboSec=60) {
     if(fx.survival > 0) survivalScore += fx.survival;
     if(fx.special === "exhil")  hasExhil = true;
     if(fx.special === "surge")  hasSurge = true;
-    if(fx.special === "crit")   hasCrit = true;
+    // fatal-blow / focus crit effects: UNVERIFIED — not processing
     if(fx.special === "fortune-ice")   hasFortune = "ice";
     if(fx.special === "fortune-fire")  hasFortune = "fire";
     if(fx.special === "fortune-umbra") hasFortune = "umbra";
-    if(cid === "focus")    critRate += 0.25;
-    if(cid === "fatal-blow") critDmg  += 0.75;
+
   }
 
   // Combo scaling
@@ -1184,8 +959,7 @@ function calcDPS(charId, tactics, crystals, entropy, comboSec=60) {
   const surgeMult = hasSurge ? 3.5 : 1;
   const comboMult = Math.max(exhilMult, surgeMult);
 
-  // Crit average multiplier
-  const critAvgMult = hasCrit ? (critRate * critDmg + (1 - critRate) * 1.0) : 1;
+  const critAvgMult = 1; // crit system removed
 
   // Tactic DPS
   let tacticDPS = 0;
@@ -1230,7 +1004,7 @@ function calcDPS(charId, tactics, crystals, entropy, comboSec=60) {
   if(domElem && domElem[1] >= 2) syns.push({ type:"ELEMENT FOCUS", label:`${domElem[0].toUpperCase()} × ${domElem[1]}`, color:"#60B8D4", msg:"Dual element concentration — Double Tactic upgrades become accessible." });
   if(hasFortune && domElem && hasFortune === domElem[0]) syns.push({ type:"FORTUNE LOCK", label:`${hasFortune.toUpperCase()} FORTUNE`, color:"#C9A227", msg:"Fortune crystal aligns with dominant tactic element. +20% on matching drops." });
   if(hasExhil && hasSurge) syns.push({ type:"COMBO BEAST", label:"EXHILARATION + SURGE", color:"#E53935", msg:`Peak multiplier: ${exhilMult}× × ${surgeMult}× = ${(exhilMult*surgeMult).toFixed(1)}× combined at max stacks.` });
-  if(hasCrit) syns.push({ type:"CRIT BUILD", label:`${Math.round(critRate*100)}% CRIT / ${Math.round(critDmg*100)}% CRIT DMG`, color:"#F97316", msg:`Expected crit value: ${critAvgMult.toFixed(2)}× average on all hits.` });
+  // CRIT BUILD removed — Fatal Blow / Focus effects are UNVERIFIED; crit DMG/rate not confirmed real stats
   if(cloneMulti > 1) syns.push({ type:"CLONE MULTI", label:`×${cloneMulti} PROC CLONE`, color:"#7B8FE4", msg:"Clone character detected — tactic procs multiply automatically." });
   if(crystals.includes("resonance") && crystals.includes("summon-booster")) syns.push({ type:"TACTIC STACK", label:"RESONANCE + SUMMON", color:"#A78BFA", msg:`Tactic bonus: ${tacticBonus.toFixed(2)}× on all procs. Stacks multiplicatively.` });
 
