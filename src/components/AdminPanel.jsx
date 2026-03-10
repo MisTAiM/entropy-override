@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { getSettings, saveSettings, resetSettings } from "../hooks/useSettings";
+import { useCommunityData } from "../hooks/useCommunityData.js";
 
 const mono   = "'Courier Prime','Courier New',monospace";
 const barlow = "'Barlow Condensed','Arial Narrow',sans-serif";
@@ -328,7 +329,159 @@ const TABS=[
   {id:"content",label:"CONTENT"},
   {id:"characters",label:"CHARACTERS"},
   {id:"system",label:"SYSTEM"},
+  {id:"verify",label:"DATA VERIFY"},
 ];
+
+// ─── DATA VERIFY TAB ──────────────────────────────────────────────────────────
+function VerifyTab() {
+  const { pending, approved, approve, reject, deleteApproved, clearRejected } = useCommunityData();
+  const [noteInputs, setNoteInputs]     = useState({});
+  const [rejectInputs, setRejectInputs] = useState({});
+  const [viewMode, setViewMode]         = useState("pending"); // "pending" | "approved"
+
+  const pendingList  = pending.filter(e => e.status === "pending");
+  const rejectedList = pending.filter(e => e.status === "rejected");
+  const approvedList = approved;
+
+  const setNote   = (id, v) => setNoteInputs(p  => ({ ...p, [id]: v }));
+  const setReason = (id, v) => setRejectInputs(p => ({ ...p, [id]: v }));
+
+  const cellStyle = { fontFamily: mono, fontSize: 10, color: "#888", lineHeight: 1.7 };
+  const btnSm = (col) => ({
+    background: col + "22", border: `1px solid ${col}44`, color: col,
+    fontFamily: barlow, fontWeight: 900, fontSize: 9, letterSpacing: 1.5,
+    padding: "4px 10px", cursor: "pointer",
+  });
+  const rowStyle = { background: "#080808", border: "1px solid #1A1A1A", padding: "14px 16px", marginBottom: 10 };
+
+  const EntryCard = ({ e }) => (
+    <div style={rowStyle}>
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8, flexWrap: "wrap", gap: 6 }}>
+        <span style={{ fontFamily: barlow, fontWeight: 900, fontSize: 12, color: "#C9A227", letterSpacing: 1 }}>
+          {e.categoryLabel}
+        </span>
+        <span style={{ fontFamily: mono, fontSize: 9, color: "#333" }}>
+          {new Date(e.timestamp).toLocaleString()} · ID: {e.id.slice(0, 8)}
+        </span>
+      </div>
+
+      {/* Data fields */}
+      <div style={{ ...cellStyle, background: "#050505", padding: "8px 10px", marginBottom: 10 }}>
+        {Object.entries(e.data).map(([k, v]) => (
+          <div key={k}><span style={{ color: "#444" }}>{k}: </span><span style={{ color: "#F0EDE5" }}>{v}</span></div>
+        ))}
+      </div>
+
+      {/* Meta */}
+      <div style={{ ...cellStyle, marginBottom: 10 }}>
+        <span style={{ color: "#555" }}>Submitted by: </span><span style={{ color: "#888" }}>{e.meta?.username || "?"}</span>
+        {"  ·  "}
+        <span style={{ color: "#555" }}>Method: </span>{e.meta?.sourceType}
+      </div>
+      <div style={{ ...cellStyle, background: "#050505", padding: "8px 10px", marginBottom: 12, color: "#666", wordBreak: "break-word" }}>
+        <span style={{ color: "#444" }}>Source: </span>{e.meta?.source || "none provided"}
+      </div>
+
+      {/* Actions */}
+      {e.status === "pending" && (
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "flex-start" }}>
+          <div style={{ display: "flex", gap: 6, alignItems: "center", flex: 1 }}>
+            <input
+              style={{ background: "#0A0A0A", border: "1px solid #1A1A1A", color: "#888", fontFamily: mono, fontSize: 10, padding: "5px 8px", flex: 1, outline: "none" }}
+              placeholder="Optional admin note (shown publicly after approval)"
+              value={noteInputs[e.id] || ""}
+              onChange={ev => setNote(e.id, ev.target.value)}
+            />
+            <button style={btnSm("#4ADE80")} onClick={() => approve(e.id, noteInputs[e.id] || "")}>✓ APPROVE</button>
+          </div>
+          <div style={{ display: "flex", gap: 6, alignItems: "center", flex: 1 }}>
+            <input
+              style={{ background: "#0A0A0A", border: "1px solid #1A1A1A", color: "#888", fontFamily: mono, fontSize: 10, padding: "5px 8px", flex: 1, outline: "none" }}
+              placeholder="Rejection reason (not shown publicly)"
+              value={rejectInputs[e.id] || ""}
+              onChange={ev => setReason(e.id, ev.target.value)}
+            />
+            <button style={btnSm("#B91C1C")} onClick={() => reject(e.id, rejectInputs[e.id] || "")}>✕ REJECT</button>
+          </div>
+        </div>
+      )}
+
+      {e.status === "rejected" && (
+        <div style={{ fontFamily: mono, fontSize: 9, color: "#444" }}>
+          REJECTED: {e.rejectReason || "no reason given"}
+        </div>
+      )}
+    </div>
+  );
+
+  return (
+    <div>
+      <SectionTitle>COMMUNITY DATA VERIFICATION</SectionTitle>
+      <div style={{ fontFamily: mono, fontSize: 9, color: "#2A2A2A", letterSpacing: 1, marginBottom: 16 }}>
+        REVIEW USER SUBMISSIONS — APPROVE TO PUBLISH, REJECT TO DISCARD
+      </div>
+
+      {/* Tab toggles */}
+      <div style={{ display: "flex", gap: 6, marginBottom: 20 }}>
+        {[
+          ["pending", `PENDING (${pendingList.length})`],
+          ["rejected", `REJECTED (${rejectedList.length})`],
+          ["approved", `APPROVED (${approvedList.length})`],
+        ].map(([id, label]) => (
+          <button key={id} onClick={() => setViewMode(id)}
+            style={{ background: viewMode === id ? "#1A1A1A" : "transparent", border: "1px solid #1A1A1A", color: viewMode === id ? "#F0EDE5" : "#333", fontFamily: barlow, fontWeight: 900, fontSize: 9, letterSpacing: 2, padding: "6px 14px", cursor: "pointer" }}>
+            {label}
+          </button>
+        ))}
+      </div>
+
+      {/* Pending */}
+      {viewMode === "pending" && (
+        pendingList.length === 0
+          ? <div style={{ fontFamily: mono, fontSize: 10, color: "#2A2A2A", padding: "20px 0" }}>No pending submissions.</div>
+          : pendingList.map(e => <EntryCard key={e.id} e={e} />)
+      )}
+
+      {/* Rejected */}
+      {viewMode === "rejected" && (
+        <div>
+          {rejectedList.length === 0
+            ? <div style={{ fontFamily: mono, fontSize: 10, color: "#2A2A2A", padding: "20px 0" }}>No rejected entries.</div>
+            : rejectedList.map(e => <EntryCard key={e.id} e={e} />)
+          }
+          {rejectedList.length > 0 && (
+            <button style={{ ...btnSm("#444"), marginTop: 10 }} onClick={clearRejected}>CLEAR ALL REJECTED</button>
+          )}
+        </div>
+      )}
+
+      {/* Approved */}
+      {viewMode === "approved" && (
+        approvedList.length === 0
+          ? <div style={{ fontFamily: mono, fontSize: 10, color: "#2A2A2A", padding: "20px 0" }}>No approved entries yet.</div>
+          : approvedList.map(e => (
+            <div key={e.id} style={{ ...rowStyle, borderColor: "#1C1C0A" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8, flexWrap: "wrap", gap: 6 }}>
+                <span style={{ fontFamily: barlow, fontWeight: 900, fontSize: 12, color: "#4ADE80", letterSpacing: 1 }}>
+                  ✓ {e.categoryLabel}
+                </span>
+                <span style={{ fontFamily: mono, fontSize: 9, color: "#333" }}>
+                  by {e.meta?.username} · {new Date(e.approvedAt).toLocaleDateString()}
+                </span>
+              </div>
+              <div style={{ fontFamily: mono, fontSize: 10, color: "#666", marginBottom: 10 }}>
+                {Object.entries(e.data).map(([k, v]) => (
+                  <div key={k}><span style={{ color: "#333" }}>{k}: </span>{v}</div>
+                ))}
+              </div>
+              {e.adminNote && <div style={{ fontFamily: mono, fontSize: 9, color: "#4ADE80", marginBottom: 8 }}>Admin: {e.adminNote}</div>}
+              <button style={btnSm("#B91C1C")} onClick={() => deleteApproved(e.id)}>REVOKE</button>
+            </div>
+          ))
+      )}
+    </div>
+  );
+}
 
 export default function AdminPanel({show,onClose}) {
   const [authed,setAuthed]=useState(()=>sessionStorage.getItem("adminAuth")==="1");
@@ -388,6 +541,7 @@ export default function AdminPanel({show,onClose}) {
                 {activeTab==="content"    &&<ContentTab    cfg={cfg} set={set}/>}
                 {activeTab==="characters" &&<CharactersTab cfg={cfg} set={set}/>}
                 {activeTab==="system"     &&<SystemTab     cfg={cfg} set={set} toast={toast}/>}
+                {activeTab==="verify"     &&<VerifyTab/>}
               </div>
             </div>
           )}
