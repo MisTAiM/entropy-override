@@ -1734,7 +1734,7 @@ export default function App() {
   const S = {
     wrap:{background:cfg.bgColor||"#080808",height:"100vh",display:"flex",flexDirection:"column",overflow:"hidden",color:cfg.textColor||"#F0EDE5",fontFamily:"'Barlow Condensed','Arial Narrow',Arial,sans-serif",fontSize:`${cfg.fontScale||100}%`},
     header:{borderBottom:"2px solid #B91C1C",padding:"18px 28px 14px",background:"#0A0A0A",display:"flex",alignItems:"center",justifyContent:"space-between"},
-    nav:{display:"flex",gap:0,background:"#060606",borderBottom:"2px solid #1A1A1A",padding:"0 20px",alignItems:"stretch",height:`${cfg.navHeight||44}px`},
+    nav:{display:"flex",gap:0,background:"#060606",borderBottom:"2px solid #1A1A1A",padding:mob?"0 4px":"0 20px",alignItems:"stretch",height:`${cfg.navHeight||44}px`,overflowX:"auto",flexShrink:0,WebkitOverflowScrolling:"touch",scrollbarWidth:"none"},
     navBtn:(a)=>({
       position:"relative",
       background:"transparent",
@@ -2002,39 +2002,45 @@ export default function App() {
         ::-webkit-scrollbar{width:4px;}
         ::-webkit-scrollbar-track{background:#080808;}
         ::-webkit-scrollbar-thumb{background:#B91C1C;}
+        .eo-nav-no-scroll::-webkit-scrollbar{display:none!important;}
         button:hover{opacity:0.85;}
         /* prevent horizontal overflow everywhere */
         .eo-content-wrap * { max-width:100%; word-break:break-word; overflow-wrap:break-word; }
         .eo-content-wrap img { max-width:100%; height:auto; }
         /* ── MOBILE ── */
+        /* hide nav scrollbar globally */
+        .eo-nav-wrap::-webkit-scrollbar { display: none !important; }
         @media (max-width: 767px) {
           .eo-brand-logotype-top { font-size: 16px !important; letter-spacing: 3px !important; }
           .eo-brand-fill { display: none !important; }
           .eo-meta-div  { display: none !important; }
           .eo-brand-bar { height: 50px !important; }
           .eo-mob-char-strip { display: flex !important; }
-          .home-hero { height: 180px !important; }
+          .home-hero { height: 160px !important; }
           .home-feat  > div { grid-template-columns: 1fr !important; }
           .home-roster-grid { grid-template-columns: repeat(4, 1fr) !important; }
-          /* ensure no overflow on mobile build panels */
           .build-tactic-row { flex-wrap: wrap !important; }
           .recharts-wrapper { overflow: hidden !important; }
+          /* stop any full-width text overflow */
+          .eo-content-wrap { overflow-x: hidden !important; }
+          /* nav: hide scrollbar on mobile */
+          nav, [class*="nav"] { scrollbar-width: none !important; }
         }
       `}</style>
 
       <Banner />
 
-      <div style={S.nav}>
+      <div className="eo-nav-wrap" style={S.nav}>
         {(mob
           ? [["home","HOME","⌂"],["builds","BUILDS","▣"],["tactics","TACTICS","◎"],["guide","GUIDE","✦"],["crystals","CRYSTALS","◆"],["calc","CALC","⊕"],["evotype","EVOTYPE","⊞"],["tier","TIERS","≡"],["datalab","LAB","⊛"]]
           : [["home","HOME","⌂"],["builds","BUILD ANALYZER","▣"],["tactics","TACTICS DATABASE","◎"],["guide","CHARACTER GUIDE","✦"],["crystals","MIND CRYSTALS","◆"],["calc","CALCULATOR","⊕"],["evotype","EVOTYPE PLANNER","⊞"],["tier","TIER LIST","≡"],["datalab","DATA LAB","⊛"]]
         ).map(([id,lbl,icon])=>(
           <button key={id} className={`eo-nav-btn${tab===id?" active":""}`} style={{
             ...S.navBtn(tab===id),
-            padding: mob ? "0 8px" : "0 26px",
-            fontSize: mob ? 11 : 12,
-            letterSpacing: mob ? 2 : 4,
-            flex: mob ? 1 : "none",
+            padding: mob ? "0 6px" : "0 26px",
+            fontSize: mob ? 9 : 12,
+            letterSpacing: mob ? 1 : 4,
+            flexShrink: 0,
             textAlign:"center",
           }} onClick={()=>setTab(id)}>{cfg.showNavLabels === false ? icon : lbl}</button>
         ))}
@@ -2049,9 +2055,9 @@ export default function App() {
       ) : tab === "evotype" ? (
         <EvotypePlanner cfg={cfg} mob={mob}/>
       ) : tab === "tier" ? (
-        <TierList cfg={cfg} mob={mob}/>
+        <div style={{flex:1,overflow:"hidden"}}><TierList cfg={cfg} mob={mob}/></div>
       ) : tab === "datalab" ? (
-        <DataLab mob={mob}/>
+        <div style={{flex:1,overflowY:"auto"}}><DataLab mob={mob}/></div>
       ) : tab === "tactics" ? (
         <div style={{flex:1, display:"flex", overflow:"hidden", flexDirection: mob ? "column" : "row"}}>
           {renderTactics()}

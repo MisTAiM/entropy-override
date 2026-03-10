@@ -389,7 +389,7 @@ export default function EvotypePlanner({ cfg = {}, mob = false }) {
     charStrip: { display:"flex", overflowX:"auto", borderBottom:"1px solid #131313", background:"#040404", flexShrink:0, WebkitOverflowScrolling:"touch", scrollbarWidth:"none" },
     charBtn: (a,c) => ({ flexShrink:0, display:"flex", flexDirection:"column", alignItems:"center", padding:"8px 10px", cursor:"pointer", borderBottom: a?`2px solid ${c}`:"2px solid transparent", background: a?`${c}14`:"transparent", transition:"all 0.12s", minWidth:58 }),
     body:   { display:"flex", flex:1, overflow:"hidden", flexDirection: mob?"column":"row" },
-    panel:  { width: mob?"100%":340, flexShrink:0, borderRight:"1px solid #111", overflowY:"auto", padding:"20px 16px", display:"flex", flexDirection:"column", gap:14 },
+    panel:  { width: mob?"100%":340, flexShrink:0, borderRight:mob?"none":"1px solid #111", borderBottom:mob?"1px solid #111":"none", overflowY:"auto", padding:mob?"12px 14px":"20px 16px", display:"flex", flexDirection:"column", gap:14, maxHeight:mob?"42vh":undefined },
     main:   { flex:1, overflowY:"auto", padding: mob?"12px":"20px 24px" },
     label:  { fontSize:10, letterSpacing:3, color:"#484848", fontWeight:700, marginBottom:5, fontFamily:"'Barlow Condensed',sans-serif" },
     input:  { background:"#0C0C0C", border:"1px solid #1E1E1E", color:"#E8E5DD", padding:"9px 12px", fontSize:13, width:"100%", boxSizing:"border-box", outline:"none", fontFamily:"'Courier Prime',monospace", letterSpacing:0.5 },
