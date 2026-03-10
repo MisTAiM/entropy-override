@@ -1692,6 +1692,11 @@ const CustomTip = ({active,payload,label}) => {
 };
 
 function DPSChart({data,color,mob=false}) {
+  if(!data || data.length === 0) return (
+    <div style={{height:mob?130:175,display:"flex",alignItems:"center",justifyContent:"center",color:"#2A2A2A",fontSize:12,fontFamily:"'Courier Prime',monospace",letterSpacing:2,border:"1px solid #141414",background:"#080808"}}>
+      DPS DATA UNVERIFIED
+    </div>
+  );
   return (
     <ResponsiveContainer width="100%" height={mob?130:175}>
       <BarChart data={data} margin={{top:4,right:mob?4:8,bottom:mob?20:28,left:mob?-10:8}}>
